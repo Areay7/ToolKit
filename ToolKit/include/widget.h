@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <databasemanager.h>
+#include "databasemanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

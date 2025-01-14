@@ -10,16 +10,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    databasemanager.cpp \
-    main.cpp \
-    widget.cpp
+    $$PWD/src/databasemanager.cpp \
+    $$PWD/src/widget.cpp \
+    $$PWD/src/main.cpp
 
 HEADERS += \
-    databasemanager.h \
-    widget.h
+    $$PWD/include/databasemanager.h \
+    $$PWD/include/widget.h
 
 FORMS += \
-    widget.ui
+    $$PWD/ui/widget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

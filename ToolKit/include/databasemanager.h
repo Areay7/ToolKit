@@ -4,7 +4,14 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QMutex>
-#include <iostream>
+
+enum class DataBaseDriver : char
+{
+    MySQL,
+    SQLite,
+    PostgreSQL,
+    Oracle
+};
 
 class DatabaseManager : public QObject
 {
