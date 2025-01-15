@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QMutex>
 #include <QDebug>
 
@@ -28,7 +29,7 @@ public:
             if(nullptr == instance)
             {
                 instance = new DatabaseManager();
-                if(instance->init())
+                if(instance->Init())
                 {
                     qDebug() << "init success ! ";
                 }
@@ -50,7 +51,9 @@ public:
         }
     }
 
-    bool init();
+    bool Init();
+    bool InsertUser(const QString &userName, const QString &userAccount, const QString &userPassword);
+    bool Login(const QString &userName, const QString &userAccount, const QString &userPassword);
 
 private:
     DatabaseManager() {}

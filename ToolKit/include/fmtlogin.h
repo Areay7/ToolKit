@@ -3,22 +3,33 @@
 
 #include <QWidget>
 #include "databasemanager.h"
+#include <mainpage.h>
+#include <commondialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class Widget;
+class FmtLogin;
 }
 QT_END_NAMESPACE
 
-class Widget : public QWidget
+class FmtLogin : public QWidget
 {
     Q_OBJECT
 
 public:
-    Widget(QWidget *parent = nullptr);
-    ~Widget();
+    FmtLogin(QWidget *parent = nullptr);
+    ~FmtLogin();
+
+public:
+    void ExitApp();
+    bool Register();
+    bool Login();
 
 private:
-    Ui::Widget *ui;
+    Ui::FmtLogin *ui;
+    MainPage m_MainPage;
+    CommonDialog m_box;
+
+    DatabaseManager *t;
 };
 #endif // FMTLOGIN_H

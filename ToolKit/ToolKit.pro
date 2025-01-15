@@ -9,20 +9,25 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/include
+
 SOURCES += \
     $$PWD/src/databasemanager.cpp \
     $$PWD/src/fmtlogin.cpp \
     $$PWD/src/main.cpp \
-    $$PWD/src/mainpage.cpp
+    $$PWD/src/mainpage.cpp \
+    $$PWD/src/commondialog.cpp
 
 HEADERS += \
     $$PWD/include/databasemanager.h \
     $$PWD/include/fmtlogin.h \
-    $$PWD/include/mainpage.h
+    $$PWD/include/mainpage.h \
+    $$PWD/include/commondialog.h
 
 FORMS += \
     $$PWD/ui/fmtlogin.ui \
-    $$PWD/ui/mainpage.ui
+    $$PWD/ui/mainpage.ui \
+    $$PWD/ui/commondialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,11 +1,11 @@
-#include "../include/databasemanager.h"
+#include "databasemanager.h"
 #include <QDebug>
 #include <QSettings>
 #include <QSqlError>
 
 DatabaseManager* DatabaseManager::instance = nullptr;
 
-bool DatabaseManager::init()
+bool DatabaseManager::Init()
 {
     // 获取当前 .pro 文件所在的目录
     QString proFilePath = QString(PRO_FILE_PWD);
@@ -49,3 +49,65 @@ bool DatabaseManager::init()
     }
     return flag;
 }
+
+bool DatabaseManager::InsertUser(const QString &userName, const QString &userAccount, const QString &userPassword)
+{
+    bool res = false;
+    if(!m_db.isOpen()) return res;
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO user (name, account, password) VALUES (?, ?, ?)");
+    query.addBindValue(userName);
+    query.addBindValue(userAccount);
+    query.addBindValue(userPassword);
+
+    if(!query.exec())
+    {
+        qDebug() << "Insert fail !";
+        res = false;
+    }
+    else
+    {
+        qDebug() << "Insert success !";
+        res = true;
+    }
+
+    return res;
+}
+
+bool DatabaseManager::Login(const QString &userName, const QString &userAccount, const QString &userPassword)
+{
+    bool res = false;
+    if(!m_db.isOpen()) return res;
+
+    QSqlQuery query;
+    query.prepare("SELECT password FROM user WHERE account =?");
+    query.addBindValue(userAccount);
+
+    if(!query.exec())
+    {
+        qDebug() << "Check fail !";
+        res = false;
+        return res;
+    }
+
+    if (query.next())
+    {
+        QString resPasswd = query.value(0).toString();
+        qDebug() << "resPasswd : " << resPasswd;
+        if(resPasswd == userPassword)
+        {
+            qDebug() << "Check success !";
+            res = true;
+        }
+    }
+    else
+    {
+        qDebug() << "Account not found!";
+    }
+
+    qDebug() << "return ------->  " << res;
+    return res;
+}
+
+

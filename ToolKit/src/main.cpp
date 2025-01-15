@@ -1,10 +1,10 @@
-#include "../include/fmtlogin.h"
+#include "fmtlogin.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Widget w;
+    FmtLogin w;
     w.show();
     return a.exec();
 }
