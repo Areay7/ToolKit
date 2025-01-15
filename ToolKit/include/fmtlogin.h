@@ -1,5 +1,5 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef FMTLOGIN_H
+#define FMTLOGIN_H
 
 #include <QWidget>
 #include "databasemanager.h"
@@ -21,4 +21,4 @@ public:
 private:
     Ui::Widget *ui;
 };
-#endif // WIDGET_H
+#endif // FMTLOGIN_H

@@ -1,5 +1,4 @@
-#include "../include/widget.h"
-
+#include "../include/fmtlogin.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

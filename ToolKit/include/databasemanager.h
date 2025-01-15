@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QMutex>
+#include <QDebug>
 
 enum class DataBaseDriver : char
 {
@@ -27,7 +28,11 @@ public:
             if(nullptr == instance)
             {
                 instance = new DatabaseManager();
-                if(!instance->init())
+                if(instance->init())
+                {
+                    qDebug() << "init success ! ";
+                }
+                else
                 {
                     DatabaseManager::destroyInstance();
                 }

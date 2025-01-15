@@ -1,7 +1,7 @@
-#include "../include/widget.h"
-#include "ui_widget.h"
+#include "../include/fmtlogin.h"
+#include "ui_fmtlogin.h"
 
-
+#include <QPixmap>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -11,6 +11,9 @@ Widget::Widget(QWidget *parent)
 
     DatabaseManager *t = DatabaseManager::getInstance();
 
+    QPixmap wxImage(":/res/LoginPage/wechat.png");
+    ui->label_avatar->setAlignment(Qt::AlignCenter);
+    ui->label_avatar->setPixmap(wxImage);
 
 }
 
