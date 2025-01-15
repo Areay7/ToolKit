@@ -11,5 +11,6 @@
         <file>res/MainPage/friend_press.png</file>
         <file>res/MainPage/moments_common.png</file>
         <file>res/MainPage/moments_press.png</file>
+        <file>res/MainPage/boy.png</file>
     </qresource>
 </RCC>

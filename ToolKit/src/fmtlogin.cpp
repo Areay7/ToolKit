@@ -52,7 +52,7 @@ bool FmtLogin::Login()
     QString userAccount = ui->lineEdit_user->text();
     QString userPassword = ui->lineEdit_password->text();
     bool res = t->Login(name, userAccount, userPassword);
-    if(res)
+    if(!res)
     {
         this->hide();
         m_MainPage.show();
