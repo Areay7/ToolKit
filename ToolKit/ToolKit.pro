@@ -17,14 +17,18 @@ SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/mainpage.cpp \
     $$PWD/src/commondialog.cpp \
-    $$PWD/src/msgrecord.cpp
+    $$PWD/src/msgrecord.cpp \
+    $$PWD/src/commonutils.cpp \
+    $$PWD/src/commonbase.cpp
 
 HEADERS += \
     $$PWD/include/databasemanager.h \
     $$PWD/include/fmtlogin.h \
     $$PWD/include/mainpage.h \
     $$PWD/include/commondialog.h \
-    $$PWD/include/msgrecord.h
+    $$PWD/include/msgrecord.h \
+    $$PWD/include/commonutils.h \
+    $$PWD/include/commonbase.h
 
 FORMS += \
     $$PWD/ui/fmtlogin.ui \
@@ -32,6 +36,26 @@ FORMS += \
     $$PWD/ui/commondialog.ui \
     $$PWD/ui/MsgRecord.ui \
     $$PWD/ui/msgrecord.ui
+
+# 区分操作系统
+win32 {
+    # LIBS += -LC:/path/to/windows/libs -lmywindowslib
+    # INCLUDEPATH += C:/path/to/windows/includes
+    # DEFINES += WINDOWS_SPECIFIC_DEFINE
+}
+
+macx {
+    # LIBS += -L/Users/username/path/to/mac/libs -lmymaclib
+    # INCLUDEPATH += /Users/username/path/to/mac/includes
+    # DEFINES += MAC_SPECIFIC_DEFINE
+}
+
+unix:!macx {
+    # LIBS += -L/usr/local/path/to/linux/libs -lmylinuxlib
+    # INCLUDEPATH += /usr/local/path/to/linux/includes
+    # DEFINES += LINUX_SPECIFIC_DEFINE
+}
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

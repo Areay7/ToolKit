@@ -16,5 +16,6 @@
         <file>res/MainPage/tool_common.png</file>
         <file>res/MainPage/gril.png</file>
         <file>res/MainPage/wxBackGround.png</file>
+        <file>res/MainPage/add.png</file>
     </qresource>
 </RCC>

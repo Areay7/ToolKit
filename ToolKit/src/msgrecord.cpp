@@ -22,7 +22,7 @@ MsgRecord::MsgRecord(QWidget *parent)
     // 中间部分（名称 + 消息）
     QLabel *nameLabel = new QLabel("User Name", this);
     nameLabel->setStyleSheet("font-weight: bold; font-size: 14px;");
-    QLabel *messageLabel = new QLabel("Last message here...", this);
+    QLabel *messageLabel = new QLabel("Last message is", this);
     messageLabel->setStyleSheet("color: gray; font-size: 12px;");
     QVBoxLayout *middleLayout = new QVBoxLayout; middleLayout->addWidget(nameLabel);
     middleLayout->addWidget(messageLabel); middleLayout->setSpacing(5);

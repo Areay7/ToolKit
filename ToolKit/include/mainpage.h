@@ -16,6 +16,9 @@ public:
     explicit MainPage(QWidget *parent = nullptr);
     ~MainPage();
 
+private slots:
+    void SwitchStatckPage();
+
 private:
     Ui::MainPage *ui;
     MsgRecord msg;
