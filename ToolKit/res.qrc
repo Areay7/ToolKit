@@ -14,5 +14,7 @@
         <file>res/MainPage/boy.png</file>
         <file>res/MainPage/tool_press.png</file>
         <file>res/MainPage/tool_common.png</file>
+        <file>res/MainPage/gril.png</file>
+        <file>res/MainPage/wxBackGround.png</file>
     </qresource>
 </RCC>

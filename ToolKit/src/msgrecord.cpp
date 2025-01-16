@@ -9,14 +9,16 @@ MsgRecord::MsgRecord(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setFixedSize(230,70);
+    setFixedSize(230,90);
     setWindowFlag(Qt::FramelessWindowHint);
+
+
 
     // 头像
     QLabel *avatarLabel = new QLabel(this);
-    avatarLabel->setFixedSize(50, 50);
+    avatarLabel->setFixedSize(45, 45);
     // 固定头像大小
-    avatarLabel->setPixmap(QPixmap(":/res/MainPage/boy.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    avatarLabel->setPixmap(QPixmap(":/res/MainPage/gril.png").scaled(45, 45, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     // 中间部分（名称 + 消息）
     QLabel *nameLabel = new QLabel("User Name", this);
     nameLabel->setStyleSheet("font-weight: bold; font-size: 14px;");
