@@ -16,18 +16,22 @@ SOURCES += \
     $$PWD/src/fmtlogin.cpp \
     $$PWD/src/main.cpp \
     $$PWD/src/mainpage.cpp \
-    $$PWD/src/commondialog.cpp
+    $$PWD/src/commondialog.cpp \
+    $$PWD/src/msgrecord.cpp
 
 HEADERS += \
     $$PWD/include/databasemanager.h \
     $$PWD/include/fmtlogin.h \
     $$PWD/include/mainpage.h \
-    $$PWD/include/commondialog.h
+    $$PWD/include/commondialog.h \
+    $$PWD/include/msgrecord.h
 
 FORMS += \
     $$PWD/ui/fmtlogin.ui \
     $$PWD/ui/mainpage.ui \
-    $$PWD/ui/commondialog.ui
+    $$PWD/ui/commondialog.ui \
+    $$PWD/ui/MsgRecord.ui \
+    $$PWD/ui/msgrecord.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

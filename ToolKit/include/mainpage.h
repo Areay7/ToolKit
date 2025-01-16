@@ -2,6 +2,7 @@
 #define MAINPAGE_H
 
 #include <QWidget>
+#include <msgrecord.h>
 
 namespace Ui {
 class MainPage;
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MainPage *ui;
+    MsgRecord msg;
 };
 
 #endif // MAINPAGE_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
-    <height>667</height>
+    <width>1027</width>
+    <height>668</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>951</width>
+     <width>1011</width>
      <height>651</height>
     </rect>
    </property>
@@ -146,6 +146,30 @@ QPushButton:pressed {
         <string/>
        </property>
       </widget>
+      <widget class="QPushButton" name="btn_moments_2">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>530</y>
+         <width>31</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/tool_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/tool_press.png);
+ }
+
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>
@@ -182,6 +206,76 @@ QPushButton:pressed {
         </rect>
        </property>
       </widget>
+      <widget class="MsgRecord" name="widget_msg1" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>120</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>190</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_3" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>260</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_4" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>330</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_5" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>400</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_6" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>470</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="MsgRecord" name="widget_msg1_7" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>540</y>
+         <width>221</width>
+         <height>71</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>
@@ -193,6 +287,14 @@ QPushButton:pressed {
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MsgRecord</class>
+   <extends>QWidget</extends>
+   <header>msgrecord.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
