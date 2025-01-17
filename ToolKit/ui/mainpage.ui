@@ -230,36 +230,37 @@ QPushButton:pressed {
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QWidget" name="widget_verticalLayout" native="true">
         <property name="geometry">
          <rect>
-          <x>2</x>
+          <x>0</x>
           <y>90</y>
           <width>231</width>
-          <height>551</height>
+          <height>561</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
-          <widget class="MsgRecord" name="widget_msg1" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_2" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_3" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_4" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_5" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_6" native="true"/>
-         </item>
-         <item>
-          <widget class="MsgRecord" name="widget_msg1_7" native="true"/>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -408,14 +409,6 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>MsgRecord</class>
-   <extends>QWidget</extends>
-   <header>msgrecord.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../res.qrc"/>
  </resources>

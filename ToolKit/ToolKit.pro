@@ -37,24 +37,7 @@ FORMS += \
     $$PWD/ui/MsgRecord.ui \
     $$PWD/ui/msgrecord.ui
 
-# 区分操作系统
-win32 {
-    # LIBS += -LC:/path/to/windows/libs -lmywindowslib
-    # INCLUDEPATH += C:/path/to/windows/includes
-    # DEFINES += WINDOWS_SPECIFIC_DEFINE
-}
-
-macx {
-    # LIBS += -L/Users/username/path/to/mac/libs -lmymaclib
-    # INCLUDEPATH += /Users/username/path/to/mac/includes
-    # DEFINES += MAC_SPECIFIC_DEFINE
-}
-
-unix:!macx {
-    # LIBS += -L/usr/local/path/to/linux/libs -lmylinuxlib
-    # INCLUDEPATH += /usr/local/path/to/linux/includes
-    # DEFINES += LINUX_SPECIFIC_DEFINE
-}
+include($$PWD/3rd_party/lib.pri)
 
 
 # Default rules for deployment.

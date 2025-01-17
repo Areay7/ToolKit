@@ -1,6 +1,8 @@
 #include "commondialog.h"
 #include "ui_commondialog.h"
 
+#include <QDebug>
+
 CommonDialog::CommonDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::CommonDialog)

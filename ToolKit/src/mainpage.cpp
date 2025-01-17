@@ -37,7 +37,30 @@ MainPage::MainPage(QWidget *parent)
     }
 
 
+    m_scrollArea = new QScrollArea(ui->widget_verticalLayout);
+    m_scrollArea->setWidgetResizable(true);
 
+
+    // 隐藏滚动条但保留功能
+    m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    m_containerWidget = new QWidget(m_scrollArea);
+    m_containerLayout = new QVBoxLayout(m_containerWidget);
+
+
+    m_scrollArea->setWidget(m_containerWidget);
+    ui->verticalLayout->addWidget(m_scrollArea);
+
+    for(int i = 0; i < 10; ++i)
+    {
+        MsgRecord *msgRecord = new MsgRecord();
+        m_widgetList.append(msgRecord);
+        m_containerLayout->addWidget(msgRecord);
+        connect(msgRecord, &MsgRecord::clicked, this, &MainPage::onWidgetClicked);
+    }
+
+    updateVisibleWidgets();
 }
 
 void MainPage::SwitchStatckPage()
@@ -77,7 +100,40 @@ void MainPage::SwitchStatckPage()
 
 }
 
+void MainPage::onWidgetClicked(MsgRecord *msgRecord)
+{
+    if(m_lastSelectedWidget)
+    {
+        m_lastSelectedWidget->m_setSelected(false); // 恢复上一个选中的控件样式
+    }
+
+    msgRecord->m_setSelected(true);
+    m_lastSelectedWidget = msgRecord;
+}
+
+void MainPage::updateVisibleWidgets()
+{
+    // 根据 visibleStartIndex 设置哪些控件可见
+    for(int i = 0; i < m_widgetList.size(); ++i)
+    {
+        m_widgetList[i]->setVisible(i >= m_visibleStartIndex && m_visibleStartIndex + 5);
+    }
+}
+
 MainPage::~MainPage()
 {
     delete ui;
+}
+
+void MainPage::wheelEvent(QWheelEvent *event)
+{
+    if(event->angleDelta().y() > 0)
+
+    {
+        // 滚轮向上
+        if (m_visibleStartIndex > 0) {
+            --m_visibleStartIndex;
+            updateVisibleWidgets();
+        }
+    }
 }

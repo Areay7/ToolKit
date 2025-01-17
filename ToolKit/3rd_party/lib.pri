@@ -3,8 +3,9 @@
 
 
 win32 {
-    # LIBS += -LC:/path/to/windows/libs -lmywindowslib
-    # INCLUDEPATH += C:/path/to/windows/includes
+    LIBS += -LD:/work/FFmpeg/soft/ffmpeg-n4.4.2/lib -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
+    INCLUDEPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
+    DEPENDPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
     # DEFINES += WINDOWS_SPECIFIC_DEFINE
 }
 
