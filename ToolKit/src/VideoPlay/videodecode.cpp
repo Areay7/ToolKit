@@ -85,7 +85,6 @@ bool VideoDecode::open(const QString &url)
     if(m_videoIndex < 0)
     {
         showError(m_videoIndex);
-        showError(ret);
         free();
         return false;
     }
@@ -102,6 +101,7 @@ bool VideoDecode::open(const QString &url)
 #if PRINT_LOG
     qDebug() << QString("分辨率 : [w:%1 h:%2] 帧率: %3 总帧数: %4 解码器: %5")
                     .arg(m_size.width()).arg(m_size.height()).arg(m_frameRate).arg(m_totalFrames).arg(codec->name);
+#endif
 
     m_codecContext = avcodec_alloc_context3(codec);
     if(!m_codecContext)
@@ -154,4 +154,37 @@ bool VideoDecode::open(const QString &url)
 
     int size = av_image_get_buffer_size(AV_PIX_FMT_BGRA, m_size.width(), m_size.height(), 4);
     m_buffer = new uchar[size + 1000];
+    m_end = false;
+
+    return true;
+}
+
+QImage VideoDecode::read()
+{
+    if(!m_formatContext)
+    {
+        return QImage();
+    }
+
+    int readRet = av_read_frame(m_formatContext, m_packet);
+    if(readRet < 0)
+    {
+        avcodec_send_packet(m_codecContext, m_packet);
+    }
+    else
+    {
+        if(m_packet->stream_index == m_videoIndex)
+        {
+            // 计算当前帧时间（毫秒）
+#if 1       // 方法一：适用于所有场景，但是存在一定误差
+            m_packet->pts = qRound64(m_packet->pts * (1000 * rationalToDouble(&m_formatContext->streams[m_videoIndex]->time_base)));
+            m_packet->dts = qRound64(m_packet->dts * (1000 * rationalToDouble(&m_formatContext->streams[m_videoIndex]->time_base)));
+#else       // 方法二：适用于播放本地视频文件，计算每一帧时间较准，但是由于网络视频流无法获取总帧数，所以无法适用
+            m_obtainFrames++;
+            m_packet->pts = qRound64(m_obtainFrames * (qreal(m_totalTime) / m_totalFrames));
+#endif
+
+            int ret = avcodec_send_packet()
+        }
+    }
 }
