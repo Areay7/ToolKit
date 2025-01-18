@@ -12,6 +12,7 @@ CONFIG += c++17
 PRO_FILE_PATH = $$PWD
 
 INCLUDEPATH += $$PWD/include
+INCLUDEPATH += $$PWD/include/VideoPlay
 
 SOURCES += \
     $$PWD/src/databasemanager.cpp \
