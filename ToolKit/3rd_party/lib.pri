@@ -1,5 +1,10 @@
 
 
+# SOURCES += \
+#         $$PRO_FILE_PATH/src/VideoPlay/videodecode.cpp
+
+# HEADERS += \
+#         $$PRO_FILE_PATH/include/VideoPlay/videodecode.h
 
 
 win32 {

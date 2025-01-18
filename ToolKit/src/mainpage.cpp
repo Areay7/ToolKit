@@ -33,7 +33,7 @@ MainPage::MainPage(QWidget *parent)
     QList<QPushButton *> buttons = this->findChildren<QPushButton* >();
     for(QPushButton *btn : buttons)
     {
-        connect(btn, &QPushButton::clicked, this, &MainPage::SwitchStatckPage);
+        connect(btn, &QPushButton::clicked, this, &MainPage::switchStatckPage);
     }
 
 
@@ -63,7 +63,7 @@ MainPage::MainPage(QWidget *parent)
     updateVisibleWidgets();
 }
 
-void MainPage::SwitchStatckPage()
+void MainPage::switchStatckPage()
 {
     QObject *senderObj = sender();
     qDebug() << "Name ------------> " << senderObj->objectName();
@@ -104,10 +104,10 @@ void MainPage::onWidgetClicked(MsgRecord *msgRecord)
 {
     if(m_lastSelectedWidget)
     {
-        m_lastSelectedWidget->m_setSelected(false); // 恢复上一个选中的控件样式
+        m_lastSelectedWidget->setSelected(false); // 恢复上一个选中的控件样式
     }
 
-    msgRecord->m_setSelected(true);
+    msgRecord->setSelected(true);
     m_lastSelectedWidget = msgRecord;
 }
 

@@ -22,8 +22,8 @@ public:
                        const QString &time = default_time,  const QString &avatarPath = default_avatar, QWidget *parent = nullptr);
     ~MsgRecord();
 
-    void m_setSelected(bool selected); // 设置控件是否被选中
-    bool m_isSelected() const; // 获取控件是否被选中
+    void setSelected(bool selected); // 设置控件是否被选中
+    bool isSelected() const; // 获取控件是否被选中
 
 signals:
     void clicked(MsgRecord *msgRecord); // 点击信号

@@ -64,7 +64,7 @@ MsgRecord::~MsgRecord()
     delete ui;
 }
 
-void MsgRecord::m_setSelected(bool selected)
+void MsgRecord::setSelected(bool selected)
 {
     this->m_selected = selected;
 
@@ -81,7 +81,7 @@ void MsgRecord::m_setSelected(bool selected)
     }
 }
 
-bool MsgRecord::m_isSelected() const
+bool MsgRecord::isSelected() const
 {
     return m_selected;
 }

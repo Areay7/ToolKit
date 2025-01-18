@@ -20,9 +20,9 @@ FmtLogin::FmtLogin(QWidget *parent)
     ui->label_avatar->setPixmap(wxImage);
 
     // connect
-    connect(ui->btn_exit, &QPushButton::clicked, this, &FmtLogin::ExitApp);
-    connect(ui->btn_register, &QPushButton::clicked, this, &FmtLogin::Register);
-    connect(ui->btn_login, &QPushButton::clicked, this, &FmtLogin::Login);
+    connect(ui->btn_exit, &QPushButton::clicked, this, &FmtLogin::exitApp);
+    connect(ui->btn_register, &QPushButton::clicked, this, &FmtLogin::myRegister);
+    connect(ui->btn_login, &QPushButton::clicked, this, &FmtLogin::login);
 
 }
 
@@ -32,12 +32,12 @@ FmtLogin::~FmtLogin()
     delete ui;
 }
 
-void FmtLogin::ExitApp()
+void FmtLogin::exitApp()
 {
     QApplication::quit();
 }
 
-bool FmtLogin::Register()
+bool FmtLogin::myRegister()
 {
     QString name = "AAA";
     QString userAccount = ui->lineEdit_user->text();
@@ -46,7 +46,7 @@ bool FmtLogin::Register()
     return res;
 }
 
-bool FmtLogin::Login()
+bool FmtLogin::login()
 {
     QString name = "AAA";
     QString userAccount = ui->lineEdit_user->text();

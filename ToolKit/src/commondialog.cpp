@@ -11,9 +11,9 @@ CommonDialog::CommonDialog(QWidget *parent)
     ui->stackedWidget->setCurrentIndex(0);
     ui->progressBar->setValue(0);
 
-    connect(ui->P2_btn_ok, &QPushButton::clicked, this, &CommonDialog::click_ok);
-    connect(ui->P3_btn_ok, &QPushButton::clicked, this, &CommonDialog::click_ok);
-    connect(ui->P3_btn_cancel, &QPushButton::clicked, this, &CommonDialog::click_cancel);
+    connect(ui->P2_btn_ok, &QPushButton::clicked, this, &CommonDialog::clickOk);
+    connect(ui->P3_btn_ok, &QPushButton::clicked, this, &CommonDialog::clickOk);
+    connect(ui->P3_btn_cancel, &QPushButton::clicked, this, &CommonDialog::clickCancel);
 }
 
 CommonDialog::~CommonDialog()
@@ -47,13 +47,13 @@ void CommonDialog::setBarValue(int value)
 
 }
 
-void CommonDialog::click_ok()
+void CommonDialog::clickOk()
 {
     qDebug() << "click ok !";
     accept();
 }
 
-void CommonDialog::click_cancel()
+void CommonDialog::clickCancel()
 {
     qDebug() << "click  cancel !";
     reject();

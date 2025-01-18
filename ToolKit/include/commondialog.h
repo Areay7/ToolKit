@@ -18,8 +18,8 @@ public:
 public:
     int setButtonWindow(QString msg, int btnNum,const QString &btnText_1 = "确认", const QString &btnText_2 = "取消", bool is_exec = true);
     void setBarValue(int value);
-    void click_ok();
-    void click_cancel();
+    void clickOk();
+    void clickCancel();
 
 private:
     Ui::CommonDialog *ui;

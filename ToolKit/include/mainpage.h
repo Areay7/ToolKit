@@ -28,7 +28,7 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 private slots:
-    void SwitchStatckPage();
+    void switchStatckPage();
     void onWidgetClicked(MsgRecord *msgRecord);
 
 private:

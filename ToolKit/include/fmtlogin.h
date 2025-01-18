@@ -21,9 +21,9 @@ public:
     ~FmtLogin();
 
 public:
-    void ExitApp();
-    bool Register();
-    bool Login();
+    void exitApp();
+    bool myRegister();
+    bool login();
 
 private:
     Ui::FmtLogin *ui;

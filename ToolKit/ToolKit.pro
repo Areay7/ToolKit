@@ -9,6 +9,8 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+PRO_FILE_PATH = $$PWD
+
 INCLUDEPATH += $$PWD/include
 
 SOURCES += \
@@ -36,6 +38,19 @@ FORMS += \
     $$PWD/ui/commondialog.ui \
     $$PWD/ui/MsgRecord.ui \
     $$PWD/ui/msgrecord.ui
+
+# 使用通配符引入 include/VideoPlay 目录下的所有 .h 文件
+Video_HEADERS = $$files($$PWD/include/VideoPlay/*.h)
+message($$Video_HEADERS)
+HEADERS += $$Video_HEADERS
+HEADERS = $$unique(HEADERS)
+
+# 使用通配符引入 include/VideoPlay 目录下的所有 .h 文件
+Video_SOURCES = $$files($$PWD/src/VideoPlay/*.cpp)
+message($$Video_SOURCES)
+SOURCES += $$Video_SOURCES
+SOURCES = $$unique(SOURCES)
+
 
 include($$PWD/3rd_party/lib.pri)
 
