@@ -1,9 +1,9 @@
 #include "mainpage.h"
 #include "ui_mainpage.h"
-#include "commonutils.h"
-#include "commonbase.h"
+
 #include <QIcon>
 #include <QList>
+#include <QScrollBar>
 #include <QDebug>
 
 MainPage::MainPage(QWidget *parent)
@@ -12,8 +12,6 @@ MainPage::MainPage(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowFlag(Qt::FramelessWindowHint);
-
-    // QPixmap chatImage(":/res/MainPage/chat_press.png");
 
     QPixmap boyImage(":/res/MainPage/boy.png");
     QPixmap scaledImage = boyImage.scaled(ui->label_avatar->width(), ui->label_avatar->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -36,10 +34,13 @@ MainPage::MainPage(QWidget *parent)
         connect(btn, &QPushButton::clicked, this, &MainPage::switchStatckPage);
     }
 
+    // NEW
+    m_xlsx = new XlsxManager();
+
+    m_lastSelectedWidget = new MsgRecord();
 
     m_scrollArea = new QScrollArea(ui->widget_verticalLayout);
     m_scrollArea->setWidgetResizable(true);
-
 
     // 隐藏滚动条但保留功能
     m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -47,7 +48,6 @@ MainPage::MainPage(QWidget *parent)
 
     m_containerWidget = new QWidget(m_scrollArea);
     m_containerLayout = new QVBoxLayout(m_containerWidget);
-
 
     m_scrollArea->setWidget(m_containerWidget);
     ui->verticalLayout->addWidget(m_scrollArea);
@@ -61,7 +61,11 @@ MainPage::MainPage(QWidget *parent)
     }
 
     updateVisibleWidgets();
+
+    int horizontalMiddle = m_scrollArea->horizontalScrollBar()->maximum() / 2;
+    m_scrollArea->horizontalScrollBar()->setValue(horizontalMiddle + horizontalMiddle / 2);
 }
+
 
 void MainPage::switchStatckPage()
 {
@@ -97,6 +101,14 @@ void MainPage::switchStatckPage()
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::ToolPage));
         CommonBase::logMessage(LogType::FATAL, "btn_tool");
     }
+    else if(senderObj == ui->btn_excel)
+    {
+        bool ret = m_xlsx->openOffice();
+        if(ret)
+            CommonBase::logMessage(LogType::INFO, "open success");
+        else
+            CommonBase::logMessage(LogType::FATAL, "open fail");
+    }
 
 }
 
@@ -120,8 +132,38 @@ void MainPage::updateVisibleWidgets()
     }
 }
 
+void MainPage::free()
+{
+    if(m_scrollArea)
+    {
+        delete m_scrollArea;
+    }
+    if(m_containerWidget)
+    {
+        delete m_containerWidget;
+    }
+    if(m_containerLayout)
+    {
+        delete m_containerLayout;
+    }
+    if(!m_widgetList.isEmpty())
+    {
+        qDeleteAll(m_widgetList);
+        m_widgetList.clear();
+    }
+    if(m_lastSelectedWidget)
+    {
+        delete m_lastSelectedWidget;
+    }
+    if(m_xlsx)
+    {
+        delete m_xlsx;
+    }
+}
+
 MainPage::~MainPage()
 {
+    free();
     delete ui;
 }
 

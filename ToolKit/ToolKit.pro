@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += Testgoogle
+# DEFINES += Testgoogle
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -19,6 +19,7 @@ INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 
 INCLUDEPATH += $$ROOT_DIR/include
 INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
+INCLUDEPATH += $$ROOT_DIR/include/Xlsx
 
 SOURCES += \
     $$ROOT_DIR/src/databasemanager.cpp \
@@ -28,7 +29,8 @@ SOURCES += \
     $$ROOT_DIR/src/commondialog.cpp \
     $$ROOT_DIR/src/msgrecord.cpp \
     $$ROOT_DIR/src/commonutils.cpp \
-    $$ROOT_DIR/src/commonbase.cpp
+    $$ROOT_DIR/src/commonbase.cpp \
+
 
 HEADERS += \
     $$ROOT_DIR/include/databasemanager.h \
@@ -37,7 +39,8 @@ HEADERS += \
     $$ROOT_DIR/include/commondialog.h \
     $$ROOT_DIR/include/msgrecord.h \
     $$ROOT_DIR/include/commonutils.h \
-    $$ROOT_DIR/include/commonbase.h
+    $$ROOT_DIR/include/commonbase.h \
+
 
 FORMS += \
     $$ROOT_DIR/ui/fmtlogin.ui \
@@ -56,6 +59,17 @@ HEADERS = $$unique(HEADERS)
 Video_SOURCES = $$files($$ROOT_DIR/src/VideoPlay/*.cpp)
 message($$Video_SOURCES)
 SOURCES += $$Video_SOURCES
+SOURCES = $$unique(SOURCES)
+
+Xlsx_HEADERS = $$files($$ROOT_DIR/include/Xlsx/*.h)
+message($$Xlsx_HEADERS)
+HEADERS += $$Xlsx_HEADERS
+HEADERS = $$unique(HEADERS)
+
+# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
+Xlsx_SOURCES = $$files($$ROOT_DIR/src/Xlsx/*.cpp)
+message($$Xlsx_SOURCES)
+SOURCES += $$Xlsx_SOURCES
 SOURCES = $$unique(SOURCES)
 
 Test_SOURCES = $$files($$ROOT_DIR/test/*.cpp)

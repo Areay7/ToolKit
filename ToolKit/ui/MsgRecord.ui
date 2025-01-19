@@ -13,6 +13,16 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">MsgRecord {
+               background-color: transparent;  // 默认背景
+            }
+
+
+            MsgRecord:hover {
+                background-color: lightblue;&quot;     // 鼠标悬停时的背景颜色
+            }</string>
+  </property>
  </widget>
  <resources/>
  <connections/>

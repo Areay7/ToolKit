@@ -45,22 +45,56 @@ void VideoDecode::initFFmpeg()
 
 void VideoDecode::showError(int err)
 {
-
+#ifdef PRINT_LOG
+    memset(m_error, 0, ERROR_LEN);
+    av_strerror(err, m_error, ERROR_LEN);
+    qWarning() << "DecodeVideo Error : " << m_error;
+#endif
 }
 
 qreal VideoDecode::rationalToDouble(AVRational *rational)
 {
-
+    qreal frameRate = (rational->den == 0) ? 0 : (qreal(rational->num) / rational->den);
+    return frameRate;
 }
 
 void VideoDecode::clear()
 {
-
+    if(m_formatContext && m_formatContext->pb)
+    {
+        avio_flush(m_formatContext->pb);
+    }
+    if(m_formatContext)
+    {
+        avformat_flush(m_formatContext);
+    }
 }
 
 void VideoDecode::free()
 {
+    if(m_swsContext)
+    {
+        sws_freeContext(m_swsContext);
+        m_swsContext = nullptr;
+    }
 
+    if(m_codecContext)
+    {
+        avcodec_free_context(&m_codecContext);
+    }
+    if(m_packet)
+    {
+        av_packet_free(&m_packet);
+    }
+    if(m_frame)
+    {
+        av_frame_free(&m_frame);
+    }
+    if(m_buffer)
+    {
+        delete [] m_buffer;
+        m_buffer = nullptr;
+    }
 }
 
 bool VideoDecode::open(const QString &url)
@@ -204,22 +238,89 @@ QImage VideoDecode::read()
             m_packet->pts = qRound64(m_obtainFrames * (qreal(m_totalTime) / m_totalFrames));
 #endif
 
-            // int ret = avcodec_send_packet()
+            int ret = avcodec_send_packet(m_codecContext, m_packet);
+            if(ret < 0)
+            {
+                showError(ret);
+
+            }
         }
     }
+    av_packet_unref(m_packet);
+
+    int ret = avcodec_receive_frame(m_codecContext, m_frame);
+    if(ret < 0)
+    {
+        av_frame_unref(m_frame);
+        if(readRet < 0)
+        {
+            m_end = true;
+        }
+        return QImage();
+    }
+
+    m_pts = m_frame->pts;
+
+    if(!m_swsContext)
+    {
+        m_swsContext = sws_getCachedContext(m_swsContext,
+                                            m_frame->width,
+                                            m_frame->height,
+                                            (AVPixelFormat)m_frame->format,
+                                            m_size.width(),
+                                            m_size.height(),
+                                            AV_PIX_FMT_RGBA,
+                                            SWS_BILINEAR,
+                                            nullptr,
+                                            nullptr,
+                                            nullptr);
+        if(!m_swsContext)
+        {
+#ifdef PRINT_LOG
+            qWarning() << "sws_getCachedContext() Error !";
+#endif
+            free();
+            return QImage();
+        }
+    }
+
+    uchar *data[] = {m_buffer};
+    int lines[4];
+    av_image_fill_linesizes(lines, AV_PIX_FMT_RGBA, m_frame->width);
+    ret = sws_scale(m_swsContext,
+                    m_frame->data,
+                    m_frame->linesize,
+                    0,
+                    m_frame->height,
+                    data,
+                    lines);
+    QImage image(m_buffer, m_frame->width, m_frame->height, QImage::Format_RGBA8888);
+    av_frame_unref(m_frame);
+
+    return image;
+
 }
 
 void VideoDecode::close()
 {
+    clear();
+    free();
 
+    m_totalTime     = 0;
+    m_videoIndex    = 0;
+    m_totalFrames   = 0;
+    m_obtainFrames  = 0;
+    m_pts           = 0;
+    m_frameRate     = 0;
+    m_size          = QSize(0,0);
 }
 
 bool VideoDecode::isEnd()
 {
-
+    return m_end;
 }
 
 const qint64 &VideoDecode::pts()
 {
-
+    return m_pts;
 }

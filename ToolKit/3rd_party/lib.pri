@@ -10,10 +10,11 @@
 
 
 win32 {
+    DEFINES += WINDOWS_SPECIFIC_DEFINE
     LIBS += -LD:/work/FFmpeg/soft/ffmpeg-n4.4.2/lib -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
     INCLUDEPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
     DEPENDPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
-    # DEFINES += WINDOWS_SPECIFIC_DEFINE
+
 }
 
 macx {

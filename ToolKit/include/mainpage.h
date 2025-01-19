@@ -8,6 +8,10 @@
 #include <QWheelEvent>
 #include <QList>
 
+#include "commonutils.h"
+#include "commonbase.h"
+#include "xlsxmanager.h"
+
 class MsgRecord;
 
 namespace Ui {
@@ -33,6 +37,7 @@ private slots:
 
 private:
     void updateVisibleWidgets();
+    void free();
 
 private:
     Ui::MainPage *ui;
@@ -42,6 +47,8 @@ private:
     QList<MsgRecord *> m_widgetList;
     MsgRecord *m_lastSelectedWidget;
     int m_visibleStartIndex;
+
+    XlsxManager *m_xlsx;
 };
 
 #endif // MAINPAGE_H

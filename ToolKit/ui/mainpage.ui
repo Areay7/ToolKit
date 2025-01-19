@@ -165,6 +165,9 @@ QPushButton:pressed {
    </item>
    <item>
     <widget class="QStackedWidget" name="stackedWidget_side">
+     <property name="currentIndex">
+      <number>4</number>
+     </property>
      <widget class="QWidget" name="page_sideChat">
       <widget class="QFrame" name="frame_2">
        <property name="geometry">
@@ -312,17 +315,69 @@ QPushButton:pressed {
       </widget>
      </widget>
      <widget class="QWidget" name="page_sideTool">
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="btn_excel">
        <property name="geometry">
         <rect>
          <x>70</x>
-         <y>280</y>
+         <y>250</y>
          <width>91</width>
          <height>51</height>
         </rect>
        </property>
        <property name="text">
-        <string>Tool</string>
+        <string>Excel</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_videoPlay">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>40</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>VideoPlay</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_gTest">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>370</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>GTest</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_opencv">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>140</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Opencv</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_gTest_2">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>480</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PDF</string>
        </property>
       </widget>
      </widget>
@@ -330,6 +385,9 @@ QPushButton:pressed {
    </item>
    <item>
     <widget class="QStackedWidget" name="stackedWidget_main">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
      <widget class="QWidget" name="page_mainChat">
       <widget class="QLabel" name="label_wxIcon">
        <property name="geometry">
@@ -402,6 +460,36 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Tool</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_videoPlay">
+      <widget class="QLabel" name="label_wxIcon_6">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>240</y>
+         <width>161</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>VideoPlay</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_opencv">
+      <widget class="QLabel" name="label_wxIcon_7">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>260</y>
+         <width>161</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Opencv</string>
        </property>
       </widget>
      </widget>
