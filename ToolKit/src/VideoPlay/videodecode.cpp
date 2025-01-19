@@ -43,6 +43,26 @@ void VideoDecode::initFFmpeg()
     }
 }
 
+void VideoDecode::showError(int err)
+{
+
+}
+
+qreal VideoDecode::rationalToDouble(AVRational *rational)
+{
+
+}
+
+void VideoDecode::clear()
+{
+
+}
+
+void VideoDecode::free()
+{
+
+}
+
 bool VideoDecode::open(const QString &url)
 {
     if(url.isNull()) return false;
@@ -184,7 +204,22 @@ QImage VideoDecode::read()
             m_packet->pts = qRound64(m_obtainFrames * (qreal(m_totalTime) / m_totalFrames));
 #endif
 
-            int ret = avcodec_send_packet()
+            // int ret = avcodec_send_packet()
         }
     }
+}
+
+void VideoDecode::close()
+{
+
+}
+
+bool VideoDecode::isEnd()
+{
+
+}
+
+const qint64 &VideoDecode::pts()
+{
+
 }

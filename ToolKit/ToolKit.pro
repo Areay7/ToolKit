@@ -5,55 +5,63 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+DEFINES += Testgoogle
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-PRO_FILE_PATH = $$PWD
+ROOT_DIR = $$PWD
 
-INCLUDEPATH += $$PWD/include
-INCLUDEPATH += $$PWD/include/VideoPlay
+include($$ROOT_DIR/3rd_party/lib.pri)
+include($$ROOT_DIR/3rd_party/QXlsx/QXlsx.pri)             # QXlsx源代码，版本V1.4.3  https://github.com/QtExcel/QXlsx/releases
+INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
+
+INCLUDEPATH += $$ROOT_DIR/include
+INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
 
 SOURCES += \
-    $$PWD/src/databasemanager.cpp \
-    $$PWD/src/fmtlogin.cpp \
-    $$PWD/src/main.cpp \
-    $$PWD/src/mainpage.cpp \
-    $$PWD/src/commondialog.cpp \
-    $$PWD/src/msgrecord.cpp \
-    $$PWD/src/commonutils.cpp \
-    $$PWD/src/commonbase.cpp
+    $$ROOT_DIR/src/databasemanager.cpp \
+    $$ROOT_DIR/src/fmtlogin.cpp \
+    $$ROOT_DIR/src/main.cpp \
+    $$ROOT_DIR/src/mainpage.cpp \
+    $$ROOT_DIR/src/commondialog.cpp \
+    $$ROOT_DIR/src/msgrecord.cpp \
+    $$ROOT_DIR/src/commonutils.cpp \
+    $$ROOT_DIR/src/commonbase.cpp
 
 HEADERS += \
-    $$PWD/include/databasemanager.h \
-    $$PWD/include/fmtlogin.h \
-    $$PWD/include/mainpage.h \
-    $$PWD/include/commondialog.h \
-    $$PWD/include/msgrecord.h \
-    $$PWD/include/commonutils.h \
-    $$PWD/include/commonbase.h
+    $$ROOT_DIR/include/databasemanager.h \
+    $$ROOT_DIR/include/fmtlogin.h \
+    $$ROOT_DIR/include/mainpage.h \
+    $$ROOT_DIR/include/commondialog.h \
+    $$ROOT_DIR/include/msgrecord.h \
+    $$ROOT_DIR/include/commonutils.h \
+    $$ROOT_DIR/include/commonbase.h
 
 FORMS += \
-    $$PWD/ui/fmtlogin.ui \
-    $$PWD/ui/mainpage.ui \
-    $$PWD/ui/commondialog.ui \
-    $$PWD/ui/MsgRecord.ui \
-    $$PWD/ui/msgrecord.ui
+    $$ROOT_DIR/ui/fmtlogin.ui \
+    $$ROOT_DIR/ui/mainpage.ui \
+    $$ROOT_DIR/ui/commondialog.ui \
+    $$ROOT_DIR/ui/MsgRecord.ui \
+    $$ROOT_DIR/ui/msgrecord.ui
 
 # 使用通配符引入 include/VideoPlay 目录下的所有 .h 文件
-Video_HEADERS = $$files($$PWD/include/VideoPlay/*.h)
+Video_HEADERS = $$files($$ROOT_DIR/include/VideoPlay/*.h)
 message($$Video_HEADERS)
 HEADERS += $$Video_HEADERS
 HEADERS = $$unique(HEADERS)
 
-# 使用通配符引入 include/VideoPlay 目录下的所有 .h 文件
-Video_SOURCES = $$files($$PWD/src/VideoPlay/*.cpp)
+# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
+Video_SOURCES = $$files($$ROOT_DIR/src/VideoPlay/*.cpp)
 message($$Video_SOURCES)
 SOURCES += $$Video_SOURCES
 SOURCES = $$unique(SOURCES)
 
-
-include($$PWD/3rd_party/lib.pri)
+Test_SOURCES = $$files($$ROOT_DIR/test/*.cpp)
+message($$Test_SOURCES)
+SOURCES += $$Test_SOURCES
+SOURCES = $$unique(SOURCES)
 
 
 # Default rules for deployment.
@@ -62,7 +70,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 # 将路径作为宏定义传递给编译后的可执行文件
-DEFINES += PRO_FILE_PWD=\\\"$$PWD\\\"
+DEFINES += PRO_FILE_PWD=\\\"$$ROOT_DIR\\\"
 
 RESOURCES += \
     res.qrc

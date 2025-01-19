@@ -7,6 +7,8 @@
 #         $$PRO_FILE_PATH/include/VideoPlay/videodecode.h
 
 
+
+
 win32 {
     LIBS += -LD:/work/FFmpeg/soft/ffmpeg-n4.4.2/lib -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
     INCLUDEPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
@@ -16,6 +18,13 @@ win32 {
 
 macx {
     DEFINES += MAC_SPECIFIC_DEFINE
+
+    GTEST_DIR = /Users/areay7/workspace/googletest
+
+    INCLUDEPATH += $$GTEST_DIR/googletest/include
+    LIBS += -L$$GTEST_DIR/build/lib -lgtest -lgtest_main
+
+    message($$GTEST_DIR)
 
     # INCLUDEPATH += /usr/local/include/SDL2
     INCLUDEPATH += /usr/local/ffmpeg/include
