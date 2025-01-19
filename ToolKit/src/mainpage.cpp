@@ -62,8 +62,7 @@ MainPage::MainPage(QWidget *parent)
 
     updateVisibleWidgets();
 
-    int horizontalMiddle = m_scrollArea->horizontalScrollBar()->maximum() / 2;
-    m_scrollArea->horizontalScrollBar()->setValue(horizontalMiddle + horizontalMiddle / 2);
+
 }
 
 
