@@ -4,6 +4,7 @@
 #include <QIcon>
 #include <QList>
 #include <QScrollBar>
+#include <QFileDialog>
 #include <QDebug>
 
 MainPage::MainPage(QWidget *parent)
@@ -34,9 +35,6 @@ MainPage::MainPage(QWidget *parent)
         connect(btn, &QPushButton::clicked, this, &MainPage::switchStatckPage);
     }
 
-    // NEW
-    m_xlsx = new XlsxManager();
-
     m_lastSelectedWidget = new MsgRecord();
 
     m_scrollArea = new QScrollArea(ui->widget_verticalLayout);
@@ -61,6 +59,13 @@ MainPage::MainPage(QWidget *parent)
     }
 
     updateVisibleWidgets();
+
+
+    // NEW
+    m_xlsx = new XlsxManager();
+    m_readThread = new ReadThread();
+    connect(m_readThread, &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::DirectConnection);
+    connect(m_readThread, &ReadThread::playState, this, &MainPage::on_playState);
 
 
 }
@@ -108,6 +113,23 @@ void MainPage::switchStatckPage()
         else
             CommonBase::logMessage(LogType::FATAL, "open fail");
     }
+    else if(senderObj == ui->btn_videoPlay_Open)
+    {
+        openClick();
+    }
+    else if(senderObj == ui->btn_videoPlay_Pause)
+    {
+        pauseClick();
+    }
+    else if(senderObj == ui->btn_videoPlay_select)
+    {
+        selectFileToPlay();
+    }
+    else if(senderObj == ui->btn_videoPlay)
+    {
+        // ui->stackedWidget_side->setCurrentIndex(static_cast<int>(StackPage::ToolPage));
+        ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::VideoPlayPage));
+    }
 
 }
 
@@ -120,6 +142,57 @@ void MainPage::onWidgetClicked(MsgRecord *msgRecord)
 
     msgRecord->setSelected(true);
     m_lastSelectedWidget = msgRecord;
+}
+
+void MainPage::selectFileToPlay()
+{
+    QString strName = QFileDialog::getOpenFileName(this, "Please Choose Your Video !" , "/Users/areay7/Downloads", "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
+    qDebug() << "strName -----> " << strName;
+    if(strName.isEmpty())
+    {
+        qDebug() << "strName is Empty !";
+        return;
+    }
+    ui->comboBox_url->setCurrentText(strName);
+}
+
+void MainPage::openClick()
+{
+    if(ui->btn_videoPlay_Open->text() == "开始播放")
+    {
+        m_readThread->open(ui->comboBox_url->currentText());
+    }
+    else
+    {
+        m_readThread->close();
+    }
+}
+
+void MainPage::pauseClick()
+{
+    if(ui->btn_videoPlay_Pause->text() == "暂停")
+    {
+        m_readThread->pause(true);
+        ui->btn_videoPlay_Pause->setText("继续");
+    }
+    else
+    {
+        m_readThread->pause(false);
+        ui->btn_videoPlay_Pause->setText("暂停");
+    }
+}
+
+void MainPage::on_playState(ReadThread::PlayState state)
+{
+    if(state == ReadThread::play)
+    {
+        ui->btn_videoPlay_Open->setText("停止播放");
+    }
+    else
+    {
+        ui->btn_videoPlay_Open->setText("开始播放");
+        ui->btn_videoPlay_Pause->setText("暂停");
+    }
 }
 
 void MainPage::updateVisibleWidgets()
@@ -157,6 +230,12 @@ void MainPage::free()
     if(m_xlsx)
     {
         delete m_xlsx;
+    }
+    if(m_readThread)
+    {
+        m_readThread->close();
+        m_readThread->wait();
+        delete m_readThread;
     }
 }
 

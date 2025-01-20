@@ -11,6 +11,8 @@
 #include "commonutils.h"
 #include "commonbase.h"
 #include "xlsxmanager.h"
+#include "readthread.h"
+#include "playimage.h"
 
 class MsgRecord;
 
@@ -35,6 +37,13 @@ private slots:
     void switchStatckPage();
     void onWidgetClicked(MsgRecord *msgRecord);
 
+    // VideoPlay
+    void selectFileToPlay();
+    void openClick();
+    void pauseClick();
+    void on_playState(ReadThread::PlayState state);
+    // End of VideoPlay
+
 private:
     void updateVisibleWidgets();
     void free();
@@ -49,6 +58,12 @@ private:
     int m_visibleStartIndex;
 
     XlsxManager *m_xlsx;
+
+    // VideoPlay
+    ReadThread *m_readThread = nullptr;
+    // End of VideoPlay
+
+
 };
 
 #endif // MAINPAGE_H

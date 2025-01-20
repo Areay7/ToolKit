@@ -407,7 +407,7 @@ QPushButton:pressed {
       <widget class="QLabel" name="label_wxIcon_3">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>240</x>
          <y>230</y>
          <width>161</width>
          <height>141</height>
@@ -464,17 +464,68 @@ QPushButton:pressed {
       </widget>
      </widget>
      <widget class="QWidget" name="page_videoPlay">
-      <widget class="QLabel" name="label_wxIcon_6">
+      <widget class="QPushButton" name="btn_videoPlay_select">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>240</y>
-         <width>161</width>
-         <height>141</height>
+         <x>80</x>
+         <y>70</y>
+         <width>91</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="text">
-        <string>VideoPlay</string>
+        <string>选择</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_videoPlay_Pause">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>70</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>暂停</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_videoPlay_Open">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>70</y>
+         <width>91</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>开始播放</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_url">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>20</y>
+         <width>401</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>/Users/areay7/Downloads/7.mp4</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="PlayImage" name="widget_VideoPlay" native="true">
+       <property name="geometry">
+        <rect>
+         <x>79</x>
+         <y>179</y>
+         <width>431</width>
+         <height>421</height>
+        </rect>
        </property>
       </widget>
      </widget>
@@ -497,6 +548,14 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlayImage</class>
+   <extends>QWidget</extends>
+   <header location="global">playimage.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../res.qrc"/>
  </resources>

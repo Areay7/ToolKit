@@ -9,7 +9,9 @@ enum class StackPage : int
     FriendPage,
     CollectPage,
     MomentsPage,
-    ToolPage
+    ToolPage,
+    VideoPlayPage,
+    OpencvPage
 };
 
 class CommonUtils : public QObject

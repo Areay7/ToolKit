@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# DEFINES += Testgoogle
+#DEFINES += Testgoogle
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,6 +17,8 @@ include($$ROOT_DIR/3rd_party/lib.pri)
 include($$ROOT_DIR/3rd_party/QXlsx/QXlsx.pri)             # QXlsx源代码，版本V1.4.3  https://github.com/QtExcel/QXlsx/releases
 INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 
+
+# INCLUDEPATH += $$ROOT_DIR
 INCLUDEPATH += $$ROOT_DIR/include
 INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
 INCLUDEPATH += $$ROOT_DIR/include/Xlsx

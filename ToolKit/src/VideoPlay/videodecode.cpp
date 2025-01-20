@@ -1,3 +1,4 @@
+#if 1
 #include "videodecode.h"
 #include <QDebug>
 #include <QImage>
@@ -324,3 +325,5 @@ const qint64 &VideoDecode::pts()
 {
     return m_pts;
 }
+
+#endif

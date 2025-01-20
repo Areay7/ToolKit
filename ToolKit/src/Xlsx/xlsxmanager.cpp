@@ -15,13 +15,14 @@ XlsxManager::~XlsxManager()
 
 bool XlsxManager::openOffice()
 {
+    bool ret = false;
 #ifdef WINDOWS_SPECIFIC_DEFINE
-    bool ret = QProcess::startDetached("C:/Program Files/Microsoft Office/root/Office16/EXCEL.EXE",
+    ret = QProcess::startDetached("C:/Program Files/Microsoft Office/root/Office16/EXCEL.EXE",
                                        QStringList() << QDir::currentPath() + "/" + "");
 #endif
 
 #ifdef MAC_SPECIFIC_DEFINE
-    bool ret = QProcess::startDetached("/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel",
+    ret = QProcess::startDetached("/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel",
                                        QStringList() << QDir::currentPath() + "/" + "");
 #endif
     if(!ret)
