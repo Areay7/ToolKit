@@ -2,6 +2,7 @@
 #include "ui_msgrecord.h"
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QDebug>
 
 
 MsgRecord::MsgRecord(const QString &userName,  const QString &lastMsg,
@@ -55,6 +56,7 @@ MsgRecord::MsgRecord(const QString &userName,  const QString &lastMsg,
     // 设置 backgroundWidget 为 MsgRecord 的主布局
     setLayout(new QVBoxLayout());
     layout()->addWidget(backgroundWidget);
+    qDebug() << "7777777***********";
 }
 
 
