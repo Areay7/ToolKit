@@ -5,7 +5,7 @@
 PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
 {
     QPalette palette(this->palette());
-    palette.setColor(QPalette::Window, Qt::black);
+    palette.setColor(QPalette::Background, Qt::black);
     this->setPalette(palette);
     this->setAutoFillBackground(true);
 }
@@ -21,7 +21,7 @@ void PlayImage::updatePixmap(const QPixmap &pixmap)
     m_pixmap = pixmap;
     m_mutex.unlock();
     update();
-} 
+}
 
 void PlayImage::paintEvent(QPaintEvent *event)
 {
@@ -39,7 +39,7 @@ void PlayImage::paintEvent(QPaintEvent *event)
         m_mutex.unlock();
         int x = (this->width() - pixmap.width()) / 2;
         int y = (this->height() - pixmap.height()) / 2;
-        painter.drawPixmap(x,y, pixmap);
+        painter.drawPixmap(x, y, pixmap);
     }
     QWidget::paintEvent(event);
 }

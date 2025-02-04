@@ -166,7 +166,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="stackedWidget_side">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="page_sideChat">
       <widget class="QFrame" name="frame_2">
@@ -386,7 +386,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="stackedWidget_main">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page_mainChat">
       <widget class="QLabel" name="label_wxIcon">
@@ -514,7 +514,7 @@ QPushButton:pressed {
        </property>
        <item>
         <property name="text">
-         <string>/Users/areay7/Downloads/7.mp4</string>
+         <string>E:/downloads/[阳光电影-www.dygod.org]大奉打更人-01~08/[阳光电影-www.dygod.org]大奉打更人-01.mp4</string>
         </property>
        </item>
       </widget>

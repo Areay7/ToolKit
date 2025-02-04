@@ -146,13 +146,14 @@ void MainPage::onWidgetClicked(MsgRecord *msgRecord)
 
 void MainPage::selectFileToPlay()
 {
-    QString strName = QFileDialog::getOpenFileName(this, "Please Choose Your Video !" , "/Users/areay7/Downloads", "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
+    QString strName = QFileDialog::getOpenFileName(this, "选择播放视频~！", "/", "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
     qDebug() << "strName -----> " << strName;
     if(strName.isEmpty())
     {
         qDebug() << "strName is Empty !";
         return;
     }
+    ui->comboBox_url->addItem(strName);
     ui->comboBox_url->setCurrentText(strName);
 }
 
