@@ -2,6 +2,13 @@
 #define COMMONUTILS_H
 
 #include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QDebug>
 
 enum class StackPage : int
 {
@@ -21,9 +28,10 @@ public:
     explicit CommonUtils(QObject *parent = nullptr);
 
 public:
-
+    void sendRequest();
 
 signals:
+
 };
 
 template <typename T>
@@ -31,4 +39,6 @@ double add(const T &a, const T &b)
 {
     return a + b;
 }
+
+
 #endif // COMMONUTILS_H

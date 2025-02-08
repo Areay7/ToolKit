@@ -5,24 +5,18 @@
 #include <QList>
 #include <QScrollBar>
 #include <QFileDialog>
+#include <QStyle>
 #include <QDebug>
 
 MainPage::MainPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainPage)
+    , m_isPlay(false)
 {
     ui->setupUi(this);
     setWindowFlag(Qt::FramelessWindowHint);
 
-    QPixmap boyImage(":/res/MainPage/boy.png");
-    QPixmap scaledImage = boyImage.scaled(ui->label_avatar->width(), ui->label_avatar->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->label_avatar->setAlignment(Qt::AlignCenter);
-    ui->label_avatar->setPixmap(scaledImage);
-
-    QPixmap wxIcon(":/res/MainPage/wxBackGround.png");
-    QPixmap iconScaledImage = wxIcon.scaled(ui->label_wxIcon->width(), ui->label_wxIcon->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    ui->label_wxIcon->setAlignment(Qt::AlignCenter);
-    ui->label_wxIcon->setPixmap(iconScaledImage);
+    setPicture();
 
     double a = add(4.5,3.2);
     qDebug() << "a : " << a;
@@ -67,7 +61,6 @@ MainPage::MainPage(QWidget *parent)
     connect(m_readThread, &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::DirectConnection);
     connect(m_readThread, &ReadThread::playState, this, &MainPage::on_playState);
 
-
 }
 
 
@@ -86,6 +79,8 @@ void MainPage::switchStatckPage()
         ui->stackedWidget_side->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         CommonBase::logMessage(LogType::WARN, "btn_friend");
+        // CommonUtils mytool;
+        // mytool.sendRequest();
     }
     else if(senderObj == ui->btn_collect)
     {
@@ -113,11 +108,11 @@ void MainPage::switchStatckPage()
         else
             CommonBase::logMessage(LogType::FATAL, "open fail");
     }
-    else if(senderObj == ui->btn_videoPlay_Open)
+    else if(senderObj == ui->btn_videoPlay_Play)
     {
         openClick();
     }
-    else if(senderObj == ui->btn_videoPlay_Pause)
+    else if(senderObj == ui->btn_videoPlay_Stop)
     {
         pauseClick();
     }
@@ -159,7 +154,9 @@ void MainPage::selectFileToPlay()
 
 void MainPage::openClick()
 {
-    if(ui->btn_videoPlay_Open->text() == "开始播放")
+    qDebug() << ui->btn_videoPlay_Stop->styleSheet();
+    m_isPlay = true;
+    if(m_isPlay)
     {
         m_readThread->open(ui->comboBox_url->currentText());
     }
@@ -171,15 +168,19 @@ void MainPage::openClick()
 
 void MainPage::pauseClick()
 {
-    if(ui->btn_videoPlay_Pause->text() == "暂停")
+    m_isPlay = false;
+    if(!m_isPlay)
     {
         m_readThread->pause(true);
-        ui->btn_videoPlay_Pause->setText("继续");
+        qDebug() << ui->btn_videoPlay_Stop->styleSheet();
+        // m_isPlay = false;
+        // ui->btn_videoPlay_Stop->setText("继续");
     }
     else
     {
         m_readThread->pause(false);
-        ui->btn_videoPlay_Pause->setText("暂停");
+        // m_isPlay = true;
+        // ui->btn_videoPlay_Stop->setText("暂停");
     }
 }
 
@@ -187,12 +188,14 @@ void MainPage::on_playState(ReadThread::PlayState state)
 {
     if(state == ReadThread::play)
     {
-        ui->btn_videoPlay_Open->setText("停止播放");
+        // ui->btn_videoPlay_Play->setText("停止播放");
+        m_isPlay = true;
     }
     else
     {
-        ui->btn_videoPlay_Open->setText("开始播放");
-        ui->btn_videoPlay_Pause->setText("暂停");
+        m_isPlay = false;
+        // ui->btn_videoPlay_Play->setText("开始播放");
+        // ui->btn_videoPlay_Stop->setText("暂停");
     }
 }
 
@@ -238,6 +241,19 @@ void MainPage::free()
         m_readThread->wait();
         delete m_readThread;
     }
+}
+
+void MainPage::setPicture()
+{
+    QPixmap boyImage(":/res/MainPage/boy.png");
+    QPixmap scaledImage = boyImage.scaled(ui->label_avatar->width(), ui->label_avatar->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->label_avatar->setAlignment(Qt::AlignCenter);
+    ui->label_avatar->setPixmap(scaledImage);
+
+    QPixmap wxIcon(":/res/MainPage/wxBackGround.png");
+    QPixmap iconScaledImage = wxIcon.scaled(ui->label_wxIcon->width(), ui->label_wxIcon->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->label_wxIcon->setAlignment(Qt::AlignCenter);
+    ui->label_wxIcon->setPixmap(iconScaledImage);
 }
 
 MainPage::~MainPage()

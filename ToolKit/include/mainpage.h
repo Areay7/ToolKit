@@ -47,6 +47,7 @@ private slots:
 private:
     void updateVisibleWidgets();
     void free();
+    void setPicture();
 
 private:
     Ui::MainPage *ui;
@@ -61,6 +62,7 @@ private:
 
     // VideoPlay
     ReadThread *m_readThread = nullptr;
+    bool m_isPlay;
     // End of VideoPlay
 
 

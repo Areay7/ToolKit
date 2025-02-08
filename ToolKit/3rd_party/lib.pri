@@ -1,14 +1,3 @@
-
-
-# SOURCES += \
-#         $$PRO_FILE_PATH/src/VideoPlay/videodecode.cpp
-
-# HEADERS += \
-#         $$PRO_FILE_PATH/include/VideoPlay/videodecode.h
-
-
-
-
 win32 {
     DEFINES += WINDOWS_SPECIFIC_DEFINE
     LIBS += -LD:/work/FFmpeg/soft/ffmpeg-n4.4.2/lib -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
@@ -40,4 +29,20 @@ unix:!macx {
     # LIBS += -L/usr/local/path/to/linux/libs -lmylinuxlib
     # INCLUDEPATH += /usr/local/path/to/linux/includes
     # DEFINES += LINUX_SPECIFIC_DEFINE
+}
+
+android {
+    # DEFINES += ANDROID_SPECIFIC_DEFINE
+
+    # GTEST_DIR = /Users/areay7/workspace/googletest
+
+    # INCLUDEPATH += $$GTEST_DIR/googletest/include
+    # LIBS += -L$$GTEST_DIR/build/lib -lgtest -lgtest_main
+
+    # message($$GTEST_DIR)
+
+    # INCLUDEPATH += /usr/local/ffmpeg/include
+    # DEPENDPATH += /usr/local/ffmpeg/include
+
+    # LIBS += -L/usr/local/ffmpeg/lib -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale
 }

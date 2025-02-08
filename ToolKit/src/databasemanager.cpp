@@ -25,7 +25,7 @@ bool DatabaseManager::Init()
     qDebug() << "driver : " << driver;
     qDebug() << "host : " << host;
     qDebug() << "user : " << user;
-    qDebug() << "password : " << password;
+    // qDebug() << "password : " << password;
     m_db = QSqlDatabase::addDatabase(driver);
     bool flag = m_db.isValid();
 

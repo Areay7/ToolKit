@@ -5,7 +5,7 @@
 PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
 {
     QPalette palette(this->palette());
-    palette.setColor(QPalette::Background, Qt::black);
+    palette.setColor(QPalette::Window, Qt::black);
     this->setPalette(palette);
     this->setAutoFillBackground(true);
 }

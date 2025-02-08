@@ -166,7 +166,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="stackedWidget_side">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_sideChat">
       <widget class="QFrame" name="frame_2">
@@ -263,6 +263,13 @@ QPushButton:pressed {
            <property name="spacing">
             <number>0</number>
            </property>
+           <item>
+            <widget class="QPushButton" name="pushButton_5">
+             <property name="text">
+              <string>PushButton</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
         </layout>
@@ -467,40 +474,48 @@ QPushButton:pressed {
       <widget class="QPushButton" name="btn_videoPlay_select">
        <property name="geometry">
         <rect>
-         <x>80</x>
-         <y>70</y>
+         <x>500</x>
+         <y>20</y>
          <width>91</width>
-         <height>51</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="text">
         <string>选择</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="btn_videoPlay_Pause">
+      <widget class="QPushButton" name="btn_videoPlay_Stop">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>70</y>
-         <width>91</width>
+         <x>150</x>
+         <y>560</y>
+         <width>51</width>
          <height>51</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/stop.png);}
+</string>
+       </property>
        <property name="text">
-        <string>暂停</string>
+        <string/>
        </property>
       </widget>
-      <widget class="QPushButton" name="btn_videoPlay_Open">
+      <widget class="QPushButton" name="btn_videoPlay_Play">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>70</y>
-         <width>91</width>
+         <x>100</x>
+         <y>560</y>
+         <width>51</width>
          <height>51</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/play.png);}
+</string>
+       </property>
        <property name="text">
-        <string>开始播放</string>
+        <string/>
        </property>
       </widget>
       <widget class="QComboBox" name="comboBox_url">
@@ -514,6 +529,11 @@ QPushButton:pressed {
        </property>
        <item>
         <property name="text">
+         <string>/Users/areay7/Downloads/1-项目功能演示.mp4</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>E:/downloads/[阳光电影-www.dygod.org]大奉打更人-01~08/[阳光电影-www.dygod.org]大奉打更人-01.mp4</string>
         </property>
        </item>
@@ -521,10 +541,10 @@ QPushButton:pressed {
       <widget class="PlayImage" name="widget_VideoPlay" native="true">
        <property name="geometry">
         <rect>
-         <x>79</x>
-         <y>179</y>
-         <width>431</width>
-         <height>421</height>
+         <x>100</x>
+         <y>110</y>
+         <width>511</width>
+         <height>441</height>
         </rect>
        </property>
       </widget>

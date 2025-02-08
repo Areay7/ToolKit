@@ -17,5 +17,8 @@
         <file>res/MainPage/gril.png</file>
         <file>res/MainPage/wxBackGround.png</file>
         <file>res/MainPage/add.png</file>
+        <file>res/VideoPlay/pause.png</file>
+        <file>res/VideoPlay/play.png</file>
+        <file>res/VideoPlay/stop.png</file>
     </qresource>
 </RCC>

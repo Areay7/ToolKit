@@ -11,7 +11,7 @@ ReadThread::ReadThread(QObject *parent) : QThread(parent)
 {
    m_videoDecode = new VideoDecode();
 
-   qRegisterMetaType<PlayState>("PlayState"); 
+   qRegisterMetaType<PlayState>("PlayState");
 }
 
 ReadThread::~ReadThread()
@@ -29,7 +29,7 @@ void ReadThread::open(const QString &url)
         m_url = url;
         emit this->start();
     }
-} 
+}
 
 void ReadThread::pause(bool flag)
 {

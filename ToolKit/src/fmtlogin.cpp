@@ -8,8 +8,8 @@ FmtLogin::FmtLogin(QWidget *parent)
     , ui(new Ui::FmtLogin)
 {
     ui->setupUi(this);
-    setWindowFlag(Qt::FramelessWindowHint);
-    // setWindowFlags(Qt::FramelessWindowHint);
+    // setWindowFlag(Qt::FramelessWindowHint);
+    setWindowFlags(Qt::FramelessWindowHint);
 
     t = DatabaseManager::getInstance();
 
