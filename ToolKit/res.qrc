@@ -20,5 +20,6 @@
         <file>res/VideoPlay/pause.png</file>
         <file>res/VideoPlay/play.png</file>
         <file>res/VideoPlay/stop.png</file>
+        <file>res/VideoPlay/open.png</file>
     </qresource>
 </RCC>

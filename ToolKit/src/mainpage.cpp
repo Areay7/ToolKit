@@ -125,6 +125,13 @@ void MainPage::switchStatckPage()
         // ui->stackedWidget_side->setCurrentIndex(static_cast<int>(StackPage::ToolPage));
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::VideoPlayPage));
     }
+    else if(senderObj == ui->btn_videoPlay_exit)
+    {
+        free();
+        exitApp();
+    }
+
+
 
 }
 
@@ -154,34 +161,29 @@ void MainPage::selectFileToPlay()
 
 void MainPage::openClick()
 {
-    qDebug() << ui->btn_videoPlay_Stop->styleSheet();
-    m_isPlay = true;
-    if(m_isPlay)
+    if(ui->btn_videoPlay_Play->styleSheet().contains("open.png"))
     {
         m_readThread->open(ui->comboBox_url->currentText());
+        ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/pause.png);}");
     }
-    else
+    else if (ui->btn_videoPlay_Play->styleSheet().contains("pause.png"))
     {
-        m_readThread->close();
+        m_readThread->pause(true);
+        ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/play.png);}");
+    }
+    else if (ui->btn_videoPlay_Play->styleSheet().contains("play.png"))
+    {
+        m_readThread->pause(false);
+        ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/pause.png);}");
     }
 }
 
 void MainPage::pauseClick()
 {
-    m_isPlay = false;
-    if(!m_isPlay)
-    {
-        m_readThread->pause(true);
-        qDebug() << ui->btn_videoPlay_Stop->styleSheet();
-        // m_isPlay = false;
-        // ui->btn_videoPlay_Stop->setText("继续");
-    }
-    else
-    {
-        m_readThread->pause(false);
-        // m_isPlay = true;
-        // ui->btn_videoPlay_Stop->setText("暂停");
-    }
+    m_readThread->close();
+    ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/open.png);}");
+    ui->btn_videoPlay_Stop->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/stop.png);}");
+
 }
 
 void MainPage::on_playState(ReadThread::PlayState state)
@@ -260,6 +262,11 @@ MainPage::~MainPage()
 {
     free();
     delete ui;
+}
+
+void MainPage::exitApp()
+{
+    QApplication::quit();
 }
 
 void MainPage::wheelEvent(QWheelEvent *event)

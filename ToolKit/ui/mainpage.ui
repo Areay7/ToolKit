@@ -511,7 +511,7 @@ QPushButton:pressed {
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/play.png);}
+        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/open.png);}
 </string>
        </property>
        <property name="text">
@@ -546,6 +546,31 @@ QPushButton:pressed {
          <width>511</width>
          <height>441</height>
         </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_videoPlay_exit">
+       <property name="geometry">
+        <rect>
+         <x>630</x>
+         <y>20</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QPushButton 
+{
+	border-image: url(:/res/LoginPage/close_common.png);
+ }
+
+QPushButton:pressed
+ {
+	border-image: url(:/res/LoginPage/close_press.png);
+ }
+</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>

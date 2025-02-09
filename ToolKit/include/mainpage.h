@@ -29,6 +29,8 @@ public:
     explicit MainPage(QWidget *parent = nullptr);
     ~MainPage();
 
+    void exitApp();
+
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
