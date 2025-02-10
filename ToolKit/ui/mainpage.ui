@@ -263,13 +263,6 @@ QPushButton:pressed {
            <property name="spacing">
             <number>0</number>
            </property>
-           <item>
-            <widget class="QPushButton" name="pushButton_5">
-             <property name="text">
-              <string>PushButton</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
         </layout>

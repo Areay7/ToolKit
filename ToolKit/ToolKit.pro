@@ -26,6 +26,7 @@ INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 INCLUDEPATH += $$ROOT_DIR/include
 INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
 INCLUDEPATH += $$ROOT_DIR/include/Xlsx
+INCLUDEPATH += $$ROOT_DIR/include/PDF
 
 SOURCES += \
     $$ROOT_DIR/src/databasemanager.cpp \
@@ -76,6 +77,17 @@ HEADERS = $$unique(HEADERS)
 Xlsx_SOURCES = $$files($$ROOT_DIR/src/Xlsx/*.cpp)
 message($$Xlsx_SOURCES)
 SOURCES += $$Xlsx_SOURCES
+SOURCES = $$unique(SOURCES)
+
+PDF_HEADERS = $$files($$ROOT_DIR/include/PDF/*.h)
+message($$PDF_HEADERS)
+HEADERS += $$PDF_HEADERS
+HEADERS = $$unique(HEADERS)
+
+# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
+PDF_SOURCES = $$files($$ROOT_DIR/src/PDF/*.cpp)
+message($$PDF_SOURCES)
+SOURCES += $$PDF_SOURCES
 SOURCES = $$unique(SOURCES)
 
 Test_SOURCES = $$files($$ROOT_DIR/test/*.cpp)
