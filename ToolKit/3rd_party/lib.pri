@@ -20,17 +20,29 @@ macx {
 
     # ******* VideoPlay *******
     # INCLUDEPATH += /usr/local/include/SDL2
-    INCLUDEPATH += /usr/local/ffmpeg/include
-    DEPENDPATH += /usr/local/ffmpeg/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
 
     # LIBS += -L/usr/local/lib/ -lSDL2
-    LIBS += -L/usr/local/ffmpeg/lib -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale
-
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/MacOS/arm64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale
     # ******* VideoPlay *******
 
-
+    # ******* hpdf *******
     INCLUDEPATH += $$ROOT_DIR/3rd_party/libhpdf/include
     LIBS += -L$$ROOT_DIR/3rd_party/libhpdf/MacOS/arm64 -lhpdf
+    # ******* hpdf *******
+
+    # ******* Opencv *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceDetector/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceLandmarker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceRecognizer/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceTracker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
+
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    # ******* Opencv *******
 
 }
 

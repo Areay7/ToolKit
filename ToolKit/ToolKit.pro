@@ -27,6 +27,7 @@ INCLUDEPATH += $$ROOT_DIR/include
 INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
 INCLUDEPATH += $$ROOT_DIR/include/Xlsx
 INCLUDEPATH += $$ROOT_DIR/include/PDF
+INCLUDEPATH += $$ROOT_DIR/include/OpencvServer
 
 SOURCES += \
     $$ROOT_DIR/src/databasemanager.cpp \
@@ -37,6 +38,10 @@ SOURCES += \
     $$ROOT_DIR/src/msgrecord.cpp \
     $$ROOT_DIR/src/commonutils.cpp \
     $$ROOT_DIR/src/commonbase.cpp \
+    src/OpencvServer/opencvWindow.cpp \
+    src/OpencvServer/qfaceobject.cpp \
+    src/OpencvServer/registerwin.cpp \
+    src/OpencvServer/selectwin.cpp
 
 
 HEADERS += \
@@ -47,6 +52,10 @@ HEADERS += \
     $$ROOT_DIR/include/msgrecord.h \
     $$ROOT_DIR/include/commonutils.h \
     $$ROOT_DIR/include/commonbase.h \
+    include/OpencvServer/opencvWindow.h \
+    include/OpencvServer/qfaceobject.h \
+    include/OpencvServer/registerwin.h \
+    include/OpencvServer/selectwin.h
 
 
 FORMS += \
