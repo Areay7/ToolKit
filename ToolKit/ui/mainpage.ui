@@ -551,7 +551,7 @@ QPushButton:pressed {
       <widget class="QPushButton" name="btn_videoPlay_exit">
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>610</x>
          <y>20</y>
          <width>41</width>
          <height>41</height>

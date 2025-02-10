@@ -190,14 +190,12 @@ void MainPage::on_playState(ReadThread::PlayState state)
 {
     if(state == ReadThread::play)
     {
-        // ui->btn_videoPlay_Play->setText("停止播放");
-        m_isPlay = true;
+        ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/pause.png);}");
     }
     else
     {
-        m_isPlay = false;
-        // ui->btn_videoPlay_Play->setText("开始播放");
-        // ui->btn_videoPlay_Stop->setText("暂停");
+        ui->btn_videoPlay_Play->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/open.png);}");
+        ui->btn_videoPlay_Stop->setStyleSheet("QPushButton{border-image: url(:/res/VideoPlay/stop.png);}");
     }
 }
 
