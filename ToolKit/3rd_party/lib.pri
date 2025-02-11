@@ -1,8 +1,28 @@
 win32 {
     DEFINES += WINDOWS_SPECIFIC_DEFINE
-    LIBS += -LD:/work/FFmpeg/soft/ffmpeg-n4.4.2/lib -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
-    INCLUDEPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
-    DEPENDPATH += D:/work/FFmpeg/soft/ffmpeg-n4.4.2/include
+
+    # ******* VideoPlay *******
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/win/win64 -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    # ******* VideoPlay *******
+
+    # ******* hpdf *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/libhpdf/include
+    LIBS += -L$$ROOT_DIR/3rd_party/libhpdf/win/win64 -lhpdf
+    # ******* hpdf *******
+
+    # ******* Opencv *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceDetector/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceLandmarker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceRecognizer/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceTracker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
+
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/win/win64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    # ******* Opencv *******
 
 }
 
