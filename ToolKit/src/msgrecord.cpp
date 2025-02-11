@@ -1,5 +1,5 @@
 #include "msgrecord.h"
-#include "ui_msgrecord.h"
+#include "ui_MsgRecord.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QDebug>

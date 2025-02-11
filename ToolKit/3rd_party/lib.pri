@@ -67,9 +67,19 @@ macx {
 }
 
 unix:!macx {
-    # LIBS += -L/usr/local/path/to/linux/libs -lmylinuxlib
-    # INCLUDEPATH += /usr/local/path/to/linux/includes
+
     # DEFINES += LINUX_SPECIFIC_DEFINE
+
+    # ******* VideoPlay *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/Linux/amd64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale -lx264 -lfdk-aac
+    # ******* VideoPlay *******
+
+    # ******* hpdf *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/libhpdf/include
+    LIBS += -L$$ROOT_DIR/3rd_party/libhpdf/Linux/amd64 -lhpdf
+    # ******* hpdf *******
 }
 
 android {
