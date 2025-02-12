@@ -81,6 +81,8 @@ void MainPage::switchStatckPage()
         CommonBase::logMessage(LogType::WARN, "btn_friend");
         // CommonUtils mytool;
         // mytool.sendRequest();
+        CommonBase::getCpuUse();
+        CommonBase::getMemoryUse();
     }
     else if(senderObj == ui->btn_collect)
     {

@@ -3,6 +3,7 @@ QT       += sql
 QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 CONFIG += c++17
 
@@ -38,11 +39,6 @@ SOURCES += \
     $$ROOT_DIR/src/msgrecord.cpp \
     $$ROOT_DIR/src/commonutils.cpp \
     $$ROOT_DIR/src/commonbase.cpp \
-    src/OpencvServer/opencvWindow.cpp \
-    src/OpencvServer/qfaceobject.cpp \
-    src/OpencvServer/registerwin.cpp \
-    src/OpencvServer/selectwin.cpp
-
 
 HEADERS += \
     $$ROOT_DIR/include/databasemanager.h \
@@ -52,11 +48,6 @@ HEADERS += \
     $$ROOT_DIR/include/msgrecord.h \
     $$ROOT_DIR/include/commonutils.h \
     $$ROOT_DIR/include/commonbase.h \
-    include/OpencvServer/opencvWindow.h \
-    include/OpencvServer/qfaceobject.h \
-    include/OpencvServer/registerwin.h \
-    include/OpencvServer/selectwin.h
-
 
 FORMS += \
     $$ROOT_DIR/ui/fmtlogin.ui \
@@ -65,44 +56,60 @@ FORMS += \
     $$ROOT_DIR/ui/MsgRecord.ui \
     $$ROOT_DIR/ui/msgrecord.ui
 
-# 使用通配符引入 include/VideoPlay 目录下的所有 .h 文件
+# ******************Video************************
 Video_HEADERS = $$files($$ROOT_DIR/include/VideoPlay/*.h)
 message($$Video_HEADERS)
 HEADERS += $$Video_HEADERS
 HEADERS = $$unique(HEADERS)
 
-# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
 Video_SOURCES = $$files($$ROOT_DIR/src/VideoPlay/*.cpp)
 message($$Video_SOURCES)
 SOURCES += $$Video_SOURCES
 SOURCES = $$unique(SOURCES)
+# ******************Video************************
 
+# ******************Xlsx************************
 Xlsx_HEADERS = $$files($$ROOT_DIR/include/Xlsx/*.h)
 message($$Xlsx_HEADERS)
 HEADERS += $$Xlsx_HEADERS
 HEADERS = $$unique(HEADERS)
 
-# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
 Xlsx_SOURCES = $$files($$ROOT_DIR/src/Xlsx/*.cpp)
 message($$Xlsx_SOURCES)
 SOURCES += $$Xlsx_SOURCES
 SOURCES = $$unique(SOURCES)
+# ******************Xlsx************************
 
+# ******************PDF************************
 PDF_HEADERS = $$files($$ROOT_DIR/include/PDF/*.h)
 message($$PDF_HEADERS)
 HEADERS += $$PDF_HEADERS
 HEADERS = $$unique(HEADERS)
 
-# 使用通配符引入 include/VideoPlay 目录下的所有 .cpp 文件
 PDF_SOURCES = $$files($$ROOT_DIR/src/PDF/*.cpp)
 message($$PDF_SOURCES)
 SOURCES += $$PDF_SOURCES
 SOURCES = $$unique(SOURCES)
+# ******************PDF************************
 
+# ******************Test************************
 Test_SOURCES = $$files($$ROOT_DIR/test/*.cpp)
 message($$Test_SOURCES)
 SOURCES += $$Test_SOURCES
 SOURCES = $$unique(SOURCES)
+# ******************Test************************
+
+# ******************Opencv************************
+Opencv_HEADERS = $$files($$ROOT_DIR/include/OpencvServer/*.h)
+message($$Opencv_HEADERS)
+HEADERS += $$PDF_HEADERS
+HEADERS = $$unique(HEADERS)
+
+Opencv_SOURCES = $$files($$ROOT_DIR/src/OpencvServer/*.cpp)
+message($$Opencv_SOURCES)
+SOURCES += $$Opencv_SOURCES
+SOURCES = $$unique(SOURCES)
+# ******************Opencv************************
 
 
 # Default rules for deployment.

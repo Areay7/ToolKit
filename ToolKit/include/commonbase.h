@@ -22,6 +22,9 @@ public:
 public:
     static QString formatDateTime(const QDateTime &dateTime);
     static void logMessage(const LogType &type, const QString &message);
+    static QString getCpuUse();
+    static QString getMemoryUse();
+
 
 signals:
 
