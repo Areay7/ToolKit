@@ -65,10 +65,7 @@ QString CommonBase::getCpuUse()
     return res;
 }
 
-#include "CommonBase.h"
-#include <QProcess>
-#include <QRegularExpression>
-#include <QDebug>
+
 
 QString CommonBase::getMemoryUse()
 {

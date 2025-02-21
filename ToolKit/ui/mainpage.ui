@@ -166,7 +166,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="stackedWidget_side">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_sideChat">
       <widget class="QFrame" name="frame_2">
@@ -386,7 +386,7 @@ QPushButton:pressed {
    <item>
     <widget class="QStackedWidget" name="stackedWidget_main">
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_mainChat">
       <widget class="QLabel" name="label_wxIcon">
@@ -407,14 +407,24 @@ QPushButton:pressed {
       <widget class="QLabel" name="label_wxIcon_3">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>230</y>
+         <x>200</x>
+         <y>0</y>
          <width>161</width>
-         <height>141</height>
+         <height>91</height>
         </rect>
        </property>
        <property name="text">
         <string>Friend</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="textEdit_Friend">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>100</y>
+         <width>571</width>
+         <height>541</height>
+        </rect>
        </property>
       </widget>
      </widget>

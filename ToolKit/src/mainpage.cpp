@@ -6,6 +6,9 @@
 #include <QScrollBar>
 #include <QFileDialog>
 #include <QStyle>
+#include <QRegExp>
+// #include <QRegularExpression>
+// #include <QRegularExpressionMatch>
 #include <QDebug>
 
 MainPage::MainPage(QWidget *parent)
@@ -22,6 +25,7 @@ MainPage::MainPage(QWidget *parent)
     qDebug() << "a : " << a;
 
     ui->stackedWidget_side->setCurrentIndex(static_cast<int>(StackPage::ChatPage));
+    ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::ChatPage));
 
     QList<QPushButton *> buttons = this->findChildren<QPushButton* >();
     for(QPushButton *btn : buttons)
@@ -44,22 +48,34 @@ MainPage::MainPage(QWidget *parent)
     m_scrollArea->setWidget(m_containerWidget);
     ui->verticalLayout->addWidget(m_scrollArea);
 
+
+
     for(int i = 0; i < 10; ++i)
     {
-        MsgRecord *msgRecord = new MsgRecord();
+        // 使用 std::shared_ptr 管理 MsgRecord 对象
+        std::shared_ptr<MsgRecord> msgRecord = std::make_shared<MsgRecord>();
+
+        // 将 shared_ptr 添加到 m_widgetList
         m_widgetList.append(msgRecord);
-        m_containerLayout->addWidget(msgRecord);
-        connect(msgRecord, &MsgRecord::clicked, this, &MainPage::onWidgetClicked);
+
+        // 将 msgRecord 作为原始指针传递给 m_containerLayout
+        m_containerLayout->addWidget(msgRecord.get()); // 使用 get() 获取裸指针
+
+        // 连接信号与槽
+        connect(msgRecord.get(), &MsgRecord::clicked, this, &MainPage::onWidgetClicked);
     }
 
     updateVisibleWidgets();
 
 
     // NEW
-    m_xlsx = new XlsxManager();
-    m_readThread = new ReadThread();
-    connect(m_readThread, &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::DirectConnection);
-    connect(m_readThread, &ReadThread::playState, this, &MainPage::on_playState);
+    m_readThread = std::make_shared<ReadThread>();
+    m_xlsx = std::make_shared<XlsxManager>();
+    m_commonUtils = std::make_shared<CommonUtils>();
+
+    connect(m_readThread.get(), &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::QueuedConnection);
+    connect(m_readThread.get(), &ReadThread::playState, this, &MainPage::on_playState, Qt::QueuedConnection);
+    connect(m_commonUtils.get(), &CommonUtils::sendMsg, this, &MainPage::recvMsg, Qt::DirectConnection);
 
 }
 
@@ -79,8 +95,10 @@ void MainPage::switchStatckPage()
         ui->stackedWidget_side->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         CommonBase::logMessage(LogType::WARN, "btn_friend");
-        // CommonUtils mytool;
-        // mytool.sendRequest();
+
+        m_commonUtils->sendRequest("你是一名资深的C++程序员", "如何高效学习Linux C++ QT，并且快速适应工作要求");
+
+
         CommonBase::getCpuUse();
         CommonBase::getMemoryUse();
     }
@@ -201,6 +219,31 @@ void MainPage::on_playState(ReadThread::PlayState state)
     }
 }
 
+void MainPage::recvMsg(const QString &msg)
+{
+    QString formatMsg = markdownToHtml(msg);
+    ui->textEdit_Friend->append(formatMsg);
+}
+
+QString MainPage::markdownToHtml(const QString &markdown) {
+    QString html = markdown;
+
+    // 替换粗体
+    html.replace(QRegularExpression("\\*\\*(.*?)\\*\\*"), "<b>\\1</b>");
+    // 替换斜体
+    html.replace(QRegularExpression("\\*(.*?)\\*"), "<i>\\1</i>");
+    // 替换标题
+    html.replace(QRegularExpression("# (.*?)\\n"), "<h1>\\1</h1>");
+    // 替换链接
+    html.replace(QRegularExpression("\\[([^\\]]+)\\]\\(([^\\)]+)\\)"), "<a href=\"\\2\">\\1</a>");
+    // 替换图片
+    html.replace(QRegularExpression("!\\[([^\\]]+)\\]\\(([^\\)]+)\\)"), "<img src=\"\\2\" alt=\"\\1\" />");
+
+    // 包裹 HTML 标签
+    html = "<html><body>" + html + "<br> </body></html> ";
+    return html;
+}
+
 void MainPage::updateVisibleWidgets()
 {
     // 根据 visibleStartIndex 设置哪些控件可见
@@ -224,24 +267,24 @@ void MainPage::free()
     {
         delete m_containerLayout;
     }
-    if(!m_widgetList.isEmpty())
-    {
-        qDeleteAll(m_widgetList);
-        m_widgetList.clear();
-    }
+    // if(!m_widgetList.isEmpty())
+    // {
+    //     qDeleteAll(m_widgetList);
+    //     m_widgetList.clear();
+    // }
     if(m_lastSelectedWidget)
     {
         delete m_lastSelectedWidget;
     }
     if(m_xlsx)
     {
-        delete m_xlsx;
+        // delete m_xlsx;
     }
     if(m_readThread)
     {
         m_readThread->close();
         m_readThread->wait();
-        delete m_readThread;
+        // delete m_readThread;
     }
 }
 

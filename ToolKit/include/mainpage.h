@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QWheelEvent>
 #include <QList>
+#include <memory>
 
 #include "commonutils.h"
 #include "commonbase.h"
@@ -35,6 +36,31 @@ public:
 protected:
     void wheelEvent(QWheelEvent *event) override;
 
+private:
+    void updateVisibleWidgets();
+    void free();
+    void setPicture();
+
+private:
+    Ui::MainPage *ui;
+    QScrollArea *m_scrollArea;
+    QWidget *m_containerWidget;
+    QVBoxLayout *m_containerLayout;
+    QList<std::shared_ptr<MsgRecord>> m_widgetList;
+    MsgRecord *m_lastSelectedWidget;
+    int m_visibleStartIndex;
+    // QList<std::unique_ptr<MsgRecord>> m_widgetList;
+
+    std::shared_ptr<XlsxManager> m_xlsx;
+
+    // VideoPlay
+    std::shared_ptr<ReadThread> m_readThread;
+    // ReadThread *m_readThread = nullptr;
+    bool m_isPlay;
+    // End of VideoPlay
+
+    std::shared_ptr<CommonUtils> m_commonUtils;
+
 private slots:
     void switchStatckPage();
     void onWidgetClicked(MsgRecord *msgRecord);
@@ -46,27 +72,8 @@ private slots:
     void on_playState(ReadThread::PlayState state);
     // End of VideoPlay
 
-private:
-    void updateVisibleWidgets();
-    void free();
-    void setPicture();
-
-private:
-    Ui::MainPage *ui;
-    QScrollArea *m_scrollArea;
-    QWidget *m_containerWidget;
-    QVBoxLayout *m_containerLayout;
-    QList<MsgRecord *> m_widgetList;
-    MsgRecord *m_lastSelectedWidget;
-    int m_visibleStartIndex;
-
-    XlsxManager *m_xlsx;
-
-    // VideoPlay
-    ReadThread *m_readThread = nullptr;
-    bool m_isPlay;
-    // End of VideoPlay
-
+    void recvMsg(const QString &msg);
+    QString markdownToHtml(const QString &markdown);
 
 };
 

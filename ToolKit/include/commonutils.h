@@ -28,9 +28,10 @@ public:
     explicit CommonUtils(QObject *parent = nullptr);
 
 public:
-    void sendRequest();
+    void sendRequest(const QString& role, const QString& question);
 
-signals:
+Q_SIGNALS:
+    void sendMsg(QString msg);
 
 };
 
