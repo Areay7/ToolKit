@@ -1,5 +1,4 @@
 #include "commonutils.h"
-#include <QEventLoop>
 
 #define DeepSeek 0
 #define KiMi 1
@@ -22,8 +21,9 @@ CommonUtils::CommonUtils(QObject *parent)
 
 
 /*
-@ role [in]
-@ question []
+* @ parm role [in] "指定希望Ai是一个什么样的角色来协助你完成工作"
+* @ parm question [in] "你需要提问的问题"
+* @ remarks 通过void MainPage::recvMsg(const QString &msg)槽函数去接收AI的回复
 */
 
 void CommonUtils::sendRequest(const QString& role, const QString& question) {
@@ -126,7 +126,6 @@ void CommonUtils::sendRequest(const QString& role, const QString& question) {
     qDebug() << "KiMi API not selected!";
 #endif
 
-// #endif
 }
 
 

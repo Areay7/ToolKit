@@ -1,4 +1,4 @@
-#if 0
+#if 1
 
 #ifndef QFACEOBJECT_H
 #define QFACEOBJECT_H
@@ -7,8 +7,9 @@
 #include <seeta/FaceEngine.h>
 #include <opencv2/opencv.hpp>
 #include <QDebug>
+#include <memory>
 
-using namespace cv;
+
 
 // 人脸数据存储， 人脸检测， 人脸识别
 class QFaceObject : public QObject
@@ -19,16 +20,15 @@ public:
     ~QFaceObject();
 
 public slots:
-    int64_t face_register(Mat& faceimage);
-    int face_query(Mat& faceImage);
+    qint64 face_register(cv::Mat& faceimage);
+    qint64 face_query(cv::Mat& faceImage);
 
 signals:
-    void send_faceid(int64_t faceid);
+    void send_faceid(qint64 faceid);
 
-signals:
 
 private:
-    seeta::FaceEngine *fengineptr;
+    std::shared_ptr<seeta::FaceEngine> m_fengineptr;
 
 };
 

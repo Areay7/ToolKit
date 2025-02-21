@@ -102,7 +102,7 @@ SOURCES = $$unique(SOURCES)
 # ******************Opencv************************
 Opencv_HEADERS = $$files($$ROOT_DIR/include/OpencvServer/*.h)
 message($$Opencv_HEADERS)
-HEADERS += $$PDF_HEADERS
+HEADERS += $$Opencv_HEADERS
 HEADERS = $$unique(HEADERS)
 
 Opencv_SOURCES = $$files($$ROOT_DIR/src/OpencvServer/*.cpp)

@@ -47,11 +47,10 @@ MsgRecord::MsgRecord(const QString &userName,  const QString &lastMsg,
     mainLayout->addWidget(avatarLabel, 1);   // 左侧头像，占 1/3 宽度
     mainLayout->addLayout(middleLayout, 2);   // 中间部分，占 2/3 宽度
     mainLayout->addWidget(timeLabel, 1);      // 右侧时间，占 1/3 宽度
-    mainLayout->setSpacing(0);
 
     // 设置布局的间距和边距
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->setSpacing(15);
+    mainLayout->setContentsMargins(3, 10, 10, 10);
+    mainLayout->setSpacing(1);
 
     // 设置 backgroundWidget 为 MsgRecord 的主布局
     setLayout(new QVBoxLayout());
