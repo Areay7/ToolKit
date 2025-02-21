@@ -11,7 +11,7 @@ bool DatabaseManager::Init()
     QString proFilePath = QString(PRO_FILE_PWD);
 
     // 拼接路径
-    QString filePath = proFilePath + "/set.ini";
+    QString filePath = proFilePath + "/setting/set.ini";
 
     // 读取配置文件
     QSettings settings(filePath, QSettings::IniFormat);

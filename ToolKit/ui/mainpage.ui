@@ -6,246 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1027</width>
-    <height>668</height>
+    <width>1130</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,9">
+  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,12">
    <item>
-    <widget class="QFrame" name="frame">
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-padding: 1px;
-radius: 5px; 
-}</string>
-     </property>
+    <widget class="QFrame" name="frame_top">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLabel" name="label_avatar">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>61</width>
-        <height>61</height>
-       </rect>
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,2,3">
+      <property name="leftMargin">
+       <number>10</number>
       </property>
-      <property name="text">
-       <string/>
+      <property name="topMargin">
+       <number>0</number>
       </property>
-     </widget>
-     <widget class="QPushButton" name="btn_chat">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>180</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
+      <property name="rightMargin">
+       <number>4</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true"> QPushButton {
-	border-image: url(:/res/MainPage/chat_common.png);
- } 
-
-QPushButton:pressed {
-	border-image: url(:/res/MainPage/chat_press.png);
- }
-
-</string>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_friend">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>260</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"> QPushButton {
-	border-image: url(:/res/MainPage/friend_common.png);
- } 
-
-QPushButton:pressed {
-	border-image: url(:/res/MainPage/friend_press.png);
- }
-
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_collect">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>350</y>
-        <width>31</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"> QPushButton {
-	border-image: url(:/res/MainPage/collect_common.png);
- } 
-
-QPushButton:pressed {
-	border-image: url(:/res/MainPage/collect_press.png);
- }
-
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_moments">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>440</y>
-        <width>31</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"> QPushButton {
-	border-image: url(:/res/MainPage/moments_common.png);
- } 
-
-QPushButton:pressed {
-	border-image: url(:/res/MainPage/moments_press.png);
- }
-
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_tool">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>530</y>
-        <width>21</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"> QPushButton {
-	border-image: url(:/res/MainPage/tool_common.png);
- } 
-
-QPushButton:pressed {
-	border-image: url(:/res/MainPage/tool_press.png);
- }
-
-</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QStackedWidget" name="stackedWidget_side">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <widget class="QWidget" name="page_sideChat">
-      <widget class="QFrame" name="frame_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>230</width>
-         <height>649</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="QFrame" name="frame_3">
-        <property name="geometry">
-         <rect>
-          <x>-1</x>
-          <y>-1</y>
-          <width>231</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLineEdit" name="lineEdit">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>30</y>
-           <width>171</width>
-           <height>41</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>30</y>
-           <width>41</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../res.qrc">
-           <normaloff>:/res/MainPage/add.png</normaloff>:/res/MainPage/add.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>26</width>
-           <height>26</height>
-          </size>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="widget_verticalLayout" native="true">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>90</y>
-          <width>231</width>
-          <height>561</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="spacing">
-          <number>0</number>
-         </property>
+      <item>
+       <widget class="QWidget" name="widget_weather" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -259,309 +51,582 @@ QPushButton:pressed {
           <number>0</number>
          </property>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="spacing">
-            <number>0</number>
+          <widget class="QLabel" name="label_weatherStatus">
+           <property name="text">
+            <string>Status</string>
            </property>
-          </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>du</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_sideFriend">
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>270</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Friend</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_sideCollect">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>220</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>collect</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_sideMoments">
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>280</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Moment</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_sideTool">
-      <widget class="QPushButton" name="btn_excel">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>250</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Excel</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_videoPlay">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>VideoPlay</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_gTest">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>370</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>GTest</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_opencv">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>140</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Opencv</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_gTest_2">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>480</y>
-         <width>91</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>PDF</string>
-       </property>
-      </widget>
-     </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_fill" native="true"/>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_status" native="true"/>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QStackedWidget" name="stackedWidget_main">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <widget class="QWidget" name="page_mainChat">
-      <widget class="QLabel" name="label_wxIcon">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>250</y>
-         <width>161</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_mainFriend">
-      <widget class="QLabel" name="label_wxIcon_3">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>0</y>
-         <width>161</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Friend</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="textEdit_Friend">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>100</y>
-         <width>571</width>
-         <height>541</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_mainCollect">
-      <widget class="QLabel" name="label_wxIcon_2">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>250</y>
-         <width>161</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Collect</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_mainMoments">
-      <widget class="QLabel" name="label_wxIcon_4">
-       <property name="geometry">
-        <rect>
-         <x>280</x>
-         <y>240</y>
-         <width>161</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Moments</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_mainTool">
-      <widget class="QLabel" name="label_wxIcon_5">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>250</y>
-         <width>161</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Tool</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_videoPlay">
-      <widget class="QPushButton" name="btn_videoPlay_select">
-       <property name="geometry">
-        <rect>
-         <x>500</x>
-         <y>20</y>
-         <width>91</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>选择</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_videoPlay_Stop">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>560</y>
-         <width>51</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/stop.png);}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_videoPlay_Play">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>560</y>
-         <width>51</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/open.png);}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="comboBox_url">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>20</y>
-         <width>401</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <item>
-        <property name="text">
-         <string>/Users/areay7/Downloads/1-项目功能演示.mp4</string>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4,10">
+      <item>
+       <widget class="QFrame" name="frame">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+padding: 1px;
+radius: 5px; 
+}</string>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>E:/downloads/[阳光电影-www.dygod.org]大奉打更人-01~08/[阳光电影-www.dygod.org]大奉打更人-01.mp4</string>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
-       </item>
-      </widget>
-      <widget class="PlayImage" name="widget_VideoPlay" native="true">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>110</y>
-         <width>511</width>
-         <height>441</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_videoPlay_exit">
-       <property name="geometry">
-        <rect>
-         <x>610</x>
-         <y>20</y>
-         <width>41</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"> QPushButton 
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_avatar">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>61</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_chat">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>180</y>
+           <width>31</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/chat_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/chat_press.png);
+ }
+
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_friend">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>260</y>
+           <width>31</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/friend_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/friend_press.png);
+ }
+
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_collect">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>350</y>
+           <width>31</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/collect_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/collect_press.png);
+ }
+
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_moments">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>440</y>
+           <width>31</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/moments_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/moments_press.png);
+ }
+
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_tool">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>530</y>
+           <width>21</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton {
+	border-image: url(:/res/MainPage/tool_common.png);
+ } 
+
+QPushButton:pressed {
+	border-image: url(:/res/MainPage/tool_press.png);
+ }
+
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget_side">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page_sideChat">
+         <widget class="QFrame" name="frame_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>281</width>
+            <height>691</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QFrame" name="frame_3">
+           <property name="geometry">
+            <rect>
+             <x>-1</x>
+             <y>-1</y>
+             <width>281</width>
+             <height>91</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <widget class="QLineEdit" name="lineEdit">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>30</y>
+              <width>211</width>
+              <height>41</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+             <rect>
+              <x>230</x>
+              <y>30</y>
+              <width>41</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../res.qrc">
+              <normaloff>:/res/MainPage/add.png</normaloff>:/res/MainPage/add.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>26</width>
+              <height>26</height>
+             </size>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="widget_verticalLayout" native="true">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>90</y>
+             <width>281</width>
+             <height>611</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_sideFriend">
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>270</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Friend</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_sideCollect">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>220</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>collect</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_sideMoments">
+         <widget class="QPushButton" name="pushButton_4">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>280</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Moment</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_sideTool">
+         <widget class="QPushButton" name="btn_excel">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>250</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Excel</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_videoPlay">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>40</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>VideoPlay</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_gTest">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>370</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>GTest</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_opencv">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>140</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Opencv</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_gTest_2">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>480</y>
+            <width>91</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>PDF</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget_main">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page_mainChat">
+         <widget class="QLabel" name="label_wxIcon">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>250</y>
+            <width>161</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_mainFriend">
+         <widget class="QLabel" name="label_wxIcon_3">
+          <property name="geometry">
+           <rect>
+            <x>200</x>
+            <y>0</y>
+            <width>161</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Friend</string>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="textEdit_Friend">
+          <property name="geometry">
+           <rect>
+            <x>50</x>
+            <y>100</y>
+            <width>571</width>
+            <height>541</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_mainCollect">
+         <widget class="QLabel" name="label_wxIcon_2">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>250</y>
+            <width>161</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Collect</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_mainMoments">
+         <widget class="QLabel" name="label_wxIcon_4">
+          <property name="geometry">
+           <rect>
+            <x>280</x>
+            <y>240</y>
+            <width>161</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Moments</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_mainTool">
+         <widget class="QLabel" name="label_wxIcon_5">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>250</y>
+            <width>161</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Tool</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_videoPlay">
+         <widget class="QPushButton" name="btn_videoPlay_select">
+          <property name="geometry">
+           <rect>
+            <x>500</x>
+            <y>20</y>
+            <width>91</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>选择</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_videoPlay_Stop">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>560</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/stop.png);}
+</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_videoPlay_Play">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>560</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-image: url(:/res/VideoPlay/open.png);}
+</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_url">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>20</y>
+            <width>401</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <item>
+           <property name="text">
+            <string>/Users/areay7/Downloads/1-项目功能演示.mp4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>E:/downloads/[阳光电影-www.dygod.org]大奉打更人-01~08/[阳光电影-www.dygod.org]大奉打更人-01.mp4</string>
+           </property>
+          </item>
+         </widget>
+         <widget class="PlayImage" name="widget_VideoPlay" native="true">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>110</y>
+            <width>511</width>
+            <height>441</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_videoPlay_exit">
+          <property name="geometry">
+           <rect>
+            <x>610</x>
+            <y>20</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"> QPushButton 
 {
 	border-image: url(:/res/LoginPage/close_common.png);
  }
@@ -571,27 +636,30 @@ QPushButton:pressed
 	border-image: url(:/res/LoginPage/close_press.png);
  }
 </string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_opencv">
-      <widget class="QLabel" name="label_wxIcon_7">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>260</y>
-         <width>161</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Opencv</string>
-       </property>
-      </widget>
-     </widget>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_opencv">
+         <widget class="QLabel" name="label_wxIcon_7">
+          <property name="geometry">
+           <rect>
+            <x>250</x>
+            <y>260</y>
+            <width>161</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Opencv</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

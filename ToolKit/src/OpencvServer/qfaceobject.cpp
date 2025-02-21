@@ -2,19 +2,25 @@
 
 #include "qfaceobject.h"
 
+const QString proFilePath = QString(PRO_FILE_PWD);
+
 QFaceObject::QFaceObject(QObject *parent)
     : QObject{parent}
 {
     // 初始化
-    seeta::ModelSetting FDmode("/Users/areay7/Opencv/model/fd_2_00.dat", seeta::ModelSetting::CPU,0);
-    seeta::ModelSetting PDmode("/Users/areay7/Opencv/model/pd_2_00_pts5.dat", seeta::ModelSetting::CPU,0);
-    seeta::ModelSetting FRmode("/Users/areay7/Opencv/model/fr_2_10.dat", seeta::ModelSetting::CPU,0);
+    const std::string FDmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/model/fd_2_00.dat").toStdString().c_str();
+    const std::string PDmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/pd_2_00_pts5.dat").toStdString().c_str();
+    const std::string FRmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/fr_2_10.dat").toStdString().c_str();
+
+    seeta::ModelSetting FDmode(FDmode_PATH, seeta::ModelSetting::GPU,0);
+    seeta::ModelSetting PDmode(PDmode_PATH, seeta::ModelSetting::GPU,0);
+    seeta::ModelSetting FRmode(FRmode_PATH, seeta::ModelSetting::GPU,0);
 
     m_fengineptr = std::make_shared<seeta::FaceEngine>(FDmode, PDmode, FRmode);
     // this->fengineptr = new seeta::FaceEngine(FDmode, PDmode, FRmode);
 
     // 导入已经有的人脸数据库
-    m_fengineptr->Load("./face.db");
+    m_fengineptr->Load(QString(proFilePath + "/setting/face.db").toStdString().c_str());
 }
 
 QFaceObject::~QFaceObject()
@@ -36,7 +42,7 @@ qint64 QFaceObject::face_register(cv::Mat &faceImage)
 
     if(faceId >= 0)
     {
-        m_fengineptr->Save("./face.db");
+        m_fengineptr->Save(QString(proFilePath + "/setting/face.db").toStdString().c_str());
     }
 
     return faceId;

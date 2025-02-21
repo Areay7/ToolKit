@@ -46,6 +46,7 @@ void CommonBase::logMessage(const LogType &type, const QString &message)
 QString CommonBase::getCpuUse()
 {
     QString res = "";
+#ifdef MAC_SPECIFIC_DEFINE
     QProcess process;
 
     QString cmd = "/bin/ps -e -o %cpu | /usr/bin/awk '{s+=$1} END {print s}'";
@@ -61,7 +62,7 @@ QString CommonBase::getCpuUse()
         res = process.readAll().trimmed();
         qDebug() << res;
     }
-
+#endif
     return res;
 }
 
@@ -70,6 +71,7 @@ QString CommonBase::getCpuUse()
 QString CommonBase::getMemoryUse()
 {
     QString res = "";
+#ifdef MAC_SPECIFIC_DEFINE
     QProcess process;
 
     // 执行 top 命令获取内存信息
@@ -114,7 +116,7 @@ QString CommonBase::getMemoryUse()
         res = "0%";
         qDebug() << "Failed to extract memory usage";
     }
-
+#endif
     return res;
 }
 

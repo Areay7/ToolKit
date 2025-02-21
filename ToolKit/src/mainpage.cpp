@@ -40,7 +40,7 @@ MainPage::MainPage(QWidget *parent)
 
     // 隐藏滚动条但保留功能
     // m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    // m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     m_containerWidget = new QWidget(m_scrollArea);
     m_containerLayout = new QVBoxLayout(m_containerWidget);

@@ -39,6 +39,7 @@ SOURCES += \
     $$ROOT_DIR/src/msgrecord.cpp \
     $$ROOT_DIR/src/commonutils.cpp \
     $$ROOT_DIR/src/commonbase.cpp \
+    $$ROOT_DIR/src/wearthermanager.cpp
 
 HEADERS += \
     $$ROOT_DIR/include/databasemanager.h \
@@ -48,6 +49,7 @@ HEADERS += \
     $$ROOT_DIR/include/msgrecord.h \
     $$ROOT_DIR/include/commonutils.h \
     $$ROOT_DIR/include/commonbase.h \
+    $$ROOT_DIR/include/wearthermanager.h
 
 FORMS += \
     $$ROOT_DIR/ui/fmtlogin.ui \
