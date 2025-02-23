@@ -14,6 +14,7 @@
 #include "xlsxmanager.h"
 #include "readthread.h"
 #include "playimage.h"
+#include "wearthermanager.h"
 
 class MsgRecord;
 
@@ -60,6 +61,7 @@ private:
     // End of VideoPlay
 
     std::shared_ptr<CommonUtils> m_commonUtils;
+    std::shared_ptr<WeartherManager> m_weartherManager;
 
 private slots:
     void switchStatckPage();

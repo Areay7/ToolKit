@@ -10,6 +10,7 @@
 // #include <QRegularExpression>
 // #include <QRegularExpressionMatch>
 #include <QDebug>
+#include "wearthermanager.h"
 
 MainPage::MainPage(QWidget *parent)
     : QWidget(parent)
@@ -72,11 +73,14 @@ MainPage::MainPage(QWidget *parent)
     m_readThread = std::make_shared<ReadThread>();
     m_xlsx = std::make_shared<XlsxManager>();
     m_commonUtils = std::make_shared<CommonUtils>();
+    m_weartherManager = std::make_shared<WeartherManager>();
 
     connect(m_readThread.get(), &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::QueuedConnection);
     connect(m_readThread.get(), &ReadThread::playState, this, &MainPage::on_playState, Qt::QueuedConnection);
     connect(m_commonUtils.get(), &CommonUtils::sendMsg, this, &MainPage::recvMsg, Qt::DirectConnection);
 
+
+    m_weartherManager->getWeatherInfo("深圳");
 }
 
 
