@@ -25,6 +25,14 @@ void WeartherManager::parseJson(QByteArray &byteArray)
     }
     QJsonObject rootObj = doc.object();
     qDebug() << rootObj.value("message").toString();
+    QJsonObject objData = rootObj.value("data").toObject();
+
+    float m_wendu = objData.value("wendu").toString().toFloat();
+    float m_shidu = objData.value("shidu").toString().toFloat();
+
+    emit sendInfo(m_wendu, m_shidu);
+    qDebug() << "------------> wendu : " << m_wendu;
+    qDebug() << "------------> shidu : " << m_shidu;
 }
 
 void WeartherManager::getWeatherInfo(QString cityName)
@@ -42,6 +50,15 @@ void WeartherManager::getWeatherInfo(QString cityName)
     qDebug() << "cityCode ----> " << cityCode;
     m_NetAccessManager->get(QNetworkRequest(url));
     qDebug() << "<<<<<<<<<<<<" << __FUNCTION__ << ">>>>>>>>>>>>  4 ";
+
+}
+
+void WeartherManager::getCityName() {
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    QNetworkRequest request(QUrl("https://2024.ipchaxun.com/"));
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, &WeartherManager::onCityNameFinished);
 }
 
 void WeartherManager::onReplied(QNetworkReply* reply)
@@ -62,6 +79,31 @@ void WeartherManager::onReplied(QNetworkReply* reply)
         QByteArray byteArray = reply->readAll();
         qDebug() << "Read All : " << byteArray.data();
         parseJson(byteArray);
+    }
+    reply->deleteLater();
+}
+
+void WeartherManager::onCityNameFinished() {
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    if (reply->error() == QNetworkReply::NoError) {
+        QByteArray response = reply->readAll();
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+        QJsonObject jsonObj = jsonDoc.object();
+
+        QString ret = jsonObj["ret"].toString();
+        if (ret == "ok") {
+            QJsonArray data = jsonObj["data"].toArray();
+            QString country = data[0].toString();
+            QString province = data[1].toString();
+            QString city = data[2].toString();
+
+            qDebug() << "*********city : " << city;
+            emit cityFetched(country, province, city);
+        } else {
+            emit errorOccurred("Failed to fetch city data.");
+        }
+    } else {
+        emit errorOccurred(reply->errorString());
     }
     reply->deleteLater();
 }

@@ -77,6 +77,9 @@ private slots:
     void recvMsg(const QString &msg);
     QString markdownToHtml(const QString &markdown);
 
+    void getWeatherInfo(const QString &country, const QString &province, const QString &city);
+    void updateWeatherData(float wendu, float shidu);
+
 };
 
 #endif // MAINPAGE_H

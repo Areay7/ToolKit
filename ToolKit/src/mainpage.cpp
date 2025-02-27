@@ -78,9 +78,11 @@ MainPage::MainPage(QWidget *parent)
     connect(m_readThread.get(), &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::QueuedConnection);
     connect(m_readThread.get(), &ReadThread::playState, this, &MainPage::on_playState, Qt::QueuedConnection);
     connect(m_commonUtils.get(), &CommonUtils::sendMsg, this, &MainPage::recvMsg, Qt::DirectConnection);
+    connect(m_weartherManager.get(), &WeartherManager::cityFetched, this, &MainPage::getWeatherInfo, Qt::DirectConnection);
+    connect(m_weartherManager.get(), &WeartherManager::sendInfo, this, &MainPage::updateWeatherData);
 
 
-    m_weartherManager->getWeatherInfo("深圳");
+    m_weartherManager->getCityName();
 }
 
 
@@ -100,11 +102,11 @@ void MainPage::switchStatckPage()
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         CommonBase::logMessage(LogType::WARN, "btn_friend");
 
-        m_commonUtils->sendRequest("你是一名资深的C++程序员", "如何高效学习Linux C++ QT，并且快速适应工作要求");
+        // m_commonUtils->sendRequest("你是一名资深的C++程序员", "如何高效学习Linux C++ QT，并且快速适应工作要求");
 
 
-        CommonBase::getCpuUse();
-        CommonBase::getMemoryUse();
+        // CommonBase::getCpuUse();
+        // CommonBase::getMemoryUse();
     }
     else if(senderObj == ui->btn_collect)
     {
@@ -248,6 +250,22 @@ QString MainPage::markdownToHtml(const QString &markdown) {
     return html;
 }
 
+void MainPage::updateWeatherData(float wendu, float shidu)
+{
+    float temperature = wendu;
+    qDebug() << "temperature ::: " << temperature;
+    int roundedTemperatue = qRound(temperature);
+    ui->label_temperature->setText(QString::number(roundedTemperatue) + "°");
+}
+
+void MainPage::getWeatherInfo(const QString &country, const QString &province, const QString &city)
+{
+    m_weartherManager->getWeatherInfo(city);
+
+
+    ui->label_weatherStatus->setText(QString(country + province + city));
+}
+
 void MainPage::updateVisibleWidgets()
 {
     // 根据 visibleStartIndex 设置哪些控件可见
@@ -271,24 +289,14 @@ void MainPage::free()
     {
         delete m_containerLayout;
     }
-    // if(!m_widgetList.isEmpty())
-    // {
-    //     qDeleteAll(m_widgetList);
-    //     m_widgetList.clear();
-    // }
     if(m_lastSelectedWidget)
     {
         delete m_lastSelectedWidget;
-    }
-    if(m_xlsx)
-    {
-        // delete m_xlsx;
     }
     if(m_readThread)
     {
         m_readThread->close();
         m_readThread->wait();
-        // delete m_readThread;
     }
 }
 
