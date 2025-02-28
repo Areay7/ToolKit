@@ -7,6 +7,8 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 CONFIG += c++17
 
+
+
 # QMAKE_CXXFLAGS += -fsanitize=address
 # QMAKE_LFLAGS += -fsanitize=address
 
@@ -19,7 +21,7 @@ CONFIG += c++17
 ROOT_DIR = $$PWD
 
 include($$ROOT_DIR/3rd_party/lib.pri)
-include($$ROOT_DIR/3rd_party/QXlsx/QXlsx.pri)             # QXlsx源代码，版本V1.4.3  https://github.com/QtExcel/QXlsx/releases
+include($$ROOT_DIR/3rd_party/QXlsx/QXlsx.pri)
 INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 
 
@@ -133,6 +135,14 @@ SOURCES = $$unique(SOURCES)
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+# RC_ICONS = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
+# RC_ICONS = /Users/areay7/QtCode/Qt_learn/MyGit/ToolKit/ToolKit/res/MainPage/wxicon_32_32.ico
+ICON = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
+
+macx {
+    QMAKE_INFO_PLIST = $$ROOT_DIR/setting/Info.plist.in
+}
 
 # 将路径作为宏定义传递给编译后的可执行文件
 DEFINES += PRO_FILE_PWD=\\\"$$ROOT_DIR\\\"

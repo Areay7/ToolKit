@@ -58,5 +58,11 @@
         <file>res/Weather/type/ZhongDaoDaYu.png</file>
         <file>res/Weather/type/ZhongXue.png</file>
         <file>res/Weather/type/ZhongYu.png</file>
+        <file>res/MainPage/wxicon.png</file>
+        <file>res/MainPage/wxicon_32_32.ico</file>
+        <file>res/MainPage/wxicon_64_64.ico</file>
+        <file>res/LoginPage/QRCode.jpg</file>
+        <file>res/LoginPage/return_common.png</file>
+        <file>res/LoginPage/return_press.png</file>
     </qresource>
 </RCC>

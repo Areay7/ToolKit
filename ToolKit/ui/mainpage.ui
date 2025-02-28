@@ -485,7 +485,7 @@ QPushButton:pressed {
       <item>
        <widget class="QStackedWidget" name="stackedWidget_main">
         <property name="currentIndex">
-         <number>0</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="page_mainChat">
          <widget class="QLabel" name="label_wxIcon">

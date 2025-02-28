@@ -62,6 +62,7 @@ macx {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 
     LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lopencv_world
     # ******* Opencv *******
 
     # ******* Mqtt *******

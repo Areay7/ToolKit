@@ -39,10 +39,10 @@ void WeartherManager::parseJson(QByteArray &byteArray)
     QString cur_type = objforecast.value("type").toString();
 
     QString s;
-    s = objforecast.value("high").toString().split(" ").at(1);     // 18度
+    s = objforecast.value("high").toString().split(" ").at(1);
     s = s.left(s.length() - 1);
     QString today_high = s;
-    s = objforecast.value("low").toString().split(" ").at(1);     // 18度
+    s = objforecast.value("low").toString().split(" ").at(1);
     s = s.left(s.length() - 1);
     QString today_low = s;
 
@@ -156,6 +156,7 @@ void WeartherManager::onCityNameFinished() {
             qDebug() << "*********city : " << city;
             emit cityFetched(country, province, city);
         } else {
+            emit cityFetched("中国", "广东", "深圳");
             emit errorOccurred("Failed to fetch city data.");
         }
     } else {

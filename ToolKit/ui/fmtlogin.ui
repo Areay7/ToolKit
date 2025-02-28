@@ -6,100 +6,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>331</width>
-    <height>445</height>
+    <width>366</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>291</width>
-     <height>331</height>
-    </rect>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <property name="leftMargin">
+    <number>12</number>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="8,5,2">
-    <item>
-     <widget class="QLabel" name="label_avatar">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_user">
-        <property name="text">
-         <string>   账   号</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_user"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_password">
-        <property name="text">
-         <string>   密   码</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_password"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="btn_register">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>注    册</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_login">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>登    陆</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="btn_exit">
-   <property name="geometry">
-    <rect>
-     <x>289</x>
-     <y>0</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
+   <property name="topMargin">
+    <number>12</number>
    </property>
-   <property name="styleSheet">
-    <string notr="true"> QPushButton 
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>12</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="page_custom">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="btn_exit">
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"> QPushButton 
 {
 	border-image: url(:/res/LoginPage/close_common.png);
  }
@@ -109,11 +58,245 @@ QPushButton:pressed
 	border-image: url(:/res/LoginPage/close_press.png);
  }
 </string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout" stretch="8,5,2">
+         <item>
+          <widget class="QLabel" name="label_avatar">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_user">
+             <property name="text">
+              <string>   账   号</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit_user"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_password">
+             <property name="text">
+              <string>   密   码</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEdit_password"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="btn_face">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>人    脸</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_QRCode">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>扫    码</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_register">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>注    册</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_login">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>登    陆</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_face">
+      <widget class="QLabel" name="label_Face">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>80</y>
+         <width>231</width>
+         <height>251</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Face</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_return_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QPushButton 
+{
+	border-image: url(:/res/LoginPage/return_common.png);
+ }
+
+QPushButton:pressed
+ {
+	border-image: url(:/res/LoginPage/return_press.png);
+ }
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_return_3">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>360</y>
+         <width>101</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QPushButton 
+{
+	border-image: url(:/res/LoginPage/return_comm2on.png);
+ }
+
+QPushButton:pressed
+ {
+	border-image: url(:/res/LoginPage/return_pr2ess.png);
+ }
+</string>
+       </property>
+       <property name="text">
+        <string>验     证</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_QRCode">
+      <widget class="QLabel" name="label_QRCode">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>130</y>
+         <width>221</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>QRCode</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>60</y>
+         <width>341</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#label
+{
+	color: rgb(40, 244, 32);
+	font-size: 20px;
+}</string>
+       </property>
+       <property name="text">
+        <string>扫码登录</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_return">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QPushButton 
+{
+	border-image: url(:/res/LoginPage/return_common.png);
+ }
+
+QPushButton:pressed
+ {
+	border-image: url(:/res/LoginPage/return_press.png);
+ }
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
