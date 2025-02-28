@@ -15,6 +15,7 @@
 #include "readthread.h"
 #include "playimage.h"
 #include "wearthermanager.h"
+#include "mqttmanager.h"
 
 class MsgRecord;
 
@@ -62,6 +63,8 @@ private:
 
     std::shared_ptr<CommonUtils> m_commonUtils;
     std::shared_ptr<WeartherManager> m_weartherManager;
+    std::shared_ptr<MqttManager> m_mqttManager;
+    // MqttManager *m_mqttManager;
 
 private slots:
     void switchStatckPage();
@@ -78,7 +81,7 @@ private slots:
     QString markdownToHtml(const QString &markdown);
 
     void getWeatherInfo(const QString &country, const QString &province, const QString &city);
-    void updateWeatherData(float wendu, float shidu);
+    void updateWeatherData(float cur_temp, float cur_humi, QString cur_type, QString today_high, QString today_low);
 
 };
 

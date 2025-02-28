@@ -25,10 +25,12 @@ INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 
 # INCLUDEPATH += $$ROOT_DIR
 INCLUDEPATH += $$ROOT_DIR/include
-INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
-INCLUDEPATH += $$ROOT_DIR/include/Xlsx
 INCLUDEPATH += $$ROOT_DIR/include/PDF
+INCLUDEPATH += $$ROOT_DIR/include/Mqtt
+INCLUDEPATH += $$ROOT_DIR/include/Xlsx
+INCLUDEPATH += $$ROOT_DIR/include/VideoPlay
 INCLUDEPATH += $$ROOT_DIR/include/OpencvServer
+
 
 SOURCES += \
     $$ROOT_DIR/src/databasemanager.cpp \
@@ -56,7 +58,8 @@ FORMS += \
     $$ROOT_DIR/ui/mainpage.ui \
     $$ROOT_DIR/ui/commondialog.ui \
     $$ROOT_DIR/ui/MsgRecord.ui \
-    $$ROOT_DIR/ui/msgrecord.ui
+    $$ROOT_DIR/ui/msgrecord.ui \
+
 
 # ******************Video************************
 Video_HEADERS = $$files($$ROOT_DIR/include/VideoPlay/*.h)
@@ -113,6 +116,18 @@ SOURCES += $$Opencv_SOURCES
 SOURCES = $$unique(SOURCES)
 # ******************Opencv************************
 
+
+# ******************Opencv************************
+Mqtt_HEADERS = $$files($$ROOT_DIR/include/Mqtt/*.h)
+message($$Mqtt_HEADERS)
+HEADERS += $$Mqtt_HEADERS
+HEADERS = $$unique(HEADERS)
+
+Mqtt_SOURCES = $$files($$ROOT_DIR/src/Mqtt/*.cpp)
+message($$Mqtt_SOURCES)
+SOURCES += $$Mqtt_SOURCES
+SOURCES = $$unique(SOURCES)
+# ******************Opencv************************
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

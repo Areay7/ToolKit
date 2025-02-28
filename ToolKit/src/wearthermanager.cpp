@@ -11,6 +11,8 @@ WeartherManager::WeartherManager()
 {
     m_NetAccessManager = new QNetworkAccessManager();
 
+    addWeatherPicTure();
+
     connect(m_NetAccessManager, &QNetworkAccessManager::finished, this, &WeartherManager::onReplied);
 }
 
@@ -27,12 +29,26 @@ void WeartherManager::parseJson(QByteArray &byteArray)
     qDebug() << rootObj.value("message").toString();
     QJsonObject objData = rootObj.value("data").toObject();
 
-    float m_wendu = objData.value("wendu").toString().toFloat();
-    float m_shidu = objData.value("shidu").toString().toFloat();
+    float cur_temp = objData.value("wendu").toVariant().toFloat();
+    float cur_humi = objData.value("shidu").toVariant().toFloat();
 
-    emit sendInfo(m_wendu, m_shidu);
-    qDebug() << "------------> wendu : " << m_wendu;
-    qDebug() << "------------> shidu : " << m_shidu;
+    QJsonArray forecastArr = objData.value("forecast").toArray();
+    QJsonObject objforecast = forecastArr[0].toObject();
+
+
+    QString cur_type = objforecast.value("type").toString();
+
+    QString s;
+    s = objforecast.value("high").toString().split(" ").at(1);     // 18度
+    s = s.left(s.length() - 1);
+    QString today_high = s;
+    s = objforecast.value("low").toString().split(" ").at(1);     // 18度
+    s = s.left(s.length() - 1);
+    QString today_low = s;
+
+    emit sendInfo(cur_temp, cur_humi, cur_type, today_high, today_low);
+    qDebug() << "------------> wendu : " << cur_temp;
+    qDebug() << "------------> shidu : " << cur_humi;
 }
 
 void WeartherManager::getWeatherInfo(QString cityName)
@@ -54,11 +70,13 @@ void WeartherManager::getWeatherInfo(QString cityName)
 }
 
 void WeartherManager::getCityName() {
+    qDebug() << "<<<<<<<<<<<<" << __FUNCTION__ << ">>>>>>>>>>>>  5 ";
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QNetworkRequest request(QUrl("https://2024.ipchaxun.com/"));
     QNetworkReply *reply = manager->get(request);
 
     connect(reply, &QNetworkReply::finished, this, &WeartherManager::onCityNameFinished);
+    qDebug() << "<<<<<<<<<<<<" << __FUNCTION__ << ">>>>>>>>>>>>  6 ";
 }
 
 void WeartherManager::onReplied(QNetworkReply* reply)
@@ -81,6 +99,44 @@ void WeartherManager::onReplied(QNetworkReply* reply)
         parseJson(byteArray);
     }
     reply->deleteLater();
+}
+
+void WeartherManager::addWeatherPicTure()
+{
+    //天气对应图标
+    m_typeMap.insert("暴雪",":/res/Weather/type/BaoXue.png");
+    m_typeMap.insert("暴雨",":/res/Weather/type/BaoYu.png");
+    m_typeMap.insert("暴雨到暴雪",":/res/Weather/type/BaoYuDaoDaBaoYu.png");
+    m_typeMap.insert("大暴雨",":/res/Weather/type/DaBaoYu.png");
+    m_typeMap.insert("大暴雨到大暴雪",":/res/Weather/type/DaBaoYuDaoTeDaBaoYu.png");
+    m_typeMap.insert("大到暴雪",":/res/Weather/type/DaDaoBaoXue.png");
+    m_typeMap.insert("大到暴雨",":/res/Weather/type/DaDaoBaoYu.png");
+    m_typeMap.insert("大雪",":/res/Weather/type/DaXue.png");
+    m_typeMap.insert("大雨",":/res/Weather/type/DaYu.png");
+    m_typeMap.insert("冻雨",":/res/Weather/type/DongYu.png");
+    m_typeMap.insert("多云",":/res/Weather/type/DuoYun.png");
+    m_typeMap.insert("浮尘",":/res/Weather/type/FuChen.png");
+    m_typeMap.insert("雷阵雨",":/res/Weather/type/LeiZhenYu.png");
+    m_typeMap.insert("雷阵雨伴有冰雹",":/res/Weather/type/LeiZhenYuBanYouBingBao.png");
+    m_typeMap.insert("霾",":/res/Weather/type/Mai.png");
+    m_typeMap.insert("强沙尘暴",":/res/Weather/type/QiangShaChenBao.png");
+    m_typeMap.insert("晴",":/res/Weather/type/Qing.png");
+    m_typeMap.insert("沙尘暴",":/res/Weather/type/ShaChenBao.png");
+    m_typeMap.insert("特大暴雨",":/res/Weather/type/TeDaBaoYu.png");
+    m_typeMap.insert("雾",":/res/Weather/type/Wu.png");
+    m_typeMap.insert("小到中雨",":/res/Weather/type/XiaoDaoZhongYu.png");
+    m_typeMap.insert("小到中雪",":/res/Weather/type/XiaoDaoZhongXue.png");
+    m_typeMap.insert("小雪",":/res/Weather/type/XiaoXue.png");
+    m_typeMap.insert("小雨",":/res/Weather/type/XiaoYu.png");
+    m_typeMap.insert("雪",":/res/Weather/type/Xue.png");
+    m_typeMap.insert("扬沙",":/res/Weather/type/YangSha.png");
+    m_typeMap.insert("阴",":/res/Weather/type/Yin.png");
+    m_typeMap.insert("雨",":/res/Weather/type/Yu.png");
+    m_typeMap.insert("雨夹雪",":/res/Weather/type/YuJiaXue.png");
+    m_typeMap.insert("阵雨",":/res/Weather/type/ZhenYu.png");
+    m_typeMap.insert("阵雪",":/res/Weather/type/ZhenXue.png");
+    m_typeMap.insert("中雨",":/res/Weather/type/ZhongYu.png");
+    m_typeMap.insert("中雪",":/res/Weather/type/ZhongXue.png");
 }
 
 void WeartherManager::onCityNameFinished() {

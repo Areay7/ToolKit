@@ -74,6 +74,9 @@ MainPage::MainPage(QWidget *parent)
     m_xlsx = std::make_shared<XlsxManager>();
     m_commonUtils = std::make_shared<CommonUtils>();
     m_weartherManager = std::make_shared<WeartherManager>();
+    m_mqttManager = std::make_shared<MqttManager>();
+
+
 
     connect(m_readThread.get(), &ReadThread::updateImage, ui->widget_VideoPlay, &PlayImage::updateImage, Qt::QueuedConnection);
     connect(m_readThread.get(), &ReadThread::playState, this, &MainPage::on_playState, Qt::QueuedConnection);
@@ -83,6 +86,9 @@ MainPage::MainPage(QWidget *parent)
 
 
     m_weartherManager->getCityName();
+    // m_mqttManager = new MqttManager();
+    // m_mqttManager->mqttConnect();
+
 }
 
 
@@ -250,20 +256,25 @@ QString MainPage::markdownToHtml(const QString &markdown) {
     return html;
 }
 
-void MainPage::updateWeatherData(float wendu, float shidu)
+void MainPage::updateWeatherData(float cur_temp, float cur_humi, QString cur_type, QString today_high, QString today_low)
 {
-    float temperature = wendu;
-    qDebug() << "temperature ::: " << temperature;
+    float temperature = cur_temp;
+    qDebug() << "temperature ::: " << temperature << "type -----> " << cur_type;
     int roundedTemperatue = qRound(temperature);
-    ui->label_temperature->setText(QString::number(roundedTemperatue) + "°");
+    ui->label_curTemp->setAlignment(Qt::AlignCenter);
+    ui->label_rangeOfTemp->setAlignment(Qt::AlignCenter);
+    ui->label_weatherIcon->setAlignment(Qt::AlignCenter);
+    ui->label_curTemp->setText(QString::number(roundedTemperatue) + "°");
+    ui->label_weatherIcon->setPixmap(m_weartherManager->m_typeMap[cur_type]);
+    ui->label_rangeOfTemp->setText(today_low + " ~ " + today_high + "°C");
 }
 
 void MainPage::getWeatherInfo(const QString &country, const QString &province, const QString &city)
 {
     m_weartherManager->getWeatherInfo(city);
 
-
-    ui->label_weatherStatus->setText(QString(country + province + city));
+    ui->label_position->setAlignment(Qt::AlignCenter);
+    ui->label_position->setText(QString(province +city));
 }
 
 void MainPage::updateVisibleWidgets()

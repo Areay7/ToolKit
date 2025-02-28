@@ -21,5 +21,42 @@
         <file>res/VideoPlay/play.png</file>
         <file>res/VideoPlay/stop.png</file>
         <file>res/VideoPlay/open.png</file>
+        <file>res/Weather/type/BaoXue.png</file>
+        <file>res/Weather/type/BaoYu.png</file>
+        <file>res/Weather/type/BaoYuDaoDaBaoYu.png</file>
+        <file>res/Weather/type/DaBaoYu.png</file>
+        <file>res/Weather/type/DaBaoYuDaoTeDaBaoYu.png</file>
+        <file>res/Weather/type/DaDaoBaoXue.png</file>
+        <file>res/Weather/type/DaDaoBaoYu.png</file>
+        <file>res/Weather/type/DaXue.png</file>
+        <file>res/Weather/type/DaYu.png</file>
+        <file>res/Weather/type/DongYu.png</file>
+        <file>res/Weather/type/DuoYun.png</file>
+        <file>res/Weather/type/FuChen.png</file>
+        <file>res/Weather/type/LeiZhenYu.png</file>
+        <file>res/Weather/type/LeiZhenYuBanYouBingBao.png</file>
+        <file>res/Weather/type/Mai.png</file>
+        <file>res/Weather/type/neige.txt</file>
+        <file>res/Weather/type/QiangShaChenBao.png</file>
+        <file>res/Weather/type/Qing.png</file>
+        <file>res/Weather/type/ShaChenBao.png</file>
+        <file>res/Weather/type/TeDaBaoYu.png</file>
+        <file>res/Weather/type/undefined.png</file>
+        <file>res/Weather/type/Wu.png</file>
+        <file>res/Weather/type/XiaoDaoZhongXue.png</file>
+        <file>res/Weather/type/XiaoDaoZhongYu.png</file>
+        <file>res/Weather/type/XiaoXue.png</file>
+        <file>res/Weather/type/XiaoYu.png</file>
+        <file>res/Weather/type/Xue.png</file>
+        <file>res/Weather/type/YangSha.png</file>
+        <file>res/Weather/type/Yin.png</file>
+        <file>res/Weather/type/Yu.png</file>
+        <file>res/Weather/type/YuJiaXue.png</file>
+        <file>res/Weather/type/ZhenXue.png</file>
+        <file>res/Weather/type/ZhenYu.png</file>
+        <file>res/Weather/type/ZhongDaoDaXue.png</file>
+        <file>res/Weather/type/ZhongDaoDaYu.png</file>
+        <file>res/Weather/type/ZhongXue.png</file>
+        <file>res/Weather/type/ZhongYu.png</file>
     </qresource>
 </RCC>

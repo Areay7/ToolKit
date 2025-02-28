@@ -64,6 +64,11 @@ macx {
     LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
     # ******* Opencv *******
 
+    # ******* Mqtt *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/QtMqtt/6.5.3/include
+    LIBS += -L$$ROOT_DIR/3rd_party/QtMqtt/6.5.3/MacOS/arm64 -lQtMqtt
+    # ******* Mqtt *******
+
 }
 
 unix:!macx {
