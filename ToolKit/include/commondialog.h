@@ -27,4 +27,12 @@ private:
     // double falseValue;
 };
 
+class Cartoon : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Cartoon(QObject *parent = nullptr);
+    ~Cartoon();
+};
+
 #endif // COMMONDIALOG_H

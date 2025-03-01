@@ -1,5 +1,7 @@
 /ToolKit/build/
+/ToolKit/data/*
 /ToolKit/ToolKit.pro.*
 .DS_Store
 /ToolKit/.DS_Store
 !/ToolKit/ToolKit.pro
+

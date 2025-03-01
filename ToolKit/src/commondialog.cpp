@@ -60,3 +60,13 @@ void CommonDialog::clickCancel()
 }
 
 
+
+Cartoon::Cartoon(QObject *parent)
+{
+
+}
+
+Cartoon::~Cartoon()
+{
+
+}
