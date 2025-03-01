@@ -24,6 +24,7 @@ FmtLogin::FmtLogin(QWidget *parent)
 
 
     m_timer.setInterval(3000);
+    ui->label_Face->setScaledContents(true);
 
     // connect
     connect(ui->btn_exit, &QPushButton::clicked, this, &FmtLogin::exitApp);
@@ -36,6 +37,7 @@ FmtLogin::FmtLogin(QWidget *parent)
     connect(&m_timer, &QTimer::timeout, this, &FmtLogin::checkLoginStatus);
     connect(this, &FmtLogin::loginSuccess, this, &FmtLogin::loginSuccessSlot);
     connect(ui->btn_faceCheck, &QPushButton::clicked, this, &FmtLogin::btnCheckFaceClick);
+    connect(&animationTimer, &QTimer::timeout, this, &FmtLogin::updateAnimation);
 }
 
 FmtLogin::~FmtLogin()
@@ -81,6 +83,49 @@ void FmtLogin::loginSuccessSlot()
     m_MainPage.show();
     stopChecking();
 }
+
+void FmtLogin::setupOverlayLabel()
+{
+    // 创建透明覆盖层作为Label_t的子控件
+    QLabel *animationLabel = new QLabel(ui->label_Face);
+    animationLabel->setAttribute(Qt::WA_TranslucentBackground);
+    animationLabel->setStyleSheet("background: transparent;");
+    animationLabel->resize(ui->label_Face->size());
+    animationLabel->move(0, 0);
+    animationLabel->show();
+}
+
+void FmtLogin::loadAnimationFrames()
+{
+    // 示例加载30帧（按实际帧数修改）
+    for(int i = 0; i < 89; ++i) {
+        QString path = QString(":/res/Cartoon/check%1.png").arg(i, 5, 10, QLatin1Char('0'));
+        QPixmap pix(path);
+
+        // 自动缩放匹配标签大小
+        if(!pix.isNull()) {
+            pix = pix.scaled(ui->label_Face->size(),
+                             Qt::KeepAspectRatio,
+                             Qt::SmoothTransformation);
+            m_animationFrames.append(pix);
+        }
+    }
+}
+
+void FmtLogin::updateAnimation()
+{
+    if(m_animationFrames.isEmpty()) return;
+
+    // 获取Label_t的子控件（第一个为动画层）
+    if(auto overlay = ui->label_Face->findChild<QLabel*>()) {
+        overlay->setPixmap(m_animationFrames[currentFrameIndex]);
+        overlay->setAlignment(Qt::AlignCenter); // 居中显示动画
+    }
+
+    // 循环播放
+    currentFrameIndex = (currentFrameIndex + 1) % m_animationFrames.size();
+}
+
 
 void FmtLogin::btnFaceClick()
 {
@@ -130,6 +175,15 @@ void FmtLogin::btnCheckFaceClick()
 
     killTimer(m_timerId);
     m_cap.release();
+
+    // 创建透明覆盖层
+    setupOverlayLabel();
+
+    // 加载动画帧
+    loadAnimationFrames();
+
+    // 设置定时器（30fps）
+    animationTimer.start(33); // 33ms ≈ 30fps
 }
 
 void FmtLogin::timerEvent(QTimerEvent *event)

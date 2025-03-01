@@ -9,6 +9,7 @@
 #include <opencv2/opencv.hpp>
 // #include "qfaceobject.h"
 #include <QDebug>
+#include <QLabel>
 
 #include "databasemanager.h"
 
@@ -46,6 +47,13 @@ public:
     void stopChecking();
     void loginSuccessSlot();
 
+
+    void setupOverlayLabel();
+    void loadAnimationFrames();
+    void updateAnimation();
+
+
+
 private:
     Ui::FmtLogin *ui;
     MainPage m_MainPage;
@@ -53,12 +61,19 @@ private:
 
     DatabaseManager *t;
 
+    // 人脸识别相关
     cv::VideoCapture m_cap;
     cv::Mat m_image;
     int m_timerId;
 
+    // 二维码登录相关
     QTimer m_timer;
     QNetworkAccessManager m_networkManager;
+
+    // 动画相关成员
+    QTimer animationTimer;
+    QVector<QPixmap> m_animationFrames;
+    int currentFrameIndex = 0;
 
 signals:
     void loginSuccess();    // 登录成功信号
