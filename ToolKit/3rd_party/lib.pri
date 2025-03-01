@@ -22,7 +22,13 @@ win32 {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 
     LIBS += -L$$ROOT_DIR/3rd_party/Opencv/win/win64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/win/win64 -lopencv_world452
     # ******* Opencv *******
+
+    # ******* Mqtt *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/QtMqtt/5.15.2/include
+    LIBS += -L$$ROOT_DIR/3rd_party/QtMqtt/5.15.2/win/win64 -lQt5Mqtt
+    # ******* Mqtt *******
 
 }
 

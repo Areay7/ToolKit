@@ -136,7 +136,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RC_ICONS = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
+# RC_ICONS = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
 # RC_ICONS = /Users/areay7/QtCode/Qt_learn/MyGit/ToolKit/ToolKit/res/MainPage/wxicon_32_32.ico
 ICON = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
 

@@ -170,7 +170,7 @@ void FmtLogin::btnReturnClick()
 void FmtLogin::btnCheckFaceClick()
 {
     QString proFilePath = QString(PRO_FILE_PWD);
-    QString imageFile = QString(proFilePath + "/data/%1.jpg").arg((QString("Areay7").toUtf8().toBase64()));
+    QString imageFile = QString(proFilePath + "/data/%1.jpg").arg(QString("Areay7"));
     cv::imwrite(imageFile.toUtf8().data(), m_image);
 
     killTimer(m_timerId);
