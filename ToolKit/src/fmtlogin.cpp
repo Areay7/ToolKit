@@ -30,7 +30,7 @@ FmtLogin::FmtLogin(QWidget *parent)
     loadAnimationFrames();
     ui->label_Face->setScaledContents(true);
 
-    m_FaceObject = std::make_shared<QFaceObject>();
+    m_faceObject = std::make_shared<QFaceObject>();
 
     // connect
     connect(ui->btn_exit, &QPushButton::clicked, this, &FmtLogin::exitApp);
@@ -44,7 +44,7 @@ FmtLogin::FmtLogin(QWidget *parent)
     connect(this, &FmtLogin::loginSuccess, this, &FmtLogin::loginSuccessSlot);
     connect(ui->btn_faceCheck, &QPushButton::clicked, this, &FmtLogin::btnCheckFaceClick);
     connect(&m_animationTimer, &QTimer::timeout, this, &FmtLogin::updateAnimation);
-    connect(m_FaceObject.get(), &QFaceObject::sendFaceId, this, &FmtLogin::checkFaceResult);
+    connect(m_faceObject.get(), &QFaceObject::sendFaceId, this, &FmtLogin::checkFaceResult);
 }
 
 FmtLogin::~FmtLogin()
@@ -87,6 +87,7 @@ bool FmtLogin::login()
 
 void FmtLogin::loginSuccessSlot()
 {
+    Cartoon::playWeChatSound();
     m_MainPage.show();
     stopChecking();
     killTimer(m_timerId);
@@ -141,7 +142,7 @@ void FmtLogin::updateAnimation()
     // 循环播放
     m_currentFrameIndex = (m_currentFrameIndex + 1) % m_animationFrames.size();
 
-    m_FaceObject->face_query(m_image);
+    m_faceObject->face_query(m_image);
 }
 
 

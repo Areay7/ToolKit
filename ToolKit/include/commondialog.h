@@ -2,6 +2,10 @@
 #define COMMONDIALOG_H
 
 #include <QDialog>
+#include <QUrl>
+#include <QTimer>
+#include <QSoundEffect>
+
 
 namespace Ui {
 class CommonDialog;
@@ -33,6 +37,9 @@ class Cartoon : public QObject
 public:
     explicit Cartoon(QObject *parent = nullptr);
     ~Cartoon();
+
+    static void playWeChatSound();
 };
+
 
 #endif // COMMONDIALOG_H

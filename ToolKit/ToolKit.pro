@@ -1,13 +1,12 @@
 QT       += core gui
 QT       += sql
 QT       += network
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 CONFIG += c++17
-
-
 
 # QMAKE_CXXFLAGS += -fsanitize=address
 # QMAKE_LFLAGS += -fsanitize=address
@@ -136,8 +135,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-# RC_ICONS = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
-# RC_ICONS = /Users/areay7/QtCode/Qt_learn/MyGit/ToolKit/ToolKit/res/MainPage/wxicon_32_32.ico
+RC_ICONS = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
 ICON = $$ROOT_DIR/res/MainPage/wxicon_32_32.ico
 
 macx {

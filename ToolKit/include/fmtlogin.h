@@ -65,7 +65,7 @@ private:
     cv::VideoCapture m_cap;
     cv::Mat m_image;
     int m_timerId;
-    std::shared_ptr<QFaceObject> m_FaceObject;
+    std::shared_ptr<QFaceObject> m_faceObject;
 
     // 二维码登录相关
     QTimer m_timer;

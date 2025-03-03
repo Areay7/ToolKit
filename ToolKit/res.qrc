@@ -153,5 +153,6 @@
         <file>res/Cartoon/check00087.png</file>
         <file>res/Cartoon/check00088.png</file>
         <file>res/LoginPage/QRCode.png</file>
+        <file>res/LoginPage/scan_note.wav</file>
     </qresource>
 </RCC>

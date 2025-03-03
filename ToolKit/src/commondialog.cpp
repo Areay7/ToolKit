@@ -70,3 +70,18 @@ Cartoon::~Cartoon()
 {
 
 }
+
+void Cartoon::playWeChatSound() {
+    QSoundEffect* sound = new QSoundEffect();
+    sound->setSource(QUrl::fromLocalFile(":/res/LoginPage/scan_note.wav"));
+    sound->setVolume(0.8);
+
+    // 播放完成后自动释放内存
+    QObject::connect(sound, &QSoundEffect::playingChanged, [sound]() {
+        if (!sound->isPlaying()) {
+            sound->deleteLater();
+        }
+    });
+
+    sound->play();
+}

@@ -7,8 +7,6 @@
 #include <QFileDialog>
 #include <QStyle>
 #include <QRegExp>
-// #include <QRegularExpression>
-// #include <QRegularExpressionMatch>
 #include <QDebug>
 #include "wearthermanager.h"
 
@@ -84,11 +82,9 @@ MainPage::MainPage(QWidget *parent)
     connect(m_weartherManager.get(), &WeartherManager::cityFetched, this, &MainPage::getWeatherInfo, Qt::DirectConnection);
     connect(m_weartherManager.get(), &WeartherManager::sendInfo, this, &MainPage::updateWeatherData);
 
-
-    m_weartherManager->getCityName();
     // m_mqttManager = new MqttManager();
     // m_mqttManager->mqttConnect();
-
+    m_weartherManager->getCityName();
 }
 
 
