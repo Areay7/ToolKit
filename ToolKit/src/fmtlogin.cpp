@@ -14,7 +14,7 @@ FmtLogin::FmtLogin(QWidget *parent)
 
     ui->stackedWidget->setCurrentIndex(static_cast<int>(PageLogin::Custom));
 
-    t = DatabaseManager::getInstance();
+    m_sql = DatabaseManager::getInstance();
 
     m_MainPage.hide();
 
@@ -24,7 +24,13 @@ FmtLogin::FmtLogin(QWidget *parent)
 
 
     m_timer.setInterval(3000);
+    // 创建透明覆盖层
+    setupOverlayLabel();
+    // 加载动画帧
+    loadAnimationFrames();
     ui->label_Face->setScaledContents(true);
+
+    m_FaceObject = std::make_shared<QFaceObject>();
 
     // connect
     connect(ui->btn_exit, &QPushButton::clicked, this, &FmtLogin::exitApp);
@@ -37,7 +43,8 @@ FmtLogin::FmtLogin(QWidget *parent)
     connect(&m_timer, &QTimer::timeout, this, &FmtLogin::checkLoginStatus);
     connect(this, &FmtLogin::loginSuccess, this, &FmtLogin::loginSuccessSlot);
     connect(ui->btn_faceCheck, &QPushButton::clicked, this, &FmtLogin::btnCheckFaceClick);
-    connect(&animationTimer, &QTimer::timeout, this, &FmtLogin::updateAnimation);
+    connect(&m_animationTimer, &QTimer::timeout, this, &FmtLogin::updateAnimation);
+    connect(m_FaceObject.get(), &QFaceObject::sendFaceId, this, &FmtLogin::checkFaceResult);
 }
 
 FmtLogin::~FmtLogin()
@@ -56,7 +63,7 @@ bool FmtLogin::myRegister()
     QString name = "AAA";
     QString userAccount = ui->lineEdit_user->text();
     QString userPassword = ui->lineEdit_password->text();
-    bool res = t->InsertUser(name , userAccount, userPassword);
+    bool res = m_sql->InsertUser(name , userAccount, userPassword);
     return res;
 }
 
@@ -65,7 +72,7 @@ bool FmtLogin::login()
     QString name = "AAA";
     QString userAccount = ui->lineEdit_user->text();
     QString userPassword = ui->lineEdit_password->text();
-    bool res = t->Login(name, userAccount, userPassword);
+    bool res = m_sql->Login(name, userAccount, userPassword);
     if(!res)
     {
         this->hide();
@@ -82,6 +89,15 @@ void FmtLogin::loginSuccessSlot()
 {
     m_MainPage.show();
     stopChecking();
+    killTimer(m_timerId);
+    if(m_animationTimer.isActive())
+    {
+    m_animationTimer.stop();
+    }
+    if(m_cap.isOpened())
+    {
+        m_cap.release();
+    }
 }
 
 void FmtLogin::setupOverlayLabel()
@@ -118,18 +134,20 @@ void FmtLogin::updateAnimation()
 
     // 获取Label_t的子控件（第一个为动画层）
     if(auto overlay = ui->label_Face->findChild<QLabel*>()) {
-        overlay->setPixmap(m_animationFrames[currentFrameIndex]);
+        overlay->setPixmap(m_animationFrames[m_currentFrameIndex]);
         overlay->setAlignment(Qt::AlignCenter); // 居中显示动画
     }
 
     // 循环播放
-    currentFrameIndex = (currentFrameIndex + 1) % m_animationFrames.size();
+    m_currentFrameIndex = (m_currentFrameIndex + 1) % m_animationFrames.size();
+
+    m_FaceObject->face_query(m_image);
 }
 
 
 void FmtLogin::btnFaceClick()
 {
-    if(m_cap.open(0))
+    if(m_cap.open(1))
     {
         qDebug() << "cap true -------------";
         m_timerId = startTimer(100);
@@ -141,7 +159,12 @@ void FmtLogin::btnFaceClick()
         killTimer(m_timerId);
         m_cap.release();
     }
+    // 设置定时器（30fps）
+    m_animationTimer.start(33); // 33ms ≈ 30fps
+
     ui->stackedWidget->setCurrentIndex(static_cast<int>(PageLogin::Face));
+
+
 }
 
 void FmtLogin::btnQRCodeClick()
@@ -169,21 +192,21 @@ void FmtLogin::btnReturnClick()
 
 void FmtLogin::btnCheckFaceClick()
 {
-    QString proFilePath = QString(PRO_FILE_PWD);
-    QString imageFile = QString(proFilePath + "/data/%1.jpg").arg(QString("Areay7"));
-    cv::imwrite(imageFile.toUtf8().data(), m_image);
+    // QString proFilePath = QString(PRO_FILE_PWD);
+    // QString imageFile = QString(proFilePath + "/data/%1.jpg").arg((QString("Areay7").toUtf8().toBase64()));
+    // cv::imwrite(imageFile.toUtf8().data(), m_image);
 
     killTimer(m_timerId);
     m_cap.release();
+}
 
-    // 创建透明覆盖层
-    setupOverlayLabel();
-
-    // 加载动画帧
-    loadAnimationFrames();
-
-    // 设置定时器（30fps）
-    animationTimer.start(33); // 33ms ≈ 30fps
+void FmtLogin::checkFaceResult(int faceId)
+{
+    if(-1 == faceId) return;
+    else
+    {
+        loginSuccessSlot();
+    }
 }
 
 void FmtLogin::timerEvent(QTimerEvent *event)
@@ -204,6 +227,8 @@ void FmtLogin::timerEvent(QTimerEvent *event)
     QPixmap mmp = QPixmap::fromImage(qImg);
     mmp = mmp.scaledToWidth(ui->label_Face->width());
     ui->label_Face->setPixmap(mmp);
+
+
 }
 
 void FmtLogin::checkLoginStatus() {

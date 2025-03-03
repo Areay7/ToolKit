@@ -19,12 +19,13 @@ public:
     explicit QFaceObject(QObject *parent = nullptr);
     ~QFaceObject();
 
-public slots:
-    qint64 face_register(cv::Mat& faceimage);
     qint64 face_query(cv::Mat& faceImage);
 
+public slots:
+    qint64 face_register(cv::Mat& faceimage);
+
 signals:
-    void send_faceid(qint64 faceid);
+    void sendFaceId(qint64 faceId);
 
 
 private:

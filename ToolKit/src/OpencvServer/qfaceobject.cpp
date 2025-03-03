@@ -1,6 +1,7 @@
 #if 1
 
 #include "qfaceobject.h"
+#include <QDebug>
 
 const QString proFilePath = QString(PRO_FILE_PWD);
 
@@ -8,19 +9,20 @@ QFaceObject::QFaceObject(QObject *parent)
     : QObject{parent}
 {
     // 初始化
-    const std::string FDmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/model/fd_2_00.dat").toStdString().c_str();
+    const std::string FDmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/fd_2_00.dat").toStdString().c_str();
     const std::string PDmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/pd_2_00_pts5.dat").toStdString().c_str();
     const std::string FRmode_PATH = QString(proFilePath + "/3rd_party/Opencv/model/fr_2_10.dat").toStdString().c_str();
 
-    seeta::ModelSetting FDmode(FDmode_PATH, seeta::ModelSetting::GPU,0);
-    seeta::ModelSetting PDmode(PDmode_PATH, seeta::ModelSetting::GPU,0);
-    seeta::ModelSetting FRmode(FRmode_PATH, seeta::ModelSetting::GPU,0);
+    seeta::ModelSetting FDmode(FDmode_PATH, seeta::ModelSetting::CPU,0);
+    seeta::ModelSetting PDmode(PDmode_PATH, seeta::ModelSetting::CPU,0);
+    seeta::ModelSetting FRmode(FRmode_PATH, seeta::ModelSetting::CPU,0);
 
     m_fengineptr = std::make_shared<seeta::FaceEngine>(FDmode, PDmode, FRmode);
-    // this->fengineptr = new seeta::FaceEngine(FDmode, PDmode, FRmode);
 
     // 导入已经有的人脸数据库
-    m_fengineptr->Load(QString(proFilePath + "/setting/face.db").toStdString().c_str());
+    bool flag = m_fengineptr->Load(QString(proFilePath + "/data/face.db").toStdString().c_str());
+    qDebug() << QString(proFilePath + "/data/face.db").toStdString().c_str();
+    qDebug() << "-------------------------- Load : " << flag << "-------------------------------";
 }
 
 QFaceObject::~QFaceObject()
@@ -42,7 +44,7 @@ qint64 QFaceObject::face_register(cv::Mat &faceImage)
 
     if(faceId >= 0)
     {
-        m_fengineptr->Save(QString(proFilePath + "/setting/face.db").toStdString().c_str());
+        m_fengineptr->Save(QString(proFilePath + "/data/face.db").toStdString().c_str());
     }
 
     return faceId;
@@ -59,15 +61,16 @@ qint64 QFaceObject::face_query(cv::Mat &faceImage)
     float similarity = 0;
     // 运算时间较久
     qint64 faceId = m_fengineptr->Query(simage, &similarity);
-    qDebug() << "查询相似度 : " << faceId  << " -> "<< similarity;
+
+    qDebug() << "查询相似度 : " << faceId  << " ======= "<< similarity;
 
     if(similarity > 0.7)
     {
-        emit send_faceid(faceId);
+        emit sendFaceId(faceId);
     }
     else
     {
-        emit send_faceid(-1);
+        emit sendFaceId(-1);
     }
     return faceId;
 }

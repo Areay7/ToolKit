@@ -30,7 +30,7 @@ int CommonDialog::setButtonWindow(QString msg, int btnNum, const QString &btnTex
         ui->P2_btn_ok->setText(btnText_1);
         ui->P2_label_msg->setText(msg);
     }
-    else if(2==btnNum)
+    else if(2 == btnNum)
     {
         ui->P3_btn_ok->setText(btnText_2);
         ui->P3_btn_cancel->setText(btnText_1);

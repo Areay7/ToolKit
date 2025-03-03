@@ -7,13 +7,13 @@
 #include <QNetworkAccessManager>
 #include <QTimer>
 #include <opencv2/opencv.hpp>
-// #include "qfaceobject.h"
 #include <QDebug>
 #include <QLabel>
 
+#include "qfaceobject.h"
 #include "databasemanager.h"
 
-#define LOGIN_URL "http://114.115.148.19:443/login"
+#define LOGIN_URL "http://hanplas.net:443/login"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -59,21 +59,22 @@ private:
     MainPage m_MainPage;
     CommonDialog m_box;
 
-    DatabaseManager *t;
+    DatabaseManager *m_sql;
 
     // 人脸识别相关
     cv::VideoCapture m_cap;
     cv::Mat m_image;
     int m_timerId;
+    std::shared_ptr<QFaceObject> m_FaceObject;
 
     // 二维码登录相关
     QTimer m_timer;
     QNetworkAccessManager m_networkManager;
 
     // 动画相关成员
-    QTimer animationTimer;
+    QTimer m_animationTimer;
     QVector<QPixmap> m_animationFrames;
-    int currentFrameIndex = 0;
+    int m_currentFrameIndex = 0;
 
 signals:
     void loginSuccess();    // 登录成功信号
@@ -85,5 +86,6 @@ private slots:
     void btnQRCodeClick();
     void btnReturnClick();
     void btnCheckFaceClick();
+    void checkFaceResult(int faceId);
 };
 #endif // FMTLOGIN_H

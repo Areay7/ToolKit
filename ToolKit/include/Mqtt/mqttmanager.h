@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <memory>
-#include "QtMqtt/qmqttclient.h"
+#include <QtMqtt/qmqttclient.h>
 
 // 阿里云 连接参数
 #define mqttHostUrl "iot-06z00aqr0zzjelx.mqtt.iothub.aliyuncs.com"

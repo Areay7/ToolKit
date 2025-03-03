@@ -9,12 +9,13 @@
 
 int main(int argc, char *argv[])
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
 
     QApplication a(argc, argv);
     QIcon icon(":/res/MainPage/wxicon_32_32.ico");
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 
 
 #ifdef Testgoogle
