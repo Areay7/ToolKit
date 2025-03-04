@@ -148,7 +148,7 @@ void FmtLogin::updateAnimation()
 
 void FmtLogin::btnFaceClick()
 {
-    if(m_cap.open(1))
+    if(m_cap.open(0))
     {
         qDebug() << "cap true -------------";
         m_timerId = startTimer(100);

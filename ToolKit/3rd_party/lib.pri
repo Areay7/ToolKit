@@ -80,6 +80,7 @@ macx {
 
 unix:!macx {
 
+    # sudo apt install libva-dev libvdpau-dev
     # DEFINES += LINUX_SPECIFIC_DEFINE
 
     # ******* VideoPlay *******
@@ -92,6 +93,24 @@ unix:!macx {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/libhpdf/include
     LIBS += -L$$ROOT_DIR/3rd_party/libhpdf/Linux/amd64 -lhpdf
     # ******* hpdf *******
+
+    # ******* Opencv *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceDetector/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceLandmarker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceRecognizer/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/FaceTracker/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
+
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/Linux/amd64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/Linux/amd64 -lopencv_world
+    # ******* Opencv *******
+
+    # ******* Mqtt *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/QtMqtt/5.15.2/include
+    LIBS += -L$$ROOT_DIR/3rd_party/QtMqtt/5.15.2/Linux/amd64 -lQt5Mqtt
+    # ******* Mqtt *******
 }
 
 android {
