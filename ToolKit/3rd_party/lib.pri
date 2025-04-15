@@ -76,6 +76,38 @@ macx {
     LIBS += -L$$ROOT_DIR/3rd_party/QtMqtt/6.5.3/MacOS/arm64 -lQtMqtt
     # ******* Mqtt *******
 
+    # ******* Ice *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Ice-3.7.10_CXX11/include/generated
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Ice-3.7.10_CXX11/include
+    LIBS += -L$$ROOT_DIR/3rd_party/Ice-3.7.10_CXX11/lib/MacOS/arm64 -lIce++11
+    # ******* Ice *******
+
+
+    # ******* RabbitMQ *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/RabbitMQ/include
+    LIBS += -L/$$ROOT_DIR/3rd_party/RabbitMQ/lib/MacOS/arm64 -lrabbitmq.0.15.0
+    # ******* RabbitMQ *******
+
+    # ******* Protobuf *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Protobuf/include
+    LIBS += -L$$ROOT_DIR/3rd_party/Protobuf/lib/MacOS/arm64 -lprotobuf
+    # ******* Protobuf *******
+
+    # ******* Redis *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Redis/include
+    LIBS += -L$$ROOT_DIR/3rd_party/Redis/lib/MacOS/arm64 -lcpp_redis -ltacopie
+    # ******* Redis *******
+
+    # ******* Curl *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/Curl/include
+    LIBS += -L$$ROOT_DIR/3rd_party/Curl/lib/MacOS/arm64 -lcurl
+    # ******* Curl *******
+
+    # ******* JsonCpp *******
+    INCLUDEPATH += $$ROOT_DIR/3rd_party/JsonCpp/include
+    LIBS += -L$$ROOT_DIR/3rd_party/JsonCpp/lib/MacOS/arm64 -ljsoncpp
+    # ******* JsonCpp *******
+
 }
 
 unix:!macx {

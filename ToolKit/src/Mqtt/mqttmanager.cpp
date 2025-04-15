@@ -1,4 +1,5 @@
 #include "mqttmanager.h"
+#include <QDebug>
 
 MqttManager::MqttManager(QObject *parent)
     : QObject{parent}
@@ -25,5 +26,6 @@ void MqttManager::mqttConnectSever(QString hostUrl, QString Port, QString client
 
 void MqttManager::mqttSubscribe(QString topicName)
 {
+    qDebug() << "mqttSubscribe **";
     m_mqttClient->subscribe(topicName);
 }
