@@ -121,13 +121,9 @@ jobs:
       - name: Enable MSVC Developer Environment
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Configure project
+      - name: Configure and Build
         run: |
           mkdir build
           cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%"
-
-      - name: Build with MSBuild
-        run: |
-          cd build
-          cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 --build . --config Release
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
