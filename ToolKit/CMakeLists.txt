@@ -23,7 +23,7 @@ else()
 endif()
 
 # Path configurations
-if(${PLATFORM} STREQUAL "macOS")
+if(${PLATFORM} STREQUAL "macOS"
     set(FFMPEG_LIB_DIR "/opt/homebrew/Cellar/ffmpeg@4/4.4.5_4/lib")
     set(OPENCV_LIB_DIR "/opt/homebrew/opt/opencv@4/lib")
     set(OPENCV_INCLUDE_DIR "${OPENCV_LIB_DIR}/../include/opencv4")
@@ -44,6 +44,10 @@ elseif(${PLATFORM} STREQUAL "Linux")
     set(MQTT_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/QtMqtt/6.5.3/Linux/x64")
     set(HARU_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/Linux/x64")
     set(SEETA_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/lib/Linux/x64")
+endif()
+
+if(NOT DEFINED FFMPEG_ROOT)
+    set(FFMPEG_ROOT /opt/homebrew/opt/ffmpeg)
 endif()
 
 # Qt
