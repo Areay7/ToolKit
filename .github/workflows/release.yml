@@ -54,65 +54,33 @@ jobs:
           cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           make -j$(sysctl -n hw.ncpu)
 
-      - name: Patch dylib paths and copy dependencies into .app
+      - name: Deploy Qt App with macdeployqt
         run: |
-          APP_PATH=build/ToolKit.app
-          MACOS_PATH=$APP_PATH/Contents/MacOS
-          FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
+        APP_PATH=build/ToolKit.app
+        MACOS_PATH=$APP_PATH/Contents/MacOS
 
-          SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
-          HARU_PATH=3rd_party/libhpdf/MacOS/arm64
-          MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
+        # 依赖库路径
+        SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
+        HARU_PATH=3rd_party/libhpdf/MacOS/arm64
+        MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
 
-          if [ ! -f "$MACOS_PATH/ToolKit" ]; then
-            echo "Error: $MACOS_PATH/ToolKit not found"
-            ls -l $MACOS_PATH || true
-            exit 1
-          fi
+        if [ ! -f "$MACOS_PATH/ToolKit" ]; then
+          echo "Error: $MACOS_PATH/ToolKit not found"
+          ls -l $MACOS_PATH || true
+          exit 1
+        fi
 
-          mkdir -p $FRAMEWORKS_PATH
+        # 设置环境变量，让 macdeployqt 能找到这些库
+        export DYLD_LIBRARY_PATH="$FFMPEG_ROOT_PATH/lib:$OPENCV_ROOT_PATH/lib:$SEETA_PATH:$HARU_PATH:$MQTT_PATH:$DYLD_LIBRARY_PATH"
 
-          echo "拷贝 FFmpeg dylib..."
-          cp $FFMPEG_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
+        echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH"
 
-          echo "拷贝 OpenCV dylib..."
-          cp $OPENCV_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
+        # 运行 macdeployqt，让它自动分析并打包依赖
+        cd build
+        macdeployqt ToolKit.app -dmg -verbose=3
 
-          echo "拷贝 Seeta dylib..."
-          cp $SEETA_PATH/*.dylib $FRAMEWORKS_PATH/
-
-          echo "拷贝 HaruPDF dylib..."
-          cp $HARU_PATH/*.dylib $FRAMEWORKS_PATH/
-
-          echo "拷贝 QtMqtt dylib..."
-          cp $MQTT_PATH/*.dylib $FRAMEWORKS_PATH/
-
-          echo "添加可执行文件 rpath..."
-          install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit"
-
-          echo "给每个 dylib 添加 rpath..."
-          for dylib in $FRAMEWORKS_PATH/*.dylib; do
-            install_name_tool -add_rpath "@loader_path/../Frameworks" "$dylib" || true
-          done
-
-          echo "设置 DYLD_LIBRARY_PATH 环境变量（调试用）"
-          echo "DYLD_LIBRARY_PATH=$SEETA_PATH:$HARU_PATH:$MQTT_PATH:\$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
-
-          cd build
-          macdeployqt ToolKit.app -dmg -no-strip
-          mv ToolKit.dmg ../../ToolKit_macOS.dmg
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ToolKit_macOS
-          path: ToolKit_macOS.dmg
-
-      - name: Upload Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: ToolKit_macOS.dmg 
+        # 重命名 dmg 输出
+        mv ToolKit.dmg ../../ToolKit_macOS.dmg
 
   build-linux:
     name: Build on Ubuntu
