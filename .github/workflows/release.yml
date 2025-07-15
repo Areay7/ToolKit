@@ -51,7 +51,7 @@ jobs:
       - name: Build Project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           make -j$(sysctl -n hw.ncpu)
 
       - name: Create DMG
