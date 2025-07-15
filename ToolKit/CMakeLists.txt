@@ -14,6 +14,7 @@ list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/ui")
 # Detect platform
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(PLATFORM macOS)
+    set_target_properties(ToolKit PROPERTIES MACOSX_BUNDLE TRUE)
 elseif(WIN32)
     set(PLATFORM Windows)
 elseif(UNIX)
