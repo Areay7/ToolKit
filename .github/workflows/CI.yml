@@ -1,0 +1,159 @@
+name: Qt CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  QT_VERSION: 6.5.3
+  BUILD_DIR: build
+  THIRD_PARTY_URL: "https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    name: Build on ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    # 下载并解压预编译的第三方库
+    - name: Download and extract 3rd_party libraries
+      run: |
+        mkdir -p ${{ github.workspace }}/3rd_party
+        curl -L ${{ env.THIRD_PARTY_URL }} -o 3rd_party.tar.gz
+        tar -xzf 3rd_party.tar.gz -C ${{ github.workspace }}/3rd_party
+        rm 3rd_party.tar.gz
+        ls -la ${{ github.workspace }}/3rd_party
+
+    # 设置Qt环境
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: ${{ env.QT_VERSION }}
+        dir: ${{ github.workspace }}/Qt
+        cached: true
+        modules: qtbase qttools qtmultimedia qtsql qtnetwork qt5compat qtdeclarative qtmqtt
+        archives: icu
+
+    # 配置构建环境变量
+    - name: Setup environment variables
+      shell: bash
+      run: |
+        echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
+        
+        # 根据平台设置库路径
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          echo "LIB_PATH=Linux/amd64" >> $GITHUB_ENV
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          echo "LIB_PATH=MacOS/arm64" >> $GITHUB_ENV
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          echo "LIB_PATH=win/win64" >> $GITHUB_ENV
+        fi
+
+    # 配置构建
+    - name: Configure build
+      shell: bash
+      run: |
+        mkdir -p ${{ env.BUILD_DIR }}
+        cd ${{ env.BUILD_DIR }}
+        
+        # 设置Qt环境
+        source ${{ github.workspace }}/Qt/${{ env.QT_VERSION }}/**/bin/qt-env.sh
+        
+        # 生成qmake命令
+        qmake ${{ github.workspace }} \
+          CONFIG+=release \
+          "LIBS += -L${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}" \
+          "LIBS += -L${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}" \
+          "LIBS += -L${{ github.workspace }}/3rd_party/libhpdf/${{ env.LIB_PATH }}" \
+          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/FFmpeg/include" \
+          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/Opencv/include" \
+          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/libhpdf/include"
+
+    # 执行构建
+    - name: Build project
+      shell: bash
+      run: |
+        cd ${{ env.BUILD_DIR }}
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          nmake
+        else
+          make -j$(nproc)
+        fi
+
+    # 运行测试 (如果有)
+    - name: Run tests
+      shell: bash
+      run: |
+        cd ${{ env.BUILD_DIR }}
+        if [ -f "./your_test_executable" ]; then
+          ./your_test_executable
+        fi
+
+    # 打包发布
+    - name: Package artifacts
+      if: github.ref == 'refs/heads/main'
+      shell: bash
+      run: |
+        cd ${{ env.BUILD_DIR }}
+        
+        # 复制所需的动态库
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          mkdir -p lib
+          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.so* lib/
+          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.so* lib/
+          tar -czvf app_linux.tar.gz your_app_executable lib/
+          
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          mkdir -p YourApp.app/Contents/Frameworks
+          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.dylib YourApp.app/Contents/Frameworks/
+          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.dylib YourApp.app/Contents/Frameworks/
+          zip -r app_macos.zip YourApp.app
+          
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          mkdir -p bin
+          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.dll bin/
+          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.dll bin/
+          7z a app_windows.zip your_app.exe bin/
+        fi
+
+    # 上传构建产物
+    - name: Upload artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}-build
+        path: ${{ env.BUILD_DIR }}/*.zip ${{ env.BUILD_DIR }}/*.tar.gz
+
+    # 部署到GitHub Releases
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Assets
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.BUILD_DIR }}/*.zip
+        asset_name: ${{ matrix.os }}-build.zip
+        asset_content_type: application/zip
