@@ -1,0 +1,169 @@
+name: Release Build
+
+on:
+  release:
+    types:
+      - created
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build-macos:
+    name: Build on macOS
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Homebrew dependencies
+        run: |
+          brew install cmake pkg-config nasm yasm x264 x265 opencv
+          echo "OPENCV_ROOT_PATH=$(brew --prefix opencv)" >> $GITHUB_ENV
+
+      - name: Download 3rd_party
+        run: |
+          curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
+          tar -xzf 3rd_party.tar.gz
+
+      - name: Build FFmpeg
+        run: |
+          if [ ! -d "ffmpeg" ]; then
+            wget https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.bz2
+            tar xjvf ffmpeg-4.4.5.tar.bz2
+            cd ffmpeg-4.4.5
+            ./configure --pkg-config-flags=--static --enable-shared --disable-static --extra-libs=-lpthread --extra-libs=-lm --enable-gpl --enable-nonfree --enable-libx264 --enable-libx265 --enable-postproc --prefix=$(pwd)/../ffmpeg
+            make -j$(sysctl -n hw.ncpu)
+            make install
+          fi
+          echo "FFMPEG_ROOT_PATH=$(pwd)/ffmpeg" >> $GITHUB_ENV
+
+      - name: Install Qt 6.5.3
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.3'
+          target: 'desktop'
+          arch: 'clang_64'
+          modules: 'qt5compat qtmultimedia'
+
+      - name: Build Project
+        run: |
+          mkdir build && cd build
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
+          make -j$(sysctl -n hw.ncpu)
+
+      - name: Create DMG
+        run: |
+          cd build
+          macdeployqt ToolKit.app -dmg
+          mv ToolKit.dmg ../../ToolKit_macOS.dmg
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_macOS
+          path: ToolKit_macOS.dmg
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_macOS.dmg
+
+  build-linux:
+    name: Build on Ubuntu
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar
+
+      - name: Download 3rd_party
+        run: |
+          curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
+          tar -xzf 3rd_party.tar.gz
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          target: 'desktop'
+          arch: 'gcc_64'
+          modules: 'qt5compat qtmultimedia'
+
+      - name: Build Project
+        run: |
+          mkdir build && cd build
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          make -j$(nproc)
+
+      - name: Create tar.gz
+        run: |
+          cd build
+          cd ..
+          mkdir -p ToolKit_Linux
+          cp -r build/* ToolKit_Linux/
+          tar -czvf ToolKit_Linux.tar.gz ToolKit_Linux
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_Linux
+          path: ToolKit_Linux.tar.gz
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_Linux.tar.gz
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download 3rd_party
+        run: |
+          curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
+          tar -xzf 3rd_party.tar.gz
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.3'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qt5compat qtmultimedia'
+
+      - name: Enable MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Deploy and Package
+        shell: powershell
+        run: |
+          mkdir ToolKit_win64
+          Copy-Item -Path "build\Release\ToolKit.exe" -Destination "ToolKit_win64"
+          & "${env:Qt6_DIR}\bin\windeployqt.exe" "ToolKit_win64\ToolKit.exe"
+          Compress-Archive -Path "ToolKit_win64" -DestinationPath "ToolKit_win64.zip"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_win64
+          path: ToolKit_win64.zip
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_win64.zip
