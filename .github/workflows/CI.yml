@@ -52,6 +52,7 @@ jobs:
       - name: Configure project
         run: |
           mkdir build && cd build
+          echo "ROOT_OPENCV=$(brew --prefix opencv)" >> $GITHUB_ENV
           cmake ../ToolKit \
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
@@ -71,7 +72,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar pkg-config nasm yasm x264 x265 libx264-dev libx265-dev
+          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar pkg-config nasm yasm x264 libx264-dev x265 libx265-dev
 
       - name: Download 3rd_party
         run: |
@@ -149,4 +150,4 @@ jobs:
       - name: Build with MSBuild
         run: |
           cd build
-          cmake --build . --config Release
+          cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 --build . --config Release
