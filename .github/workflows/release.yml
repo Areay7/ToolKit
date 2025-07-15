@@ -161,9 +161,7 @@ jobs:
           Copy-Item -Path "build\Release\ToolKit.exe" -Destination "ToolKit_win64"
 
           # 使用 windeployqt 部署 Qt 依赖（包括 QtMqtt）
-          & "${env:Qt6_DIR}\bin\windeployqt.exe" \
-            --qmldir=".." \
-            "ToolKit_win64\ToolKit.exe"
+          & "${env:Qt6_DIR}\bin\windeployqt.exe" --qmldir=".." "ToolKit_win64\ToolKit.exe"
 
           # 备份 FFmpeg DLLs
           $ffmpegDir = "${{ github.workspace }}\3rd_party\FFmpeg\lib\win\win64"
