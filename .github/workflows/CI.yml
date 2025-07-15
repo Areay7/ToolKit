@@ -32,7 +32,7 @@ jobs:
             (
               cd ffmpeg-4.4.5 && \
               ./configure --pkg-config-flags=--static --enable-shared --disable-static --extra-libs=-lpthread --extra-libs=-lm \
-              --enable-gpl --enable-nonfree --enable-libx264 --enable-libx265 --enable-postproc --enable-avresample \
+              --enable-gpl --enable-nonfree --enable-libx264 --enable-libx265 --enable-postproc \
               --prefix=$(pwd)/../ffmpeg
             )
             (
