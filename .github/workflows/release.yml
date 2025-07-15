@@ -2,8 +2,7 @@ name: Release Build
 
 on:
   release:
-    types:
-      - created
+    types: [created]
   push:
     tags:
       - "v*.*.*"
@@ -18,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Homebrew dependencies
+      - name: Install dependencies
         run: |
           brew install cmake pkg-config nasm yasm x264 x265 opencv
           echo "OPENCV_ROOT_PATH=$(brew --prefix opencv)" >> $GITHUB_ENV
@@ -40,7 +39,7 @@ jobs:
           fi
           echo "FFMPEG_ROOT_PATH=$(pwd)/ffmpeg" >> $GITHUB_ENV
 
-      - name: Install Qt 6.5.3
+      - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
@@ -51,7 +50,7 @@ jobs:
       - name: Build Project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
           make -j$(sysctl -n hw.ncpu)
 
       - name: Create DMG
@@ -91,7 +90,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '5.15.2'
+          version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
           modules: 'qt5compat qtmultimedia'
@@ -104,9 +103,8 @@ jobs:
 
       - name: Create tar.gz
         run: |
-          cd build
           cd ..
-          mkdir -p ToolKit_Linux
+          mkdir ToolKit_Linux
           cp -r build/* ToolKit_Linux/
           tar -czvf ToolKit_Linux.tar.gz ToolKit_Linux
 
@@ -154,38 +152,34 @@ jobs:
       - name: Deploy and Package
         shell: powershell
         run: |
-          # 创建打包目录
-          mkdir ToolKit_win64
+          $OutDir = "ToolKit_win64"
+          mkdir $OutDir
+          Copy-Item -Path "build\Release\ToolKit.exe" -Destination "$OutDir"
 
-          # 备份 ToolKit.exe
-          Copy-Item -Path "build\Release\ToolKit.exe" -Destination "ToolKit_win64"
+          & "${env:Qt6_DIR}\bin\windeployqt.exe" --qmldir=".." "$OutDir\ToolKit.exe"
 
-          # 使用 windeployqt 部署 Qt 依赖（包括 QtMqtt）
-          & "${env:Qt6_DIR}\bin\windeployqt.exe" --qmldir=".." "ToolKit_win64\ToolKit.exe"
+          # Copy FFmpeg DLLs
+          Copy-Item -Path "3rd_party\FFmpeg\lib\win\win64\*.dll" -Destination $OutDir -ErrorAction SilentlyContinue
 
-          # 备份 FFmpeg DLLs
-          $ffmpegDir = "${{ github.workspace }}\3rd_party\FFmpeg\lib\win\win64"
-          if (Test-Path "$ffmpegDir") {
-            Copy-Item -Path "$ffmpegDir\*.dll" -Destination "ToolKit_win64" -Force
-          }
+          # Copy OpenCV DLLs
+          Copy-Item -Path "3rd_party\Opencv\lib\win\win64\release\*.dll" -Destination $OutDir -ErrorAction SilentlyContinue
 
-          # 备份 OpenCV DLLs
-          $opencvDir = "${{ github.workspace }}\3rd_party\Opencv\lib\win\win64\release"
-          if (Test-Path "$opencvDir") {
-            Copy-Item -Path "$opencvDir\*.dll" -Destination "ToolKit_win64" -Force
-          }
+          # Copy QtMqtt DLL
+          Copy-Item -Path "3rd_party\QtMqtt\5.15.2\win\win64\*.dll" -Destination $OutDir -ErrorAction SilentlyContinue
 
-          # 备份 QtMqtt.dll 如果未被自动备份
-          $mqttDir = "${{ github.workspace }}\3rd_party\QtMqtt\5.15.2\win\win64"
-          if (Test-Path "$mqttDir") {
-            Copy-Item -Path "$mqttDir\*.dll" -Destination "ToolKit_win64" -Force
-          }
+          # Copy HaruPDF (optional)
+          Copy-Item -Path "3rd_party\libhpdf\win\win64\*.dll" -Destination $OutDir -ErrorAction SilentlyContinue
 
-          # 备份 HaruPDF DLLs 如需
-          $hpdfDir = "${{ github.workspace }}\3rd_party\libhpdf\win\win64"
-          if (Test-Path "$hpdfDir") {
-            Copy-Item -Path "$hpdfDir\*.dll" -Destination "ToolKit_win64" -Force
-          }
+          Compress-Archive -Path "$OutDir" -DestinationPath "ToolKit_win64.zip"
 
-          # 打包
-          Compress-Archive -Path "ToolKit_win64" -DestinationPath "ToolKit_win64.zip"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_win64
+          path: ToolKit_win64.zip
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_win64.zip
