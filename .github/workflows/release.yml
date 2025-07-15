@@ -10,7 +10,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
   build-macos:
     name: Build on macOS
@@ -151,22 +151,43 @@ jobs:
           cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
 
-      - name: Deploy and Package
+            - name: Deploy and Package
         shell: powershell
         run: |
+          # 创建打包目录
           mkdir ToolKit_win64
+
+          # 备份 ToolKit.exe
           Copy-Item -Path "build\Release\ToolKit.exe" -Destination "ToolKit_win64"
-          & "${env:Qt6_DIR}\bin\windeployqt.exe" "ToolKit_win64\ToolKit.exe"
+
+          # 使用 windeployqt 部署 Qt 依赖（包括 QtMqtt）
+          & "${env:Qt6_DIR}\bin\windeployqt.exe" \
+            --qmldir=".." \
+            "ToolKit_win64\ToolKit.exe"
+
+          # 备份 FFmpeg DLLs
+          $ffmpegDir = "${{ github.workspace }}\3rd_party\FFmpeg\lib\win\win64"
+          if (Test-Path "$ffmpegDir") {
+            Copy-Item -Path "$ffmpegDir\*.dll" -Destination "ToolKit_win64" -Force
+          }
+
+          # 备份 OpenCV DLLs
+          $opencvDir = "${{ github.workspace }}\3rd_party\Opencv\lib\win\win64\release"
+          if (Test-Path "$opencvDir") {
+            Copy-Item -Path "$opencvDir\*.dll" -Destination "ToolKit_win64" -Force
+          }
+
+          # 备份 QtMqtt.dll 如果未被自动备份
+          $mqttDir = "${{ github.workspace }}\3rd_party\QtMqtt\5.15.2\win\win64"
+          if (Test-Path "$mqttDir") {
+            Copy-Item -Path "$mqttDir\*.dll" -Destination "ToolKit_win64" -Force
+          }
+
+          # 备份 HaruPDF DLLs 如需
+          $hpdfDir = "${{ github.workspace }}\3rd_party\libhpdf\win\win64"
+          if (Test-Path "$hpdfDir") {
+            Copy-Item -Path "$hpdfDir\*.dll" -Destination "ToolKit_win64" -Force
+          }
+
+          # 打包
           Compress-Archive -Path "ToolKit_win64" -DestinationPath "ToolKit_win64.zip"
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ToolKit_win64
-          path: ToolKit_win64.zip
-
-      - name: Upload Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: ToolKit_win64.zip
