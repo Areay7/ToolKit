@@ -31,9 +31,9 @@ jobs:
             tar xjvf ffmpeg-4.4.5.tar.bz2
             (
               cd ffmpeg-4.4.5 && \
-              ./configure --pkg-config-flags=--static --enable-shared --disable-static \
-                --extra-libs=-lpthread --extra-libs=-lm --enable-gpl --enable-nonfree \
-                --enable-libx264 --enable-libx265 --prefix=$(pwd)/../ffmpeg
+              ./configure --pkg-config-flags=--static --enable-shared --disable-static --extra-libs=-lpthread --extra-libs=-lm \
+              --enable-gpl --enable-nonfree --enable-libx264 --enable-libx265 --enable-postproc --enable-avresample \
+              --prefix=$(pwd)/../ffmpeg
             )
             (
               cd ffmpeg-4.4.5 && \
