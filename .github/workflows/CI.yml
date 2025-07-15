@@ -34,7 +34,7 @@ jobs:
       - name: Configure with CMake
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
 
       - name: Build
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: Configure with CMake
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
 
       - name: Build
         run: |
@@ -98,7 +98,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -G "NMake Makefiles"
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -G "NMake Makefiles"
 
       - name: Build with NMake
         run: |
