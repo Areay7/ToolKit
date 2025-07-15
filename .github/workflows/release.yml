@@ -196,12 +196,18 @@ jobs:
           wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
           chmod +x linuxdeployqt-continuous-x86_64.AppImage
           sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+          export FF_PATH="$(pwd)/ffmpeg/lib"
+          export OC_PATH="$(pwd)/opencv-install/lib"
+          export MQTT_PATH="${{ github.workspace }}/qtmqtt-install/lib"
+          export HPDF_PATH="3rd_party/libhpdf/Linux/amd64"
+          export SEETA_PATH="3rd_party/SeetaNet/lib/Linux/amd64"
+          export LD_LIBRARY_PATH="$FF_PATH:$OC_PATH:$MQTT_PATH:$HPDF_PATH:$SEETA_PATH:$LD_LIBRARY_PATH"
+          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 
       - name: Prepare AppDir and Create AppImage
         run: |
           mkdir -p AppDir/usr/bin
           cp build/ToolKit AppDir/usr/bin/
-
           mkdir -p AppDir/usr/share/applications
           cat > AppDir/usr/share/applications/ToolKit.desktop <<EOF
           [Desktop Entry]
@@ -211,10 +217,8 @@ jobs:
           Type=Application
           Categories=Utility;
           EOF
-
           mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
           cp ToolKit/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/ToolKit.png || true
-
           export VERSION=${{ github.ref_name }}
           linuxdeployqt AppDir/usr/share/applications/ToolKit.desktop -appimage -verbose=2
 
