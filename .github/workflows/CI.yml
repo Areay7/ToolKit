@@ -22,18 +22,18 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 6.5.3 with Multimedia
+      - name: Install Qt 6.5.3 with modules
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'clang_64'
-          modules: 'qtmultimedia'
+          modules: 'qt6core5compat qtmultimedia'
 
       - name: Configure project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR"
 
       - name: Build
         run: |
@@ -56,18 +56,18 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 6.5.3 with Multimedia
+      - name: Install Qt 6.5.3 with modules
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qtmultimedia'
+          modules: 'qt6core5compat qtmultimedia'
 
       - name: Configure project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR"
 
       - name: Build
         run: |
@@ -85,13 +85,13 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 6.5.3 with Multimedia
+      - name: Install Qt 6.5.3 with modules
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qtmultimedia'
+          modules: 'qt6core5compat qtmultimedia'
 
       - name: Enable MSVC Developer Environment
         uses: ilammy/msvc-dev-cmd@v1
