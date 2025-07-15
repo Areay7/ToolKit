@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <chrono>
 
 namespace tool::qps
 {

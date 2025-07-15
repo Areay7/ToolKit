@@ -81,13 +81,13 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 6.5.3 with Multimedia
+      - name: Install Qt 5.15.2 with Multimedia
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.5.3'
+          version: '5.15.2'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qt5compat qtmultimedia'
+          modules: 'qtmultimedia'
 
       - name: Configure project
         run: |
@@ -110,13 +110,13 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 6.5.3 with modules
+      - name: Install Qt 5.15.2 with modules
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.5.3'
+          version: '5.15.2'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qt5compat qtmultimedia'
+          modules: 'qtmultimedia'
 
       - name: Enable MSVC Developer Environment
         uses: ilammy/msvc-dev-cmd@v1
