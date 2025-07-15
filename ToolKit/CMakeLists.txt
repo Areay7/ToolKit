@@ -25,12 +25,14 @@ endif()
 # Qt version based on platform
 if(${PLATFORM} STREQUAL "macOS")
     # Qt6 for macOS
-    find_package(Qt6 COMPONENTS Widgets Sql Multimedia Core5Compat REQUIRED)
+    find_package(Qt6 REQUIRED COMPONENTS Widgets Sql Multimedia Core5Compat)
     set(QT_LIBS Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Multimedia Qt6::Core5Compat)
+    set(QT_VERSION_MAJOR 6)
 else()
-    # Qt5.15.2 for Windows and Linux
-    find_package(Qt5 REQUIRED COMPONENTS Widgets Sql Multimedia Core)
+    # Qt5 for Windows/Linux
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Sql Multimedia)
     set(QT_LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Sql Qt5::Multimedia)
+    set(QT_VERSION_MAJOR 5)
 endif()
 
 if(NOT DEFINED FFMPEG_ROOT)
@@ -101,7 +103,11 @@ file(GLOB_RECURSE RESOURCES ${CMAKE_SOURCE_DIR}/*.qrc)
 
 
 # Executable
-qt_add_executable(ToolKit ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES})
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_add_executable(ToolKit ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES})
+else()
+    add_executable(ToolKit ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES})
+endif()
 
 # Definitions
 target_compile_definitions(ToolKit PRIVATE PRO_FILE_PWD="${CMAKE_SOURCE_DIR}")
