@@ -8,15 +8,13 @@ on:
 
 jobs:
   build-macos:
-    name: macOS Build
+    name: Build on macOS
     runs-on: macos-14
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install dependencies (FFmpeg & OpenCV)
+      - name: Install Homebrew dependencies
         run: |
-          brew update
           brew install ffmpeg opencv
 
       - name: Download 3rd_party
@@ -24,14 +22,15 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt
+      - name: Install Qt 6.5.3 with Multimedia
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'clang_64'
+          modules: 'qt6multimedia'
 
-      - name: Configure with CMake
+      - name: Configure project
         run: |
           mkdir build && cd build
           cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
@@ -42,30 +41,30 @@ jobs:
           make -j$(sysctl -n hw.ncpu)
 
   build-linux:
-    name: Ubuntu Build
+    name: Build on Ubuntu
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev
+          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar
 
       - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt
+      - name: Install Qt 6.5.3 with Multimedia
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
+          modules: 'qt6multimedia'
 
-      - name: Configure with CMake
+      - name: Configure project
         run: |
           mkdir build && cd build
           cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
@@ -76,31 +75,34 @@ jobs:
           make -j$(nproc)
 
   build-windows:
-    name: Windows Build (MSVC)
+    name: Build on Windows
     runs-on: windows-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt
+      - name: Install Qt 6.5.3 with Multimedia
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
+          modules: 'qt6multimedia'
 
-      - name: Configure with CMake
+      - name: Enable MSVC Developer Environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure project
         run: |
           mkdir build
           cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -G "NMake Makefiles"
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%"
 
-      - name: Build with NMake
+      - name: Build with MSBuild
         run: |
           cd build
-          nmake
+          cmake --build . --config Release
