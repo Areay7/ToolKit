@@ -113,9 +113,13 @@ link_lib_if_exists(ToolKit QtMqtt ${MQTT_LIB_DIR})
 link_lib_if_exists(ToolKit hpdf ${HARU_LIB_DIR})
 
 # OpenCV
-foreach(lib IN ITEMS opencv_core opencv_imgproc opencv_videoio opencv_highgui opencv_imgcodecs)
-    link_lib_if_exists(ToolKit ${lib} ${OPENCV_LIB_DIR})
-endforeach()
+if(${PLATFORM} STREQUAL "Linux" OR ${PLATFORM} STREQUAL "Windows")
+    link_lib_if_exists(ToolKit opencv_world ${OPENCV_LIB_DIR})
+elseif(${PLATFORM} STREQUAL "macOS")
+    foreach(lib IN ITEMS opencv_core opencv_imgproc opencv_videoio opencv_highgui opencv_imgcodecs)
+        link_lib_if_exists(ToolKit ${lib} ${OPENCV_LIB_DIR})
+    endforeach()
+endif()
 
 # SeetaFace
 foreach(lib IN ITEMS SeetaFaceDetector SeetaFaceLandmarker SeetaFaceRecognizer SeetaFaceTracker SeetaNet SeetaQualityAssessor)
