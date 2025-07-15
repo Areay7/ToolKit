@@ -127,7 +127,7 @@ foreach(lib IN ITEMS SeetaFaceDetector SeetaFaceLandmarker SeetaFaceRecognizer S
 endforeach()
 
 # FFmpeg
-foreach(lib IN ITEMS avcodec avdevice avfilter avformat avresample avutil swresample swscale postproc)
+foreach(lib IN ITEMS avcodec avfilter avformat avutil swresample swscale postproc)
     link_lib_if_exists(ToolKit ${lib} ${FFMPEG_LIB_DIR})
 endforeach()
 
