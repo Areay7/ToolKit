@@ -88,10 +88,12 @@ jobs:
           name: ToolKit_macOS
           path: ToolKit_macOS.dmg
 
-      - name: Upload Release
+      - name: Check if ToolKit_macOS.dmg exists
         run: |
           cd ..
           ls -lh ToolKit_macOS.dmg || { echo "DMG not found before upload!"; exit 1; }
+
+      - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
