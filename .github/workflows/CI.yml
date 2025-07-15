@@ -74,17 +74,53 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar
+          sudo apt install -y build-essential cmake pkg-config git curl tar \
+            libx11-dev libgl1-mesa-dev libpulse-dev \
+            yasm nasm libx264-dev libx265-dev libnuma-dev \
+            libgtk-3-dev libjpeg-dev libpng-dev libtiff-dev \
+            libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
+            libeigen3-dev libtbb-dev
 
-      - name: Download 3rd_party
+      - name: Download and Build FFmpeg 4.4.5
         run: |
-          curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
-          tar -xzf 3rd_party.tar.gz
+          wget https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.bz2
+          tar xjvf ffmpeg-4.4.5.tar.bz2
+          mkdir ffmpeg && cd ffmpeg-4.4.5
+          ./configure \
+            --enable-shared \
+            --disable-static \
+            --enable-gpl \
+            --enable-nonfree \
+            --enable-libx264 \
+            --enable-libx265 \
+            --enable-postproc \
+            --prefix=$(pwd)/../ffmpeg
+          make -j$(nproc)
+          make install
+          cd ..
+          echo "FFMPEG_ROOT_PATH=$(pwd)/ffmpeg" >> $GITHUB_ENV
 
-      - name: Install Qt 5.15.2 with Multimedia
+      - name: Download and Build OpenCV 4.4.0
+        run: |
+          git clone --branch 4.4.0 https://github.com/opencv/opencv.git
+          git clone --branch 4.4.0 https://github.com/opencv/opencv_contrib.git
+          mkdir -p opencv/build && cd opencv/build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/../../opencv-install \
+            -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+            -DBUILD_EXAMPLES=OFF \
+            -DBUILD_TESTS=OFF \
+            -DBUILD_PERF_TESTS=OFF
+          make -j$(nproc)
+          make install
+          cd ../..
+          echo "OPENCV_ROOT_PATH=$(pwd)/opencv-install" >> $GITHUB_ENV
+
+      - name: Install Qt 6.5.3 with modules
         uses: jurplel/install-qt-action@v3
         with:
-          version: '5.15.2'
+          version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
           modules: 'qt5compat qtmultimedia'
@@ -92,7 +128,10 @@ jobs:
       - name: Configure project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
+          cmake ../ToolKit \
+            -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
+            -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" \
+            -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
 
       - name: Build
         run: |
