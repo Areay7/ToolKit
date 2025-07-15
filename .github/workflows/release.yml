@@ -56,31 +56,31 @@ jobs:
 
       - name: Deploy Qt App with macdeployqt
         run: |
-        APP_PATH=build/ToolKit.app
-        MACOS_PATH=$APP_PATH/Contents/MacOS
+          APP_PATH=build/ToolKit.app
+          MACOS_PATH=$APP_PATH/Contents/MacOS
 
-        # 依赖库路径
-        SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
-        HARU_PATH=3rd_party/libhpdf/MacOS/arm64
-        MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
+          # 依赖库路径
+          SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
+          HARU_PATH=3rd_party/libhpdf/MacOS/arm64
+          MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
 
-        if [ ! -f "$MACOS_PATH/ToolKit" ]; then
-          echo "Error: $MACOS_PATH/ToolKit not found"
-          ls -l $MACOS_PATH || true
-          exit 1
-        fi
+          if [ ! -f "$MACOS_PATH/ToolKit" ]; then
+            echo "Error: $MACOS_PATH/ToolKit not found"
+            ls -l $MACOS_PATH || true
+            exit 1
+          fi
 
-        # 设置环境变量，让 macdeployqt 能找到这些库
-        export DYLD_LIBRARY_PATH="$FFMPEG_ROOT_PATH/lib:$OPENCV_ROOT_PATH/lib:$SEETA_PATH:$HARU_PATH:$MQTT_PATH:$DYLD_LIBRARY_PATH"
+          # 设置环境变量，让 macdeployqt 能找到这些库
+          export DYLD_LIBRARY_PATH="$FFMPEG_ROOT_PATH/lib:$OPENCV_ROOT_PATH/lib:$SEETA_PATH:$HARU_PATH:$MQTT_PATH:$DYLD_LIBRARY_PATH"
 
-        echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH"
+          echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH"
 
-        # 运行 macdeployqt，让它自动分析并打包依赖
-        cd build
-        macdeployqt ToolKit.app -dmg -verbose=3
+          # 运行 macdeployqt，让它自动分析并打包依赖
+          cd build
+          macdeployqt ToolKit.app -dmg -verbose=3
 
-        # 重命名 dmg 输出
-        mv ToolKit.dmg ../../ToolKit_macOS.dmg
+          # 重命名 dmg 输出
+          mv ToolKit.dmg ../../ToolKit_macOS.dmg
 
   build-linux:
     name: Build on Ubuntu
