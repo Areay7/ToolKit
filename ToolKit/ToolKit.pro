@@ -8,8 +8,8 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 CONFIG += c++17
 
-# QMAKE_CXXFLAGS += -fsanitize=address
-# QMAKE_LFLAGS += -fsanitize=address
+QMAKE_CXXFLAGS += -fsanitize=address
+QMAKE_LFLAGS += -fsanitize=address
 
 # DEFINES += Testgoogle
 
@@ -26,6 +26,7 @@ INCLUDEPATH += ROOT_DIR/3rd_party/QXlsx
 
 # INCLUDEPATH += $$ROOT_DIR
 INCLUDEPATH += $$ROOT_DIR/include
+INCLUDEPATH += $$ROOT_DIR/include/QPS
 INCLUDEPATH += $$ROOT_DIR/include/PDF
 INCLUDEPATH += $$ROOT_DIR/include/Mqtt
 INCLUDEPATH += $$ROOT_DIR/include/Xlsx
@@ -129,6 +130,19 @@ message($$Mqtt_SOURCES)
 SOURCES += $$Mqtt_SOURCES
 SOURCES = $$unique(SOURCES)
 # ******************Opencv************************
+
+
+# ******************QPS************************
+QPS_HEADERS = $$files($$ROOT_DIR/include/QPS/*.h)
+message($$QPS_HEADERS)
+HEADERS += $$QPS_HEADERS
+HEADERS = $$unique(HEADERS)
+
+QPS_SOURCES = $$files($$ROOT_DIR/src/QPS/*.cpp)
+message($$QPS_SOURCES)
+SOURCES += $$QPS_SOURCES
+SOURCES = $$unique(SOURCES)
+# ******************QPS************************
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

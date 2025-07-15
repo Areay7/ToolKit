@@ -9,8 +9,8 @@ const QString API_KEY = "sk-6050ef86e2d542208302ccb5e1aba110";
 
 #elif KiMi
 const QString API_URL = "https://api.moonshot.cn/v1";
-const QString API_KEY = "sk-tyU3wVYqHCFoWNnUtXM0PMdFGG4VtBXEtu7HNn4UH15LFVHW";
-
+// const QString API_KEY = "sk-tyU3wVYqHCFoWNnUtXM0PMdFGG4VtBXEtu7HNn4UH15LFVHW";
+const QString API_KEY = "sk-Tg4tDuLuUxE4MioIOjLYCI3ENutskpOAiiyZSYBNJ5AhinEe";
 #endif
 
 CommonUtils::CommonUtils(QObject *parent)

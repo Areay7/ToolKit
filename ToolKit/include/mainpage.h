@@ -16,6 +16,7 @@
 #include "playimage.h"
 #include "wearthermanager.h"
 #include "mqttmanager.h"
+#include "qps_calc.h"
 
 class MsgRecord;
 
@@ -64,6 +65,8 @@ private:
     std::shared_ptr<CommonUtils> m_commonUtils;
     std::shared_ptr<WeartherManager> m_weartherManager;
     std::shared_ptr<MqttManager> m_mqttManager;
+
+    tool::qps::QpsCalcPtr m_qps_calc;
     // MqttManager *m_mqttManager;
 
 private slots:

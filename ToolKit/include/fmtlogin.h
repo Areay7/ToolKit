@@ -13,6 +13,7 @@
 #include "qfaceobject.h"
 #include "databasemanager.h"
 
+// #define LOGIN_URL "http://hanplas.net:443/login"
 #define LOGIN_URL "http://hanplas.net:443/login"
 
 QT_BEGIN_NAMESPACE

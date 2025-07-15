@@ -1,7 +1,6 @@
 #if 0
 
 #include "opencvWindow.h"
-#include "./ui_opencvwindow.h"
 
 OpencvWindow::OpencvWindow(QWidget *parent)
     : QMainWindow(parent)

@@ -1,7 +1,6 @@
 #if 0
 
 #include "registerwin.h"
-#include "ui_registerwin.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSqlTableModel>

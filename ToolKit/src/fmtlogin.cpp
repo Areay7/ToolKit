@@ -227,7 +227,7 @@ void FmtLogin::timerEvent(QTimerEvent *event)
     // 在 QT 界面上显示
     QPixmap mmp = QPixmap::fromImage(qImg);
     mmp = mmp.scaledToWidth(ui->label_Face->width());
-    // ui->label_Face->setPixmap(mmp);
+    ui->label_Face->setPixmap(mmp);
 
 
 }

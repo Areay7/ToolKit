@@ -77,6 +77,7 @@ void WeartherManager::getCityName() {
 
     connect(reply, &QNetworkReply::finished, this, &WeartherManager::onCityNameFinished);
     qDebug() << "<<<<<<<<<<<<" << __FUNCTION__ << ">>>>>>>>>>>>  6 ";
+    emit cityFetched("中国", "广东", "深圳");
 }
 
 void WeartherManager::onReplied(QNetworkReply* reply)
@@ -146,6 +147,7 @@ void WeartherManager::onCityNameFinished() {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         QJsonObject jsonObj = jsonDoc.object();
 
+#if 0
         QString ret = jsonObj["ret"].toString();
         if (ret == "ok") {
             QJsonArray data = jsonObj["data"].toArray();
@@ -156,12 +158,15 @@ void WeartherManager::onCityNameFinished() {
             qDebug() << "*********city : " << city;
             emit cityFetched(country, province, city);
         } else {
+#endif
             emit cityFetched("中国", "广东", "深圳");
             emit errorOccurred("Failed to fetch city data.");
         }
+#if 0
     } else {
         emit errorOccurred(reply->errorString());
     }
+#endif
     reply->deleteLater();
 }
 

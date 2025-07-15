@@ -2,9 +2,9 @@ win32 {
     DEFINES += WINDOWS_SPECIFIC_DEFINE
 
     # ******* VideoPlay *******
-    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/win/win64 -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
     INCLUDEPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
     DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/lib/win/win64 -lavcodec -lavfilter -lavformat -lswscale -lavutil -lswresample -lavdevice
     # ******* VideoPlay *******
 
     # ******* hpdf *******
@@ -21,8 +21,8 @@ win32 {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/win/win64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/win/win64 -lopencv_world452
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/win/win64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/win/win64 -lopencv_world452
     # ******* Opencv *******
 
     # ******* Mqtt *******
@@ -36,10 +36,10 @@ macx {
     DEFINES += MAC_SPECIFIC_DEFINE
 
     # ******* Googletest *******
-    GTEST_DIR = /Users/areay7/workspace/googletest
+    GTEST_DIR = $$ROOT_DIR/3rd_party/GoogleTest
 
-    INCLUDEPATH += $$GTEST_DIR/googletest/include
-    LIBS += -L$$GTEST_DIR/build/lib -lgtest -lgtest_main
+    INCLUDEPATH += $$GTEST_DIR/include/googletest
+    LIBS += -L$$GTEST_DIR/lib/MacOS/arm64 -lgtest -lgtest_main
 
     message($$GTEST_DIR)
     # ******* Googletest *******
@@ -50,7 +50,7 @@ macx {
     DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
 
     # LIBS += -L/usr/local/lib/ -lSDL2
-    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/MacOS/arm64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/lib/MacOS/arm64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale
     # ******* VideoPlay *******
 
     # ******* hpdf *******
@@ -67,8 +67,8 @@ macx {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/MacOS/arm64 -lopencv_world
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/MacOS/arm64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/MacOS/arm64 -lopencv_world
     # ******* Opencv *******
 
     # ******* Mqtt *******
@@ -118,7 +118,7 @@ unix:!macx {
     # ******* VideoPlay *******
     INCLUDEPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
     DEPENDPATH += $$ROOT_DIR/3rd_party/FFmpeg/include
-    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/Linux/amd64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale -lx264 -lfdk-aac
+    LIBS += -L$$ROOT_DIR/3rd_party/FFmpeg/lib/Linux/amd64 -lavformat -lavcodec -lavdevice -lavfilter -lavutil -lpostproc -lswresample -lswscale -lx264 -lfdk-aac
     # ******* VideoPlay *******
 
     # ******* hpdf *******
@@ -135,8 +135,8 @@ unix:!macx {
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
     INCLUDEPATH += $$ROOT_DIR/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/Linux/amd64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
-    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/Linux/amd64 -lopencv_world
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/Linux/amd64 -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaFaceTracker -lSeetaNet -lSeetaQualityAssessor
+    LIBS += -L$$ROOT_DIR/3rd_party/Opencv/lib/Linux/amd64 -lopencv_world
     # ******* Opencv *******
 
     # ******* Mqtt *******

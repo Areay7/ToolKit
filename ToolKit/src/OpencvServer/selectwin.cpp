@@ -1,7 +1,6 @@
 #if 0
 
 #include "selectwin.h"
-#include "ui_selectwin.h"
 
 SelectWin::SelectWin(QWidget *parent)
     : QWidget(parent)

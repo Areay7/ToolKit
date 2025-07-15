@@ -10,6 +10,9 @@
 #include <QDebug>
 #include "wearthermanager.h"
 
+using namespace tool::qps;
+
+
 MainPage::MainPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainPage)
@@ -73,6 +76,7 @@ MainPage::MainPage(QWidget *parent)
     m_commonUtils = std::make_shared<CommonUtils>();
     m_weartherManager = std::make_shared<WeartherManager>();
     m_mqttManager = std::make_shared<MqttManager>();
+    m_qps_calc = std::make_shared<QpsCalc>("MainPage",3000, 6000);
 
 
 
@@ -90,6 +94,7 @@ MainPage::MainPage(QWidget *parent)
 
 void MainPage::switchStatckPage()
 {
+    QpsTick tick(m_qps_calc.get());
     QObject *senderObj = sender();
     qDebug() << "Name ------------> " << senderObj->objectName();
     if(senderObj == ui->btn_chat)
@@ -104,7 +109,7 @@ void MainPage::switchStatckPage()
         ui->stackedWidget_main->setCurrentIndex(static_cast<int>(StackPage::FriendPage));
         CommonBase::logMessage(LogType::WARN, "btn_friend");
 
-        // m_commonUtils->sendRequest("你是一名资深的C++程序员", "如何高效学习Linux C++ QT，并且快速适应工作要求");
+        m_commonUtils->sendRequest("你是一名资深的C++程序员", "如何高效学习Linux C++ QT，并且快速适应工作要求");
 
 
         // CommonBase::getCpuUse();
@@ -267,6 +272,7 @@ void MainPage::updateWeatherData(float cur_temp, float cur_humi, QString cur_typ
 
 void MainPage::getWeatherInfo(const QString &country, const QString &province, const QString &city)
 {
+    qDebug() << "fetch city name : " << city;
     m_weartherManager->getWeatherInfo(city);
 
     ui->label_position->setAlignment(Qt::AlignCenter);
