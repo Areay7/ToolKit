@@ -74,33 +74,14 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          libx11-dev libgl1-mesa-dev libpulse-dev curl tar pkg-config nasm yasm libx264-dev libx265-dev
+          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar
 
       - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Build FFmpeg 4.4.5
-        run: |
-          if [ ! -d "ffmpeg" ]; then
-            wget https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.bz2
-            tar xjvf ffmpeg-4.4.5.tar.bz2
-            (
-              cd ffmpeg-4.4.5 && \
-              ./configure --pkg-config-flags=--static --enable-shared --disable-static \
-                --extra-libs=-lpthread --extra-libs=-lm --enable-gpl --enable-nonfree \
-                --enable-libx264 --enable-libx265 --prefix=$(pwd)/../ffmpeg
-            )
-            (
-              cd ffmpeg-4.4.5 && \
-              make -j$(nproc) && \
-              make install
-            )
-          fi
-          echo "FFMPEG_ROOT_PATH=$(pwd)/ffmpeg" >> $GITHUB_ENV
-
-      - name: Install Qt 6.5.3 with modules
+      - name: Install Qt 6.5.3 with Multimedia
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.3'
@@ -111,10 +92,7 @@ jobs:
       - name: Configure project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit \
-            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-            -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
-            -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH"
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH=$Qt6_DIR
 
       - name: Build
         run: |
