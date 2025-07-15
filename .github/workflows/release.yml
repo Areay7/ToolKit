@@ -151,7 +151,7 @@ jobs:
           cmake ../ToolKit -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
 
-            - name: Deploy and Package
+      - name: Deploy and Package
         shell: powershell
         run: |
           # 创建打包目录
