@@ -23,7 +23,7 @@ else()
 endif()
 
 # Path configurations
-if(${PLATFORM} STREQUAL "macOS"
+if(${PLATFORM} STREQUAL "macOS")
     set(FFMPEG_LIB_DIR "/opt/homebrew/Cellar/ffmpeg@4/4.4.5_4/lib")
     set(OPENCV_LIB_DIR "/opt/homebrew/opt/opencv@4/lib")
     set(OPENCV_INCLUDE_DIR "${OPENCV_LIB_DIR}/../include/opencv4")
