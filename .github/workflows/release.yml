@@ -60,6 +60,10 @@ jobs:
           MACOS_PATH=$APP_PATH/Contents/MacOS
           FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
+          SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
+          HARU_PATH=3rd_party/libhpdf/MacOS/arm64
+          MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
+
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
             echo "Error: $MACOS_PATH/ToolKit not found"
             ls -l $MACOS_PATH || true
@@ -68,19 +72,32 @@ jobs:
 
           mkdir -p $FRAMEWORKS_PATH
 
-          # 拷贝 FFmpeg 和 OpenCV 的 dylib 到 Frameworks
+          echo "拷贝 FFmpeg dylib..."
           cp $FFMPEG_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
+
+          echo "拷贝 OpenCV dylib..."
           cp $OPENCV_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
 
-          # 给可执行文件加 rpath 路径，指向 Frameworks
+          echo "拷贝 Seeta dylib..."
+          cp $SEETA_PATH/*.dylib $FRAMEWORKS_PATH/
+
+          echo "拷贝 HaruPDF dylib..."
+          cp $HARU_PATH/*.dylib $FRAMEWORKS_PATH/
+
+          echo "拷贝 QtMqtt dylib..."
+          cp $MQTT_PATH/*.dylib $FRAMEWORKS_PATH/
+
+          echo "添加可执行文件 rpath..."
           install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit"
 
-          # 给所有拷贝的 dylib 也添加 rpath，防止找不到依赖
+          echo "给每个 dylib 添加 rpath..."
           for dylib in $FRAMEWORKS_PATH/*.dylib; do
-            install_name_tool -add_rpath "@loader_path/../Frameworks" "$dylib"
+            install_name_tool -add_rpath "@loader_path/../Frameworks" "$dylib" || true
           done
 
-      - name: Create DMG
+          echo "设置 DYLD_LIBRARY_PATH 环境变量（调试用）"
+          echo "DYLD_LIBRARY_PATH=$SEETA_PATH:$HARU_PATH:$MQTT_PATH:\$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+
         run: |
           cd build
           macdeployqt ToolKit.app -dmg -no-strip
