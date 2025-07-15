@@ -137,8 +137,10 @@ jobs:
             -DBUILD_SHARED_LIBS=ON
           make -j$(nproc)
           make install
+          ln -sf libQt6Mqtt.so ${{ github.workspace }}/qtmqtt-install/lib/libQtMqtt.so
           cd ../..
           echo "MQTT_ROOT=${{ github.workspace }}/qtmqtt-install" >> $GITHUB_ENV
+          ls -l ${{ github.workspace }}/qtmqtt-install/lib
 
       - name: Configure ToolKit
         run: |
