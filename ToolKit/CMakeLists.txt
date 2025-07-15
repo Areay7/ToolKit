@@ -22,6 +22,17 @@ else()
     message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif()
 
+# Qt version based on platform
+if(${PLATFORM} STREQUAL "macOS")
+    # Qt6 for macOS
+    find_package(Qt6 COMPONENTS Widgets Sql Multimedia Core5Compat REQUIRED)
+    set(QT_LIBS Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Multimedia Qt6::Core5Compat)
+else()
+    # Qt5.15.2 for Windows and Linux
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Sql Multimedia Core)
+    set(QT_LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Sql Qt5::Multimedia)
+endif()
+
 if(NOT DEFINED FFMPEG_ROOT)
     set(FFMPEG_ROOT /opt/homebrew/opt/ffmpeg)
 endif()
@@ -53,9 +64,6 @@ elseif(${PLATFORM} STREQUAL "Linux")
     set(HARU_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/Linux/amd64")
     set(SEETA_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/lib/Linux/amd64")
 endif()
-
-# Qt
-find_package(Qt6 COMPONENTS Widgets Sql Multimedia Core5Compat REQUIRED)
 
 # Subdirectories
 add_subdirectory(3rd_party)
