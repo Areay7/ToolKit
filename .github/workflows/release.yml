@@ -82,6 +82,18 @@ jobs:
           # 重命名 dmg 输出
           mv ToolKit.dmg ../../ToolKit_macOS.dmg
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_macOS
+          path: ToolKit_macOS.dmg
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_macOS.dmg
+
   build-linux:
     name: Build on Ubuntu
     runs-on: ubuntu-22.04
