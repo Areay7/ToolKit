@@ -83,7 +83,7 @@ jobs:
       - name: Create DMG
         run: |
           cd build
-          macdeployqt ToolKit.app -dmg
+          macdeployqt ToolKit.app -dmg -no-strip
           mv ToolKit.dmg ../../ToolKit_macOS.dmg
 
       - name: Upload Artifact
