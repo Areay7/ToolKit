@@ -14,7 +14,6 @@ list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/ui")
 # Detect platform
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(PLATFORM macOS)
-    set_target_properties(ToolKit PROPERTIES MACOSX_BUNDLE TRUE)
 elseif(WIN32)
     set(PLATFORM Windows)
 elseif(UNIX)
@@ -60,10 +59,10 @@ elseif(${PLATFORM} STREQUAL "Windows")
     set(HARU_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/win/win64")
     set(SEETA_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/lib/win/win64/release")
 elseif(${PLATFORM} STREQUAL "Linux")
-    set(FFMPEG_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/FFmpeg/lib/Linux/amd64")
-    set(OPENCV_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include")
+    set(FFMPEG_LIB_DIR "${FFMPEG_ROOT}/lib")
+    set(OPENCV_LIB_DIR "${OPENCV_ROOT}/lib")
+    set(MQTT_LIB_DIR "${MQTT_ROOT}/lib")
     set(OPENCV_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/lib/Linux/amd64")
-    set(MQTT_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/QtMqtt/5.15.2/Linux/amd64")
     set(HARU_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/Linux/amd64")
     set(SEETA_LIB_DIR "${CMAKE_SOURCE_DIR}/3rd_party/Opencv/lib/Linux/amd64")
 endif()
@@ -75,25 +74,28 @@ add_subdirectory(3rd_party/QXlsx)
 # Include directories
 include_directories(
     ${OPENCV_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/3rd_party/FFmpeg/include
-    ${CMAKE_SOURCE_DIR}/3rd_party/QXlsx/header
-    ${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/include
-    ${CMAKE_SOURCE_DIR}/3rd_party/QtMqtt/6.5.3/include
+
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/include/VideoPlay
-    ${CMAKE_SOURCE_DIR}/include/OpencvServer
-    ${CMAKE_SOURCE_DIR}/include/Xlsx
     ${CMAKE_SOURCE_DIR}/include/QPS
     ${CMAKE_SOURCE_DIR}/include/PDF
+    ${CMAKE_SOURCE_DIR}/include/Xlsx
     ${CMAKE_SOURCE_DIR}/include/Mqtt
+    ${CMAKE_SOURCE_DIR}/include/VideoPlay
+    ${CMAKE_SOURCE_DIR}/include/OpencvServer
+    
+
+    ${CMAKE_SOURCE_DIR}/3rd_party/QXlsx/header
+    ${CMAKE_SOURCE_DIR}/3rd_party/FFmpeg/include
+    ${CMAKE_SOURCE_DIR}/3rd_party/libhpdf/include
+    ${CMAKE_SOURCE_DIR}/3rd_party/QtMqtt/6.5.3/include
 
     # SeetaFace2 includes
+    ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
+    ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/FaceTracker/include
     ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/FaceDetector/include
     ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/FaceLandmarker/include
     ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/FaceRecognizer/include
-    ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/FaceTracker/include
     ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/QualityAssessor/include
-    ${CMAKE_SOURCE_DIR}/3rd_party/Opencv/include/SeetaFace2/SeetaNet/include
 )
 
 # Source files
@@ -134,6 +136,7 @@ elseif(${PLATFORM} STREQUAL "macOS")
     foreach(lib IN ITEMS opencv_core opencv_imgproc opencv_videoio opencv_highgui opencv_imgcodecs)
         link_lib_if_exists(ToolKit ${lib} ${OPENCV_LIB_DIR})
     endforeach()
+    set_target_properties(ToolKit PROPERTIES MACOSX_BUNDLE TRUE)
 endif()
 
 # SeetaFace

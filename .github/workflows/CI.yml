@@ -111,7 +111,8 @@ jobs:
             -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
             -DBUILD_EXAMPLES=OFF \
             -DBUILD_TESTS=OFF \
-            -DBUILD_PERF_TESTS=OFF
+            -DBUILD_PERF_TESTS=OFF \
+            -DWITH_GTK=OFF
           make -j$(nproc)
           make install
           cd ../..
@@ -123,17 +124,31 @@ jobs:
           version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qt5compat qtmultimedia'
+          modules: 'qt5compat qtmultimedia qtmqtt'
 
-      - name: Configure project
+      - name: Clone and Build QtMqtt 6.5.3
+        run: |
+          git clone --branch v6.5.3 https://github.com/qt/qtmqtt.git
+          mkdir -p qtmqtt/build && cd qtmqtt/build
+          cmake .. \
+            -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/../../qtmqtt-install \
+            -DCMAKE_BUILD_TYPE=Release
+          make -j$(nproc)
+          make install
+          cd ../..
+          echo "MQTT_ROOT=$(pwd)/qtmqtt-install" >> $GITHUB_ENV
+
+      - name: Configure ToolKit
         run: |
           mkdir build && cd build
           cmake ../ToolKit \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
             -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" \
-            -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
+            -DOPENCV_ROOT="$OPENCV_ROOT_PATH" \
+            -DMQTT_ROOT="$MQTT_ROOT"
 
-      - name: Build
+      - name: Build ToolKit
         run: |
           cd build
           make -j$(nproc)
