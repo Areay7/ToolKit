@@ -28,7 +28,7 @@ jobs:
           version: '6.5.3'
           target: 'desktop'
           arch: 'clang_64'
-          modules: 'qt6multimedia'
+          modules: 'qtmultimedia'
 
       - name: Configure project
         run: |
@@ -62,7 +62,7 @@ jobs:
           version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qt6multimedia'
+          modules: 'qtmultimedia'
 
       - name: Configure project
         run: |
@@ -91,7 +91,7 @@ jobs:
           version: '6.5.3'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qt6multimedia'
+          modules: 'qtmultimedia'
 
       - name: Enable MSVC Developer Environment
         uses: ilammy/msvc-dev-cmd@v1
