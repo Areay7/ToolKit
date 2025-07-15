@@ -71,7 +71,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar pkg-config nasm yasm x264 x265
+          sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev curl tar pkg-config nasm yasm x264 x265 libx264-dev libx265-dev
 
       - name: Download 3rd_party
         run: |
