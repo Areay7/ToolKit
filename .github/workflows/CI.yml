@@ -86,7 +86,7 @@ jobs:
         with:
           version: '5.15.2'
           target: 'desktop'
-          arch: 'gcc_64o
+          arch: 'gcc_64'
           modules: 'qtnetwork'
 
       - name: Configure project
