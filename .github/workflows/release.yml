@@ -98,7 +98,6 @@ jobs:
           echo "设置 DYLD_LIBRARY_PATH 环境变量（调试用）"
           echo "DYLD_LIBRARY_PATH=$SEETA_PATH:$HARU_PATH:$MQTT_PATH:\$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
 
-        run: |
           cd build
           macdeployqt ToolKit.app -dmg -no-strip
           mv ToolKit.dmg ../../ToolKit_macOS.dmg
