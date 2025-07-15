@@ -36,6 +36,7 @@ jobs:
             ./configure --pkg-config-flags=--static --enable-shared --disable-static --extra-libs=-lpthread --extra-libs=-lm --enable-gpl --enable-nonfree --enable-libx264 --enable-libx265 --enable-postproc --prefix=$(pwd)/../ffmpeg
             make -j$(sysctl -n hw.ncpu)
             make install
+            cd ..
           fi
           echo "FFMPEG_ROOT_PATH=$(pwd)/ffmpeg" >> $GITHUB_ENV
 
@@ -50,8 +51,28 @@ jobs:
       - name: Build Project
         run: |
           mkdir build && cd build
-          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
+          cmake ../ToolKit -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" -DOPENCV_ROOT="$OPENCV_ROOT_PATH" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           make -j$(sysctl -n hw.ncpu)
+
+      - name: Patch dylib paths and copy dependencies into .app
+        run: |
+          APP_PATH=build/ToolKit.app
+          MACOS_PATH=$APP_PATH/Contents/MacOS
+          FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
+
+          mkdir -p $FRAMEWORKS_PATH
+
+          # 拷贝 FFmpeg 和 OpenCV 的 dylib 到 Frameworks
+          cp $FFMPEG_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
+          cp $OPENCV_ROOT_PATH/lib/*.dylib $FRAMEWORKS_PATH/
+
+          # 给可执行文件加 rpath 路径，指向 Frameworks
+          install_name_tool -add_rpath "@executable_path/../Frameworks" $MACOS_PATH/ToolKit
+
+          # 给所有拷贝的 dylib 也添加 rpath，防止找不到依赖
+          for dylib in $FRAMEWORKS_PATH/*.dylib; do
+            install_name_tool -add_rpath "@loader_path/../Frameworks" "$dylib"
+          done
 
       - name: Create DMG
         run: |
@@ -169,6 +190,13 @@ jobs:
 
           # Copy HaruPDF (optional)
           Copy-Item -Path "3rd_party\libhpdf\win\win64\*.dll" -Destination $OutDir -ErrorAction SilentlyContinue
+
+          # Download and extract qt5neworkt.zip into output directory
+          Invoke-WebRequest -Uri "https://github.com/Areay7/LearnCode/releases/download/v1.1.1/qt5neworkt.zip" -OutFile "qt5network.zip"
+          Expand-Archive -Path "qt5network.zip" -DestinationPath "$OutDir" -Force
+
+          # Copy OpenCV model folder
+          Copy-Item -Path "3rd_party\Opencv\model" -Destination $OutDir -Recurse -Force
 
           Compress-Archive -Path "$OutDir" -DestinationPath "ToolKit_win64.zip"
 
