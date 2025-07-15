@@ -23,17 +23,17 @@ else()
 endif()
 
 # Qt version based on platform
-if(${PLATFORM} STREQUAL "macOS")
+# if(${PLATFORM} STREQUAL "macOS")
     # Qt6 for macOS
     find_package(Qt6 REQUIRED COMPONENTS Widgets Sql Multimedia Core5Compat)
     set(QT_LIBS Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Multimedia Qt6::Core5Compat)
     set(QT_VERSION_MAJOR 6)
-else()
-    # Qt5 for Windows/Linux
-    find_package(Qt5 REQUIRED COMPONENTS Widgets Sql Multimedia)
-    set(QT_LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Sql Qt5::Multimedia)
-    set(QT_VERSION_MAJOR 5)
-endif()
+# else()
+#     # Qt5 for Windows/Linux
+#     find_package(Qt5 REQUIRED COMPONENTS Widgets Sql Multimedia)
+#     set(QT_LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Sql Qt5::Multimedia)
+#     set(QT_VERSION_MAJOR 5)
+# endif()
 
 if(NOT DEFINED FFMPEG_ROOT)
     set(FFMPEG_ROOT /opt/homebrew/opt/ffmpeg)

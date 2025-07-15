@@ -110,10 +110,10 @@ jobs:
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
 
-      - name: Install Qt 5.15.2 with modules
+      - name: Install Qt 6.5.3 with modules
         uses: jurplel/install-qt-action@v3
         with:
-          version: '5.15.2'
+          version: '6.5.3'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           # modules: 'qtnetwork'
