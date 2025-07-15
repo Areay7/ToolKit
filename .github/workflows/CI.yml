@@ -52,11 +52,12 @@ jobs:
       - name: Configure project
         run: |
           mkdir build && cd build
-          echo "ROOT_OPENCV=$(brew --prefix opencv)" >> $GITHUB_ENV
+          echo "OPENCV_ROOT_PATH=$(brew --prefix opencv)" >> $GITHUB_ENV
           cmake ../ToolKit \
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
-            -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH"
+            -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" \
+            -DOPENCV_ROOT="$OPENCV_ROOT_PATH"
 
       - name: Build
         run: |
