@@ -1,4 +1,4 @@
-name: Build Qt Project
+name: Build Qt CMake Project
 
 on:
   push:
@@ -7,18 +7,19 @@ on:
     branches: [main]
 
 jobs:
-  build-mac:
+  build-macos:
     name: macOS Build
     runs-on: macos-14
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install FFmpeg & OpenCV via Homebrew
+      - name: Install dependencies (FFmpeg & OpenCV)
         run: |
-          brew install ffmpeg@4 opencv
+          brew update
+          brew install ffmpeg opencv
 
-      - name: Download 3rd_party.tar.gz
+      - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
@@ -30,9 +31,14 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
 
-      - name: Build Project
+      - name: Configure with CMake
         run: |
-          qmake your.pro
+          mkdir build && cd build
+          cmake .. -DCMAKE_PREFIX_PATH=$Qt6_DIR
+
+      - name: Build
+        run: |
+          cd build
           make -j$(sysctl -n hw.ncpu)
 
   build-linux:
@@ -42,12 +48,12 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install build dependencies
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y libx11-dev libgl1-mesa-dev libpulse-dev
 
-      - name: Download 3rd_party.tar.gz
+      - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
@@ -59,19 +65,24 @@ jobs:
           target: 'desktop'
           arch: 'gcc_64'
 
-      - name: Build Project
+      - name: Configure with CMake
         run: |
-          qmake your.pro
+          mkdir build && cd build
+          cmake .. -DCMAKE_PREFIX_PATH=$Qt6_DIR
+
+      - name: Build
+        run: |
+          cd build
           make -j$(nproc)
 
   build-windows:
-    name: Windows Build
+    name: Windows Build (MSVC)
     runs-on: windows-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Download and extract 3rd_party.tar.gz
+      - name: Download 3rd_party
         run: |
           curl -L -o 3rd_party.tar.gz https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz
           tar -xzf 3rd_party.tar.gz
@@ -81,10 +92,15 @@ jobs:
         with:
           version: '6.5.3'
           target: 'desktop'
-          arch: 'win64_msvc2019_64'  # 根据你使用的 MSVC 版本修改
+          arch: 'win64_msvc2019_64'
 
-      - name: Build Project (Windows)
-        shell: cmd
+      - name: Configure with CMake
         run: |
-          qmake your.pro
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -G "NMake Makefiles"
+
+      - name: Build with NMake
+        run: |
+          cd build
           nmake
