@@ -132,12 +132,13 @@ jobs:
           mkdir -p qtmqtt/build && cd qtmqtt/build
           cmake .. \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/../../qtmqtt-install \
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/qtmqtt-install \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=ON
           make -j$(nproc)
           make install
           cd ../..
-          echo "MQTT_ROOT=$(pwd)/qtmqtt-install" >> $GITHUB_ENV
+          echo "MQTT_ROOT=${{ github.workspace }}/qtmqtt-install" >> $GITHUB_ENV
 
       - name: Configure ToolKit
         run: |
