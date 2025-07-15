@@ -15,7 +15,9 @@ jobs:
 
       - name: Install Homebrew dependencies
         run: |
-          brew install cmake pkg-config nasm yasm x264 x265
+          brew install cmake pkg-config nasm yasm x264 x265 opencv
+          echo "OPENCV_ROOT_PATH=$(brew --prefix opencv)" >> $GITHUB_ENV
+          export OPENCV_ROOT_PATH=$(brew --prefix opencv)
 
       - name: Download 3rd_party
         run: |
@@ -52,8 +54,6 @@ jobs:
       - name: Configure project
         run: |
           mkdir build && cd build
-          echo "OPENCV_ROOT_PATH=$(brew --prefix opencv)" >> $GITHUB_ENV
-          export OPENCV_ROOT_PATH=$(brew --prefix opencv)
           cmake ../ToolKit \
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
