@@ -124,7 +124,7 @@ jobs:
           version: '6.5.3'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qt5compat qtmultimedia qtmqtt'
+          modules: 'qt5compat qtmultimedia'
 
       - name: Clone and Build QtMqtt 6.5.3
         run: |
