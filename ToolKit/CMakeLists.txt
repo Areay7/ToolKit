@@ -50,6 +50,10 @@ if(NOT DEFINED FFMPEG_ROOT)
     set(FFMPEG_ROOT /opt/homebrew/opt/ffmpeg)
 endif()
 
+if(NOT DEFINED OPENCV_ROOT)
+    set(OPENCV_ROOT /opt/homebrew/opt/opencv)
+endif()
+
 # Qt
 find_package(Qt6 COMPONENTS Widgets Sql Multimedia Core5Compat REQUIRED)
 
