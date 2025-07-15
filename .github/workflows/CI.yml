@@ -1,10 +1,11 @@
-name: Qt CI/CD Pipeline
+name: CI
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   QT_VERSION: 6.5.3
@@ -12,12 +13,11 @@ env:
   THIRD_PARTY_URL: "https://github.com/Areay7/LearnCode/releases/download/v1.1.1/3rd_party.tar.gz"
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    name: Build on ${{ matrix.os }}
+  linux-build:
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: "qt-linux-${{ github.event.pull_request.number || github.ref }}"
+      cancel-in-progress: true
 
     steps:
     - name: Checkout code
@@ -25,118 +25,206 @@ jobs:
       with:
         submodules: recursive
 
-    # 下载并解压预编译的第三方库
-    - name: Download and extract 3rd_party libraries
+    - name: Download 3rd_party
       run: |
-        mkdir -p ${{ github.workspace }}/3rd_party
-        curl -L ${{ env.THIRD_PARTY_URL }} -o 3rd_party.tar.gz
-        tar -xzf 3rd_party.tar.gz -C ${{ github.workspace }}/3rd_party
-        rm 3rd_party.tar.gz
-        ls -la ${{ github.workspace }}/3rd_party
+        mkdir -p 3rd_party
+        curl -L $THIRD_PARTY_URL -o 3rd_party.tar.gz
+        tar -xzf 3rd_party.tar.gz -C 3rd_party
+        ls -la 3rd_party/
 
-    # 设置Qt环境
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3
       with:
         version: ${{ env.QT_VERSION }}
-        dir: ${{ github.workspace }}/Qt
-        cached: true
-        modules: qtbase qttools qtmultimedia qtsql qtnetwork qt5compat qtdeclarative qtmqtt
+        modules: qtbase qttools qtmultimedia qtsql qtnetwork qt5compat qtmqtt
         archives: icu
 
-    # 配置构建环境变量
-    - name: Setup environment variables
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          libgl1-mesa-dev \
+          libxkbcommon-x11-dev \
+          libasound2-dev
+
+    - name: Configure project
+      run: |
+        mkdir -p $BUILD_DIR
+        cd $BUILD_DIR
+        qmake $GITHUB_WORKSPACE CONFIG+=release \
+          "LIBS += -L$GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/Linux/amd64" \
+          "LIBS += -L$GITHUB_WORKSPACE/3rd_party/Opencv/lib/Linux/amd64" \
+          "INCLUDEPATH += $GITHUB_WORKSPACE/3rd_party/FFmpeg/include" \
+          "INCLUDEPATH += $GITHUB_WORKSPACE/3rd_party/Opencv/include"
+
+    - name: Build
+      run: |
+        cd $BUILD_DIR
+        make -j$(nproc)
+
+    - name: Run tests
+      run: |
+        export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/Linux/amd64:$GITHUB_WORKSPACE/3rd_party/Opencv/lib/Linux/amd64
+        cd $BUILD_DIR
+        ./your_test_executable
+
+    - name: Package artifacts
+      run: |
+        mkdir -p package/lib
+        cp $BUILD_DIR/your_app_executable package/
+        cp $GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/Linux/amd64/*.so* package/lib/
+        7z a qt-linux-build.zip package/*
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: linux-build
+        path: ${{ env.BUILD_DIR }}/qt-linux-build.zip
+
+  macos-build:
+    runs-on: macos-13
+    concurrency:
+      group: "qt-macos-${{ github.event.pull_request.number || github.ref }}"
+      cancel-in-progress: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download 3rd_party
+      run: |
+        mkdir -p 3rd_party
+        curl -L $THIRD_PARTY_URL -o 3rd_party.tar.gz
+        tar -xzf 3rd_party.tar.gz -C 3rd_party
+        ls -la 3rd_party/
+
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: ${{ env.QT_VERSION }}
+        modules: qtbase qttools qtmultimedia qtsql qtnetwork qt5compat qtmqtt
+
+    - name: Install dependencies
+      run: |
+        brew install cmake pkg-config
+
+    - name: Configure project
+      run: |
+        mkdir -p $BUILD_DIR
+        cd $BUILD_DIR
+        qmake $GITHUB_WORKSPACE CONFIG+=release \
+          "LIBS += -L$GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/MacOS/arm64" \
+          "LIBS += -L$GITHUB_WORKSPACE/3rd_party/Opencv/lib/MacOS/arm64" \
+          "INCLUDEPATH += $GITHUB_WORKSPACE/3rd_party/FFmpeg/include" \
+          "INCLUDEPATH += $GITHUB_WORKSPACE/3rd_party/Opencv/include"
+
+    - name: Build
+      run: |
+        cd $BUILD_DIR
+        make -j$(sysctl -n hw.ncpu)
+
+    - name: Run tests
+      run: |
+        export DYLD_LIBRARY_PATH=$GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/MacOS/arm64:$GITHUB_WORKSPACE/3rd_party/Opencv/lib/MacOS/arm64
+        cd $BUILD_DIR
+        ./your_test_executable
+
+    - name: Create macOS app bundle
+      run: |
+        mkdir -p YourApp.app/Contents/{MacOS,Frameworks,Resources}
+        cp $BUILD_DIR/your_app_executable YourApp.app/Contents/MacOS/
+        cp $GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/MacOS/arm64/*.dylib YourApp.app/Contents/Frameworks/
+        cp -r $GITHUB_WORKSPACE/res/ YourApp.app/Contents/Resources/
+        zip -r qt-macos-app.zip YourApp.app
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: macos-build
+        path: qt-macos-app.zip
+
+  windows-build:
+    runs-on: windows-latest
+    concurrency:
+      group: "qt-windows-${{ github.event.pull_request.number || github.ref }}"
+      cancel-in-progress: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download 3rd_party
       shell: bash
       run: |
-        echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
-        
-        # 根据平台设置库路径
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "LIB_PATH=Linux/amd64" >> $GITHUB_ENV
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          echo "LIB_PATH=MacOS/arm64" >> $GITHUB_ENV
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          echo "LIB_PATH=win/win64" >> $GITHUB_ENV
-        fi
+        mkdir -p 3rd_party
+        curl -L $THIRD_PARTY_URL -o 3rd_party.tar.gz
+        tar -xzf 3rd_party.tar.gz -C 3rd_party
+        ls -la 3rd_party/
 
-    # 配置构建
-    - name: Configure build
-      shell: bash
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: ${{ env.QT_VERSION }}
+        modules: qtbase qttools qtmultimedia qtsql qtnetwork qt5compat qtmqtt
+
+    - name: Install dependencies
       run: |
-        mkdir -p ${{ env.BUILD_DIR }}
-        cd ${{ env.BUILD_DIR }}
-        
-        # 设置Qt环境
-        source ${{ github.workspace }}/Qt/${{ env.QT_VERSION }}/**/bin/qt-env.sh
-        
-        # 生成qmake命令
-        qmake ${{ github.workspace }} \
-          CONFIG+=release \
-          "LIBS += -L${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}" \
-          "LIBS += -L${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}" \
-          "LIBS += -L${{ github.workspace }}/3rd_party/libhpdf/${{ env.LIB_PATH }}" \
-          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/FFmpeg/include" \
-          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/Opencv/include" \
-          "INCLUDEPATH += ${{ github.workspace }}/3rd_party/libhpdf/include"
+        choco install -y cmake
+        choco install -y ninja
 
-    # 执行构建
-    - name: Build project
-      shell: bash
+    - name: Configure project
+      shell: cmd
       run: |
-        cd ${{ env.BUILD_DIR }}
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          nmake
-        else
-          make -j$(nproc)
-        fi
+        mkdir %BUILD_DIR%
+        cd %BUILD_DIR%
+        qmake %GITHUB_WORKSPACE% CONFIG+=release ^
+          "LIBS += -L%GITHUB_WORKSPACE%/3rd_party/FFmpeg/lib/win/win64" ^
+          "LIBS += -L%GITHUB_WORKSPACE%/3rd_party/Opencv/lib/win/win64" ^
+          "INCLUDEPATH += %GITHUB_WORKSPACE%/3rd_party/FFmpeg/include" ^
+          "INCLUDEPATH += %GITHUB_WORKSPACE%/3rd_party/Opencv/include"
 
-    # 运行测试 (如果有)
+    - name: Build
+      shell: cmd
+      run: |
+        cd %BUILD_DIR%
+        nmake
+
     - name: Run tests
       shell: bash
       run: |
-        cd ${{ env.BUILD_DIR }}
-        if [ -f "./your_test_executable" ]; then
-          ./your_test_executable
-        fi
+        export PATH=$PATH:$GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/win/win64
+        cd $BUILD_DIR
+        ./your_test_executable.exe
 
-    # 打包发布
-    - name: Package artifacts
-      if: github.ref == 'refs/heads/main'
+    - name: Package Windows build
       shell: bash
       run: |
-        cd ${{ env.BUILD_DIR }}
-        
-        # 复制所需的动态库
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          mkdir -p lib
-          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.so* lib/
-          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.so* lib/
-          tar -czvf app_linux.tar.gz your_app_executable lib/
-          
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          mkdir -p YourApp.app/Contents/Frameworks
-          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.dylib YourApp.app/Contents/Frameworks/
-          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.dylib YourApp.app/Contents/Frameworks/
-          zip -r app_macos.zip YourApp.app
-          
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          mkdir -p bin
-          cp ${{ github.workspace }}/3rd_party/FFmpeg/lib/${{ env.LIB_PATH }}/*.dll bin/
-          cp ${{ github.workspace }}/3rd_party/Opencv/lib/${{ env.LIB_PATH }}/*.dll bin/
-          7z a app_windows.zip your_app.exe bin/
-        fi
+        mkdir -p package/bin
+        cp $BUILD_DIR/your_app_executable.exe package/
+        cp $GITHUB_WORKSPACE/3rd_party/FFmpeg/lib/win/win64/*.dll package/bin/
+        7z a qt-windows-build.zip package/*
 
-    # 上传构建产物
-    - name: Upload artifacts
-      if: github.ref == 'refs/heads/main'
-      uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.os }}-build
-        path: ${{ env.BUILD_DIR }}/*.zip ${{ env.BUILD_DIR }}/*.tar.gz
+        name: windows-build
+        path: ${{ env.BUILD_DIR }}/qt-windows-build.zip
 
-    # 部署到GitHub Releases
-    - name: Create Release
-      if: github.ref == 'refs/heads/main'
+  deploy:
+    needs: [linux-build, macos-build, windows-build]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+
+    - name: Create release
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -144,16 +232,40 @@ jobs:
       with:
         tag_name: v${{ github.run_number }}
         release_name: Release v${{ github.run_number }}
+        body: |
+          Multi-platform Qt build
+          - Linux build
+          - macOS app bundle
+          - Windows executable
         draft: false
         prerelease: false
 
-    - name: Upload Release Assets
-      if: github.ref == 'refs/heads/main'
+    - name: Upload release assets
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.BUILD_DIR }}/*.zip
-        asset_name: ${{ matrix.os }}-build.zip
+        asset_path: artifacts/linux-build/qt-linux-build.zip
+        asset_name: ToolKit-Linux-v${{ github.run_number }}.zip
+        asset_content_type: application/zip
+
+    - name: Upload macOS asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts/macos-build/qt-macos-app.zip
+        asset_name: ToolKit-macOS-v${{ github.run_number }}.zip
+        asset_content_type: application/zip
+
+    - name: Upload Windows asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts/windows-build/qt-windows-build.zip
+        asset_name: ToolKit-Windows-v${{ github.run_number }}.zip
         asset_content_type: application/zip
