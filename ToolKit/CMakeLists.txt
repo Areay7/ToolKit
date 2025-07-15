@@ -146,7 +146,7 @@ foreach(lib IN ITEMS avcodec avfilter avformat avutil swresample swscale postpro
 endforeach()
 
 # Qt official libs
-target_link_libraries(ToolKit PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Multimedia Qt6::Core5Compat QXlsx)
+target_link_libraries(ToolKit PRIVATE ${QT_LIBS} QXlsx)
 
 # Install
 install(TARGETS ToolKit DESTINATION ${CMAKE_SOURCE_DIR}/bin)
