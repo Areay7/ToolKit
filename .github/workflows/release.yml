@@ -48,6 +48,19 @@ jobs:
           arch: 'clang_64'
           modules: 'qt5compat qtmultimedia'
 
+      - name: Clone and Build QtMqtt 6.5.3
+        run: |
+          git clone --branch v6.5.3 https://github.com/qt/qtmqtt.git
+          mkdir -p qtmqtt/build && cd qtmqtt/build
+          cmake .. \
+            -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/qtmqtt-install \
+            -DCMAKE_BUILD_TYPE=Release
+          make -j$(sysctl -n hw.ncpu)
+          make install
+          cd ../..
+          echo "MQTT_ROOT=${{ github.workspace }}/qtmqtt-install" >> $GITHUB_ENV
+
       - name: Build Project
         run: |
           mkdir build && cd build
@@ -55,6 +68,7 @@ jobs:
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
             -DFFMPEG_ROOT="$FFMPEG_ROOT_PATH" \
             -DOPENCV_ROOT="$OPENCV_ROOT_PATH" \
+            -DMQTT_ROOT="$MQTT_ROOT" \
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           make -j$(sysctl -n hw.ncpu)
 
@@ -64,13 +78,8 @@ jobs:
           MACOS_PATH=$APP_PATH/Contents/MacOS
           FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
-          SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
-          HARU_PATH=3rd_party/libhpdf/MacOS/arm64
-          MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
-          MQTT_FRAMEWORK_PATH=$MQTT_PATH/QtMqtt.framework
+          MQTT_FRAMEWORK_PATH=${{ github.workspace }}/qtmqtt-install/lib/QtMqtt.framework
 
-          echo "== 当前目录 =="; pwd
-          ls -l 
           echo "== MQTT_FRAMEWORK_PATH =="; ls -l "$MQTT_FRAMEWORK_PATH" || echo "🚫 路径不存在"
 
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
