@@ -205,28 +205,47 @@ jobs:
           echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 
       - name: Prepare AppDir and Create AppImage
-        run: |
-          mkdir -p AppDir/usr/bin
-          cp build/ToolKit AppDir/usr/bin/
-          mkdir -p AppDir/usr/share/applications
-          cat > AppDir/usr/share/applications/ToolKit.desktop <<EOF
-          [Desktop Entry]
-          Name=ToolKit
-          Exec=ToolKit
-          Icon=ToolKit
-          Type=Application
-          Categories=Utility;
-          EOF
-          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
-          cp ToolKit/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/ToolKit.png || true
-          export VERSION=${{ github.ref_name }}
-          linuxdeployqt AppDir/usr/share/applications/ToolKit.desktop -appimage -verbose=2
+          run: |
+            mkdir -p AppDir/usr/bin
+            cp build/ToolKit AppDir/usr/bin/
 
-      - name: Upload Release AppImage
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: ToolKit*.AppImage
+            # 添加 desktop 文件
+            mkdir -p AppDir/usr/share/applications
+            cat > AppDir/usr/share/applications/ToolKit.desktop <<EOF
+            [Desktop Entry]
+            Name=ToolKit
+            Exec=ToolKit
+            Icon=ToolKit
+            Type=Application
+            Categories=Utility;
+            EOF
+
+            # 添加图标（如果存在）
+            mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+            if [ -f ToolKit/icon.png ]; then
+              cp ToolKit/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/ToolKit.png
+            fi
+
+            # 添加 HaruPDF 和 SeetaFace 库（仍来自 3rd_party）
+            mkdir -p AppDir/usr/lib
+            cp -v 3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
+            cp -v 3rd_party/Opencv/lib/Linux/amd64/*.so* AppDir/usr/lib || true
+
+            # 使用 GITHUB_ENV 中的路径复制你编译的库
+            cp -v "$FFMPEG_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
+            cp -v "$OPENCV_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
+            cp -v "$MQTT_ROOT/lib/"*.so* AppDir/usr/lib || true
+
+            # 设置 LD_LIBRARY_PATH
+            export LD_LIBRARY_PATH="$(pwd)/AppDir/usr/lib:$LD_LIBRARY_PATH"
+            echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+
+            # 构建 AppImage
+            export VERSION=${{ github.ref_name }}
+            linuxdeployqt AppDir/usr/share/applications/ToolKit.desktop -appimage -verbose=2
+
+            # 验证生成
+            ls -lh ToolKit*.AppImage || { echo "❌ AppImage 构建失败"; exit 1; }
 
   build-windows:
     name: Build on Windows
