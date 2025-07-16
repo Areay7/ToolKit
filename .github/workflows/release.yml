@@ -97,7 +97,14 @@ jobs:
           fi
 
           echo "🔧 修复 @rpath -> @executable_path/../Frameworks"
-          install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit"
+          # 检查并添加 rpath
+          RPATH="@executable_path/../Frameworks"
+          if ! otool -l "$MACOS_PATH/ToolKit" | grep -q "$RPATH"; then
+            echo "🔧 添加 rpath: $RPATH"
+            install_name_tool -add_rpath "$RPATH" "$MACOS_PATH/ToolKit"
+          else
+            echo "✅ rpath 已存在: $RPATH，跳过添加"
+          fi
 
           echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
           ls -lh build/ToolKit.dmg || { echo "❌ ToolKit.dmg not created!"; exit 1; }
