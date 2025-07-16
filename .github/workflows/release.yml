@@ -75,12 +75,17 @@ jobs:
         run: |
           APP_PATH=build/ToolKit.app
           MACOS_PATH=$APP_PATH/Contents/MacOS
+          FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
             echo "❌ Error: $MACOS_PATH/ToolKit not found"
             ls -l $MACOS_PATH || true
             exit 1
           fi
+
+          echo "📦 准备拷贝人脸识别相关库"
+          mkdir -p "$FRAMEWORKS_PATH"
+          cp -av ToolKit/3rd_party/Opencv/lib/MacOS/arm64/*.dylib "$FRAMEWORKS_PATH/" || true
 
           echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
