@@ -84,7 +84,8 @@ jobs:
 
           echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
-          "$Qt6_DIR/bin/macdeployqt" ToolKit.app -dmg -no-sign -verbose=3 || true
+          "$Qt6_DIR/bin/macdeployqt" ToolKit.app -dmg -verbose=3 || true
+          codesign --force --deep --sign - ToolKit.app
           cd ..
 
           echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
