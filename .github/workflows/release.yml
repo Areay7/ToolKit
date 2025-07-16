@@ -76,11 +76,6 @@ jobs:
         run: |
           APP_PATH=build/ToolKit.app
           MACOS_PATH=$APP_PATH/Contents/MacOS
-          FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
-
-          MQTT_FRAMEWORK_PATH=${{ github.workspace }}/qtmqtt-install/lib/QtMqtt.framework
-
-          echo "== MQTT_FRAMEWORK_PATH =="; ls -l "$MQTT_FRAMEWORK_PATH" || echo "🚫 路径不存在"
 
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
             echo "❌ Error: $MACOS_PATH/ToolKit not found"
@@ -88,24 +83,10 @@ jobs:
             exit 1
           fi
 
-          echo "📥 提前复制 QtMqtt.framework 到 App 包中"
-          mkdir -p "$FRAMEWORKS_PATH"
-          cp -a "$MQTT_FRAMEWORK_PATH" "$FRAMEWORKS_PATH/" || exit 1
-
-          echo "🔧 修改 rpath 与依赖指向，强制引用 QtMqtt.framework"
-          install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit" || true
-          install_name_tool -change \
-              libQtMqtt.6.dylib \
-              @rpath/QtMqtt.framework/Versions/A/QtMqtt \
-              "$MACOS_PATH/ToolKit" || true
-
           echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
           macdeployqt ToolKit.app -dmg -verbose=3 || true
           cd ..
-
-          echo "✅ 检查 QtMqtt.framework 是否存在"
-          ls -l "$FRAMEWORKS_PATH/QtMqtt.framework" || { echo "❌ QtMqtt.framework 未包含进 App 包！"; exit 1; }
 
           echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
           ls -lh build/ToolKit.dmg || { echo "❌ ToolKit.dmg not created!"; exit 1; }
