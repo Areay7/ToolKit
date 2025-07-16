@@ -67,29 +67,39 @@ jobs:
           SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
           HARU_PATH=3rd_party/libhpdf/MacOS/arm64
           MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
+          MQTT_FRAMEWORK_PATH=$MQTT_PATH/QtMqtt.framework
 
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
-            echo "Error: $MACOS_PATH/ToolKit not found"
+            echo "❌ Error: $MACOS_PATH/ToolKit not found"
             ls -l $MACOS_PATH || true
             exit 1
           fi
 
-          install_name_tool -add_rpath "$MQTT_PATH" $MACOS_PATH/ToolKit
-
+          echo "📌 设置运行时库路径（DYLD_LIBRARY_PATH）"
           export DYLD_LIBRARY_PATH="$FFMPEG_ROOT_PATH/lib:$OPENCV_ROOT_PATH/lib:$SEETA_PATH:$HARU_PATH:$MQTT_PATH:$DYLD_LIBRARY_PATH"
           echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH"
 
+          echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
           macdeployqt ToolKit.app -dmg -verbose=3 || true
+          cd ..
 
-          # ✅ 手动复制 QtMqtt.framework
-          mkdir -p "$FRAMEWORKS_PATH"
-          cp -a ../$MQTT_PATH/QtMqtt.framework "$FRAMEWORKS_PATH" || echo "❗️QtMqtt.framework not found, skipping..."
+          echo "📥 复制 QtMqtt.framework 到 App 包中"
+          if [ -d "$MQTT_FRAMEWORK_PATH" ]; then
+            mkdir -p "$FRAMEWORKS_PATH"
+            cp -a "$MQTT_FRAMEWORK_PATH" "$FRAMEWORKS_PATH/"
+          else
+            echo "❌ QtMqtt.framework not found in $MQTT_PATH"
+            exit 1
+          fi
 
-          echo "== Checking ToolKit.dmg existence =="
-          ls -lh ToolKit.dmg || { echo "ToolKit.dmg not created!"; exit 1; }
+          echo "🔧 修复 @rpath -> @executable_path/../Frameworks"
+          install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit"
 
-          cp ToolKit.dmg ../ToolKit_macOS.dmg
+          echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
+          ls -lh build/ToolKit.dmg || { echo "❌ ToolKit.dmg not created!"; exit 1; }
+
+          cp build/ToolKit.dmg ToolKit_macOS.dmg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -211,6 +221,8 @@ jobs:
           echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 
       - name: Prepare AppDir and Create AppImage
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/AppDir/usr/lib:${{ env.LD_LIBRARY_PATH }}
         run: |
           mkdir -p AppDir/usr/bin
           cp build/ToolKit AppDir/usr/bin/
@@ -242,9 +254,11 @@ jobs:
           cp -av "$OPENCV_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
           cp -av "$MQTT_ROOT/lib/"*.so* AppDir/usr/lib || true
 
-          # 设置 LD_LIBRARY_PATH
-          export LD_LIBRARY_PATH="$(pwd)/AppDir/usr/lib:$LD_LIBRARY_PATH"
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+          # 输出以检查是否存在目标库和软链接
+          echo "== 检查 AppDir/usr/lib 中的 Seeta 库 =="
+          ls -l AppDir/usr/lib | grep Seeta || true
+
+          ldd AppDir/usr/bin/ToolKit | grep "not found" && echo "⚠️ 缺失库!" || echo "✅ 所有库已找到"
 
           # 构建 AppImage
           export VERSION=${{ github.ref_name }}
