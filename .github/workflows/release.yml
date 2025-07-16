@@ -65,10 +65,14 @@ jobs:
           FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
           # 修正路径：注意是 ToolKit/3rd_party，而不是当前目录的 3rd_party
-          SEETA_PATH=ToolKit/3rd_party/Opencv/lib/MacOS/arm64
-          HARU_PATH=ToolKit/3rd_party/libhpdf/MacOS/arm64
-          MQTT_PATH=ToolKit/3rd_party/QtMqtt/6.5.3/MacOS/arm64
+          SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
+          HARU_PATH=3rd_party/libhpdf/MacOS/arm64
+          MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
           MQTT_FRAMEWORK_PATH=$MQTT_PATH/QtMqtt.framework
+
+          echo "== 当前目录 =="; pwd
+          ls -l 
+          echo "== MQTT_FRAMEWORK_PATH =="; ls -l "$MQTT_FRAMEWORK_PATH" || echo "🚫 路径不存在"
 
           if [ ! -f "$MACOS_PATH/ToolKit" ]; then
             echo "❌ Error: $MACOS_PATH/ToolKit not found"
@@ -257,17 +261,17 @@ jobs:
           ls -l
 
           echo "************777"
-          ls -l 3rd_party/libhpdf/Linux/amd64
+          ls -l ToolKit/3rd_party/libhpdf/Linux/amd64
           echo "************777" 
 
           echo "************888"
-          ls -l 3rd_party/Opencv/lib/Linux/amd64
+          ls -l ToolKit/3rd_party/Opencv/lib/Linux/amd64
           echo "************888" 
 
           # 添加 HaruPDF 和 SeetaFace 库（仍来自 3rd_party）
           mkdir -p AppDir/usr/lib
-          cp -av 3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
-          cp -av 3rd_party/Opencv/lib/Linux/amd64/* AppDir/usr/lib || true
+          cp -av ToolKit/3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
+          cp -av ToolKit/3rd_party/Opencv/lib/Linux/amd64/* AppDir/usr/lib || true
 
           # 使用 GITHUB_ENV 中的路径复制你编译的库
           cp -av "$FFMPEG_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
