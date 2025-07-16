@@ -62,6 +62,7 @@ jobs:
         run: |
           APP_PATH=build/ToolKit.app
           MACOS_PATH=$APP_PATH/Contents/MacOS
+          FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
           SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
           HARU_PATH=3rd_party/libhpdf/MacOS/arm64
@@ -80,6 +81,10 @@ jobs:
 
           cd build
           macdeployqt ToolKit.app -dmg -verbose=3 || true
+
+          # ✅ 手动复制 QtMqtt.framework
+          mkdir -p "$FRAMEWORKS_PATH"
+          cp -a ../$MQTT_PATH/QtMqtt.framework "$FRAMEWORKS_PATH" || echo "❗️QtMqtt.framework not found, skipping..."
 
           echo "== Checking ToolKit.dmg existence =="
           ls -lh ToolKit.dmg || { echo "ToolKit.dmg not created!"; exit 1; }
