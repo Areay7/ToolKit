@@ -54,12 +54,11 @@ jobs:
           mkdir -p qtmqtt/build && cd qtmqtt/build
           cmake .. \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/qtmqtt-install \
+            -DCMAKE_INSTALL_PREFIX="$Qt6_DIR" \
             -DCMAKE_BUILD_TYPE=Release
           make -j$(sysctl -n hw.ncpu)
           make install
-          cd ../..
-          echo "MQTT_ROOT=${{ github.workspace }}/qtmqtt-install" >> $GITHUB_ENV
+          echo "MQTT_ROOT=$Qt6_DIR" >> $GITHUB_ENV
 
       - name: Build Project
         run: |
@@ -85,7 +84,7 @@ jobs:
 
           echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
-          macdeployqt ToolKit.app -dmg -verbose=3 || true
+          "$Qt6_DIR/bin/macdeployqt" ToolKit.app -dmg -verbose=3 || true
           cd ..
 
           echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
