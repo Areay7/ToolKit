@@ -64,7 +64,6 @@ jobs:
           MACOS_PATH=$APP_PATH/Contents/MacOS
           FRAMEWORKS_PATH=$APP_PATH/Contents/Frameworks
 
-          # 修正路径：注意是 ToolKit/3rd_party，而不是当前目录的 3rd_party
           SEETA_PATH=3rd_party/Opencv/lib/MacOS/arm64
           HARU_PATH=3rd_party/libhpdf/MacOS/arm64
           MQTT_PATH=3rd_party/QtMqtt/6.5.3/MacOS/arm64
@@ -80,35 +79,24 @@ jobs:
             exit 1
           fi
 
-          echo "📌 设置运行时库路径（DYLD_LIBRARY_PATH）"
-          export DYLD_LIBRARY_PATH="$FFMPEG_ROOT_PATH/lib:$OPENCV_ROOT_PATH/lib:$SEETA_PATH:$HARU_PATH:$MQTT_PATH:$DYLD_LIBRARY_PATH"
-          echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH"
+          echo "📥 提前复制 QtMqtt.framework 到 App 包中"
+          mkdir -p "$FRAMEWORKS_PATH"
+          cp -a "$MQTT_FRAMEWORK_PATH" "$FRAMEWORKS_PATH/" || exit 1
+
+          echo "🔧 修改 rpath 与依赖指向，强制引用 QtMqtt.framework"
+          install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_PATH/ToolKit" || true
+          install_name_tool -change \
+              libQtMqtt.6.dylib \
+              @rpath/QtMqtt.framework/Versions/A/QtMqtt \
+              "$MACOS_PATH/ToolKit" || true
 
           echo "📦 使用 macdeployqt 打包 .app 和 .dmg"
           cd build
           macdeployqt ToolKit.app -dmg -verbose=3 || true
           cd ..
 
-          echo "📥 复制 QtMqtt.framework 到 App 包中"
-          if [ -d "$MQTT_FRAMEWORK_PATH" ]; then
-            mkdir -p "$FRAMEWORKS_PATH"
-            cp -a "$MQTT_FRAMEWORK_PATH" "$FRAMEWORKS_PATH/"
-          else
-            echo "❌ QtMqtt.framework not found in $MQTT_PATH"
-            echo "目录内容如下："
-            ls -l "$MQTT_PATH"
-            exit 1
-          fi
-
-          echo "🔧 修复 @rpath -> @executable_path/../Frameworks"
-          # 检查并添加 rpath
-          RPATH="@executable_path/../Frameworks"
-          if ! otool -l "$MACOS_PATH/ToolKit" | grep -q "$RPATH"; then
-            echo "🔧 添加 rpath: $RPATH"
-            install_name_tool -add_rpath "$RPATH" "$MACOS_PATH/ToolKit"
-          else
-            echo "✅ rpath 已存在: $RPATH，跳过添加"
-          fi
+          echo "✅ 检查 QtMqtt.framework 是否存在"
+          ls -l "$FRAMEWORKS_PATH/QtMqtt.framework" || { echo "❌ QtMqtt.framework 未包含进 App 包！"; exit 1; }
 
           echo "== ✅ 检查是否成功创建 ToolKit.dmg =="
           ls -lh build/ToolKit.dmg || { echo "❌ ToolKit.dmg not created!"; exit 1; }
