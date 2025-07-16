@@ -179,6 +179,7 @@ jobs:
 
       - name: Configure ToolKit
         run: |
+          export LD_LIBRARY_PATH="$(pwd)/3rd_party/Opencv/lib/Linux/amd64:$LD_LIBRARY_PATH"
           mkdir build && cd build
           cmake ../ToolKit \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
@@ -228,13 +229,13 @@ jobs:
 
           # 添加 HaruPDF 和 SeetaFace 库（仍来自 3rd_party）
           mkdir -p AppDir/usr/lib
-          cp -v 3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
-          cp -v 3rd_party/Opencv/lib/Linux/amd64/*.so* AppDir/usr/lib || true
+          cp -av 3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
+          cp -av 3rd_party/Opencv/lib/Linux/amd64/* AppDir/usr/lib || true
 
           # 使用 GITHUB_ENV 中的路径复制你编译的库
-          cp -v "$FFMPEG_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
-          cp -v "$OPENCV_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
-          cp -v "$MQTT_ROOT/lib/"*.so* AppDir/usr/lib || true
+          cp -av "$FFMPEG_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
+          cp -av "$OPENCV_ROOT_PATH/lib/"*.so* AppDir/usr/lib || true
+          cp -av "$MQTT_ROOT/lib/"*.so* AppDir/usr/lib || true
 
           # 设置 LD_LIBRARY_PATH
           export LD_LIBRARY_PATH="$(pwd)/AppDir/usr/lib:$LD_LIBRARY_PATH"
