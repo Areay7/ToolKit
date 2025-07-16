@@ -192,7 +192,6 @@ jobs:
 
       - name: Configure ToolKit
         run: |
-          export LD_LIBRARY_PATH="$(pwd)/3rd_party/Opencv/lib/Linux/amd64:$LD_LIBRARY_PATH"
           mkdir build && cd build
           cmake ../ToolKit \
             -DCMAKE_PREFIX_PATH="$Qt6_DIR" \
@@ -242,6 +241,16 @@ jobs:
             cp ToolKit/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/ToolKit.png
           fi
 
+          pwd
+          
+          echo "************777"
+          ls -l 3rd_party/libhpdf/Linux/amd64
+          echo "************777" 
+
+          echo "************888"
+          ls -l 3rd_party/Opencv/lib/Linux/amd64
+          echo "************888" 
+
           # 添加 HaruPDF 和 SeetaFace 库（仍来自 3rd_party）
           mkdir -p AppDir/usr/lib
           cp -av 3rd_party/libhpdf/Linux/amd64/*.so* AppDir/usr/lib || true
@@ -263,7 +272,19 @@ jobs:
           linuxdeployqt AppDir/usr/share/applications/ToolKit.desktop -appimage -verbose=2
 
           # 验证生成
-          ls -lh ToolKit*.AppImage || { echo "❌ AppImage 构建失败"; exit 1; }
+          ls -lh ToolKit*.AppImage || { echo "❌ AppImage 构建失败"; exit 1; o
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ToolKit_macOS
+          path: ToolKit_macOS.dmg
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ToolKit_macOS.dmg
 
 
   build-windows:
