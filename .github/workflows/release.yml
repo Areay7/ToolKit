@@ -142,7 +142,7 @@ jobs:
             yasm nasm libx264-dev libx265-dev libnuma-dev \
             libgtk-3-dev libjpeg-dev libpng-dev libtiff-dev \
             libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
-            libeigen3-dev libtbb-dev \
+            libeigen3-dev libtbb-dev libxcb-cursor0 \
             libfuse2 patchelf
 
       - name: Download and Build FFmpeg 4.4.5
